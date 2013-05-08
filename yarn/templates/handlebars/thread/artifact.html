@@ -1,0 +1,10 @@
+{% load templatetag_handlebars %}
+    {% tplhandlebars "artifact_display" %}
+            <div style="border: 1px solid #555; margin: 10px;">
+            Time: {{ timestamp }} <br />
+            type : {{ type }} <br />
+            id: {{ id }} <br />
+            bot: {{ bot }} <br />
+            description: {{ description }} <br />
+            </div>
+    {% endtplhandlebars %}

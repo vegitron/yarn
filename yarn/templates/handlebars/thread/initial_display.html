@@ -4,13 +4,7 @@
 
     <div class="artifact_list" id="thread_{{ thread_id }}">
         {{#each artifacts}}
-            <div style="border: 1px solid #555; margin: 10px;">
-            Time: {{ timestamp }} <br />
-            type : {{ type }} <br />
-            id: {{ id }} <br />
-            bot: {{ bot }} <br />
-            description: {{ description }} <br />
-            </div>
+            {{{ artifact }}}
         {{/each}}
     </div>
 
