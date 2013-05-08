@@ -1,4 +1,6 @@
 from django.db import models
+import time
+from wsgiref.handlers import format_date_time
 
 # Create your models here.
 
@@ -19,3 +21,23 @@ class Thread(models.Model):
 
     class Meta:
         db_table = 'thread'
+
+class Artifact(models.Model):
+    description = models.TextField(db_column='description')
+    timestamp = models.DateTimeField(db_column='timestamp')
+    artifact_type = models.CharField(max_length=128, db_column='type')
+    thread = models.ForeignKey(Thread, db_column='thread_id')
+    bot = models.TextField(db_column='bot')
+
+    def json_data(self):
+        return {
+            "id": self.pk,
+            "description": self.description,
+            "timestamp": format_date_time(time.mktime(self.timestamp.timetuple())),
+            "type": self.artifact_type,
+            "thread_id": self.thread.pk,
+            "bot": self.bot
+        }
+
+    class Meta:
+        db_table = 'artifact'

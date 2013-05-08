@@ -15,6 +15,7 @@
         {% load compress %}
         {% compress css %}
         <link rel="stylesheet" type="text/less" href="{{STATIC_URL}}css/bootstrap.2.2.1.min.css"/>
+        <link rel="stylesheet" type="text/less" href="{{STATIC_URL}}css/jquery-ui.css"/>
         {% endcompress %}
     </head>
     <body>
@@ -24,18 +25,26 @@
         <![endif]-->
 
         <div id="main" class="content">
-            <div id="available_thread_list">
+            <div id="tabs">
+                <ul id="tab_list">
+                    <li id="home_tab"><a href="#available_thread_list">Threads</a></li>
+                </ul>
+                <div id="available_thread_list">
+                </div>
             </div>
-
         </div>
 
         {% compress js %}
             <script src="{{STATIC_URL}}js/jquery-1.9.1.js"></script>
+            <script src="{{STATIC_URL}}js/jquery-ui.js"></script>
             <script src="{{STATIC_URL}}js/handlebars.js"></script>
             <script src="{{STATIC_URL}}js/yarn.js"></script>
+            <script src="{{STATIC_URL}}js/thread.js"></script>
         {% endcompress %}
 
         {% include "handlebars/available_threads.html" %}
+        {% include "handlebars/thread/initial_display.html" %}
+        {% include "handlebars/thread/tab_display.html" %}
 
         <script>
             start_yarn();

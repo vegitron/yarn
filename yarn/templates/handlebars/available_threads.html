@@ -4,7 +4,7 @@
     <h1>Threads:</h1>
 
     {{#each threads}}
-        {{name}} ({{id}})<br/>
+        <a href="javascript:void(0);" rel="{{id}}" class="open_thread">{{name}}</a><br/>
         <div>
         {{description}}
         </div>
