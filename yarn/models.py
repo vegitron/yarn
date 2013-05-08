@@ -30,14 +30,18 @@ class Artifact(models.Model):
     bot = models.TextField(db_column='bot')
 
     def json_data(self):
-        return {
+        data = {
             "id": self.pk,
             "description": self.description,
-            "timestamp": format_date_time(time.mktime(self.timestamp.timetuple())),
             "type": self.artifact_type,
             "thread_id": self.thread.pk,
+            "timestamp": None,
             "bot": self.bot
         }
+        if self.timestamp:
+            data["timestamp"] = format_date_time(time.mktime(self.timestamp.timetuple())),
+
+        return data
 
     class Meta:
         db_table = 'artifact'

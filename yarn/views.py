@@ -9,7 +9,7 @@ def thread_info(request, thread_id):
     thread = Thread.objects.get(pk=thread_id)
 
     #artifacts = Artifact.objects.filter(thread_id__exact = thread.pk).order_by(pk)[:10]
-    artifacts = Artifact.objects.filter(thread_id = thread.pk).order_by('pk')[:5]
+    artifacts = Artifact.objects.filter(thread_id = thread.pk).order_by('-pk')[:50]
 
     artifact_data = []
     for artifact in artifacts:
