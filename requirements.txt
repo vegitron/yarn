@@ -1,0 +1,7 @@
+Django==1.4
+MySQL-python
+simplejson
+django-compressor
+BeautifulSoup
+django-templatetag-handlebars
+

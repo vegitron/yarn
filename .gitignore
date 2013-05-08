@@ -2,3 +2,10 @@
 *.pot
 *.pyc
 local_settings.py
+manage.py
+project
+bin
+include
+lib
+local
+CACHE
