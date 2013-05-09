@@ -9,6 +9,10 @@ from django.contrib.auth.decorators import login_required
 def thread_info(request, thread_id):
     """ Returns the initial data needed for a thread """
     thread = Thread.objects.get(pk=thread_id)
+    person = Person.objects.filter(login_name = request.user.username)
+
+    if not thread.person_has_access(person):
+        return HttpResponse()
 
     #artifacts = Artifact.objects.filter(thread_id__exact = thread.pk).order_by(pk)[:10]
     artifacts = Artifact.objects.filter(thread_id = thread.pk).order_by('-pk')[:50]
@@ -23,11 +27,16 @@ def thread_info(request, thread_id):
 @login_required
 def thread_list(request):
     """ Returns a list of all threads the user has access to """
-    threads = Thread.objects.all()
+    threads = Thread.objects.filter(is_private__isnull = True)
+
+    person = Person.objects.filter(login_name = request.user.username)
+    if not person:
+        person = Person.objects.create(login_name = request.user.username)
 
     data = []
     for thread in threads:
-        data.append(thread.json_data())
+        if thread.person_has_access(person):
+            data.append(thread.json_data())
 
     return HttpResponse(json.dumps(data), { "Content-type": "application/json" })
 

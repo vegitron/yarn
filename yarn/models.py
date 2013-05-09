@@ -8,6 +8,12 @@ class Thread(models.Model):
     is_private = models.BooleanField(db_column='is_private')
     has_groups = models.BooleanField(db_column='has_groups')
 
+    def person_has_access(self, person):
+        # XXX - needs to check the auth_list and group_auth, as well
+        # as checking for private threads that the person is one of the 2
+        # participants
+        return True
+
     def json_data(self):
         return {
             "id": self.pk,
