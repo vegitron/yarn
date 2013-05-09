@@ -1,4 +1,4 @@
-from yarn.models import Thread, Artifact
+from yarn.models import Thread, Artifact, Person
 import simplejson as json
 from django.http import HttpResponse
 from django.template import RequestContext
@@ -14,7 +14,6 @@ def thread_info(request, thread_id):
     artifact_data = []
     for artifact in artifacts:
         artifact_data.append(artifact.json_data())
-
 
     data = { "thread": thread.json_data(), "artifacts": artifact_data }
     return HttpResponse(json.dumps(data), { "Content-type": "application/json" })

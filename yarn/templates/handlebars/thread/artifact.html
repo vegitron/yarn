@@ -1,6 +1,18 @@
 {% load templatetag_handlebars %}
     {% tplhandlebars "artifact_display" %}
-            <div style="border: 1px solid #555; margin: 10px;">
+        <li class="artifact">
+            <div class="yarn-artifact-left">
+                <span class="artifact-timestamp">{{ format_time timestamp }}</span>
+                <span class="artifact-avatar"></span>
+            </div>
+            <div class="yarn-artifact-right">
+                <span class="artifact_user"><a href="javascript:void(0);" class="open_private_chat" rel="{{ author.login_name }}">{{ author.name }}</a></span>
+                <span class="artifact_user_id">{{ author.login_name }}</span>
+                <div class="artifact_content">
+                    {{ formatted_artifact description }}
+                </div>
+            </div>
+            <!--
             {{#if_eq type "online_notice"}}
                 -- online notice -- <br >
             {{else}}
@@ -12,5 +24,6 @@
             bot: {{ bot }} <br />
             description: {{ description }} <br />
             formatted: <div>{{formatted_artifact description}} </div>
-            </div>
+            -->
+        </li>
     {% endtplhandlebars %}

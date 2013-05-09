@@ -2,10 +2,12 @@
 {% load templatetag_handlebars %}
     {% tplhandlebars "initial_thread_display" %}
 
-    <div class="artifact_list" id="thread_{{ thread_id }}">
+    <div class="yarn-artifacts" id="thread_{{ thread_id }}">
+        <ul>
         {{#each artifacts}}
             {{{ artifact }}}
         {{/each}}
+        </ul>
     </div>
 
 
