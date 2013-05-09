@@ -1,10 +1,16 @@
 {% load templatetag_handlebars %}
     {% tplhandlebars "artifact_display" %}
             <div style="border: 1px solid #555; margin: 10px;">
+            {{#if_eq type "online_notice"}}
+                -- online notice -- <br >
+            {{else}}
+               ok <br />
+            {{/if_eq}}
             Time: {{ timestamp }} <br />
             type : {{ type }} <br />
             id: {{ id }} <br />
             bot: {{ bot }} <br />
             description: {{ description }} <br />
+            formatted: <div>{{formatted_artifact description}} </div>
             </div>
     {% endtplhandlebars %}

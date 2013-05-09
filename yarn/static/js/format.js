@@ -81,3 +81,12 @@ function _test_formatter() {
         }
     }
 }
+
+
+// Keep this here, just to stay on top of things...
+_test_formatter();
+
+Handlebars.registerHelper('formatted_artifact', function(text) {
+    return new Handlebars.SafeString(format_text(text));
+});
+

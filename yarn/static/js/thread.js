@@ -9,8 +9,6 @@ function load_thread(thread_id) {
 function show_thread_error() {
 }
 
-    _test_formatter();
-
 function draw_new_thread(data) {
     var source = $("#initial_thread_display").html();
     var tab_source = $("#thread_tab_display").html();
@@ -41,7 +39,9 @@ function draw_new_thread(data) {
     $($.parseHTML(tab_content)).appendTo("#tab_list");
     $($.parseHTML(initial_content)).appendTo("#tabs");
     refresh_thread_tabs();
-    $("#tabs").tabs("refresh");
+
+    var index = $('#tabs a[href="#thread_'+data.thread.id+'"]').parent().index(); 
+    $("#tabs").tabs("option", "active", index);
 
 }
 
