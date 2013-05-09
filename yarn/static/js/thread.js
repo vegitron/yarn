@@ -9,6 +9,8 @@ function load_thread(thread_id) {
 function show_thread_error() {
 }
 
+    _test_formatter();
+
 function draw_new_thread(data) {
     var source = $("#initial_thread_display").html();
     var tab_source = $("#thread_tab_display").html();
