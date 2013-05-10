@@ -908,4 +908,9 @@ border-radius: 5px;
 }
 
 
+.artifact_upload_chooser {
+    visibility:hidden;position:absolute;top:-50;left:-50
+}
+
+.upload_file_info { overflow-y: scroll; height: 84px; }
 

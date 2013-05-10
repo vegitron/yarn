@@ -90,6 +90,7 @@ class Artifact(models.Model):
             data["download_url"] = reverse('yarn.views.download_file', kwargs = {'thread_id': self.thread.pk, 'file_id': self.description, 'verify_hash': hashval })
 
             sol_file = SolsticeFile.objects.get(pk = self.description)
+            data["file_name"] = sol_file.name
             if sol_file.is_image():
                 data["is_image"] = True
                 data["thumbnail_url"] = reverse('yarn.views.thumbnail_file', kwargs = {'thread_id': self.thread.pk, 'file_id': self.description, 'verify_hash': hashval })

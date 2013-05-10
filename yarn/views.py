@@ -1,6 +1,7 @@
 from yarn.models import Thread, Artifact, Person, PersonAttribute, SolsticeFile, User
 import simplejson as json
 import md5
+import base64
 from django.conf import settings
 from datetime import datetime
 from django.http import HttpResponse
@@ -40,14 +41,43 @@ def thread_info(request, thread_id):
 
     if request.method == "POST":
         json_data = json.loads(request.raw_post_data)
-        artifact = Artifact.objects.create(
-            thread_id = thread.pk,
-            person_id =  person.person_id,
-            description = json_data["value"],
-            timestamp = datetime.now(),
-            artifact_type = None,
-        )
-        return HttpResponse()
+
+        if json_data["type"] == "text":
+            artifact = Artifact.objects.create(
+                thread_id = thread.pk,
+                person_id =  person.person_id,
+                description = json_data["value"],
+                timestamp = datetime.now(),
+                artifact_type = None,
+            )
+
+        elif json_data["type"] == "file":
+            raw_content = base64.b64decode(json_data["file"])
+            sol_file = SolsticeFile.objects.create(
+                person = person,
+                name = json_data["name"],
+                content_type = json_data["content_type"],
+                content_length = len(raw_content),
+                creation_date = datetime.now(),
+                modification_date = datetime.now(),
+                filestore_id = 0,
+            )
+
+            path = sol_file.path_to_file()
+            handle = open(path, "w")
+            handle.write(raw_content)
+            handle.close()
+
+
+            artifact = Artifact.objects.create(
+                thread_id = thread.pk,
+                person_id =  person.person_id,
+                description = sol_file.pk,
+                timestamp = datetime.now(),
+                artifact_type = "file",
+            )
+
+        return HttpResponse('""')
 
 
 @login_required

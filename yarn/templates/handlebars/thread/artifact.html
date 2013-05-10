@@ -17,9 +17,10 @@
                         {{#if is_image }}
                             <img src="{{ thumbnail_url }}" /> <br />
                         {{/if }}
-                        <a href="{{ download_url }}">Download</a>
+                        <a href="{{ download_url }}">Download</a> {{ file_name }}
+                    {{else}}
+                        {{ formatted_artifact description }}
                     {{/if_eq }}
-                    {{ formatted_artifact description }}
                 </div>
             </div>
             <!--

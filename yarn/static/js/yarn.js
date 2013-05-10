@@ -32,3 +32,18 @@ function refresh_thread_tabs() {
 
 }
 
+function handle_window_click(e) {
+    var target = e.target;
+    if (target.className == "artifact_upload_interface") {
+        choose_file_to_upload(target.rel);
+    }
+    else if (target.className == "cancel_upload_artifact") {
+        cancel_file_upload(target.rel);
+    }
+    else if (target.className == "upload_artifact") {
+        upload_new_artifact(target.rel);
+    }
+}
+
+$(window).on("click", handle_window_click);
+
