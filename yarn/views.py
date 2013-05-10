@@ -1,5 +1,7 @@
-from yarn.models import Thread, Artifact, Person
+from yarn.models import Thread, Artifact, Person, PersonAttribute, SolsticeFile
 import simplejson as json
+import md5
+from django.conf import settings
 from datetime import datetime
 from django.http import HttpResponse
 from django.template import RequestContext
@@ -60,4 +62,54 @@ def thread_list(request):
 @login_required
 def home(request):
     return render_to_response("home.html", {}, RequestContext(request))
+
+
+def download_file(request, thread_id, file_id, verify_hash):
+    if verify_hash != md5.new("%s-%s-%s" % (thread_id, file_id, settings.SECRET_KEY)).hexdigest():
+        raise Exception("Invalid file hash")
+
+    thread = Thread.objects.get(pk=thread_id)
+    person = Person.objects.filter(login_name = request.user.username)[0]
+
+    if not thread.person_has_access(person):
+        return HttpResponse()
+
+    sol_file = SolsticeFile.objects.get(pk=file_id)
+    fsock = open(sol_file.path_to_file(), "r")
+    response = HttpResponse(fsock, mimetype=sol_file.content_type)
+    response['Content-Disposition'] = 'attachment; filename = '+sol_file.name
+
+    return response
+
+def thumbnail_file(request, thread_id, file_id, verify_hash):
+    if verify_hash != md5.new("%s-%s-%s" % (thread_id, file_id, settings.SECRET_KEY)).hexdigest():
+        raise Exception("Invalid file hash")
+
+    thread = Thread.objects.get(pk=thread_id)
+    person = Person.objects.filter(login_name = request.user.username)[0]
+
+    if not thread.person_has_access(person):
+        return HttpResponse()
+
+    sol_file = SolsticeFile.objects.get(pk=file_id)
+    fsock = open(sol_file.path_to_file(), "r")
+    response = HttpResponse(fsock, mimetype=sol_file.content_type)
+    response['Content-Disposition'] = 'attachment; filename = '+sol_file.name
+
+    return response
+
+def view_avatar(request, person_id, verify_hash):
+    if verify_hash != md5.new("%s-%s" % (person_id, settings.SECRET_KEY)).hexdigest():
+        raise Exception("Invalid file hash")
+
+    person = Person.objects.get(pk = person_id)
+    avatar_attribute = PersonAttribute.objects.get(person = person, attribute = "yarn_avatar_id")
+
+    sol_file = SolsticeFile.objects.get(pk=avatar_attribute.value)
+    fsock = open(sol_file.path_to_file(), "r")
+    response = HttpResponse(fsock, mimetype=sol_file.content_type)
+
+    return response
+
+
 

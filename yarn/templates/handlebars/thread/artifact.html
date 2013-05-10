@@ -3,12 +3,22 @@
         <li class="artifact">
             <div class="yarn-artifact-left">
                 <span class="artifact-timestamp">{{ format_time timestamp }}</span>
-                <span class="artifact-avatar"></span>
+                <span class="artifact-avatar">
+                    {{#if author.avatar_url }}
+                        <img src="{{author.avatar_url}}"/>
+                    {{/if}}
+                </span>
             </div>
             <div class="yarn-artifact-right">
                 <span class="artifact_user"><a href="javascript:void(0);" class="open_private_chat" rel="{{ author.login_name }}">{{ author.name }}</a></span>
                 <span class="artifact_user_id">{{ author.login_name }}</span>
                 <div class="artifact_content">
+                    {{#if_eq type "file" }}
+                        {{#if is_image }}
+                            <img src="{{ thumbnail_url }}" /> <br />
+                        {{/if }}
+                        <a href="{{ download_url }}">Download</a>
+                    {{/if_eq }}
                     {{ formatted_artifact description }}
                 </div>
             </div>
