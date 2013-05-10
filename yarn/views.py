@@ -1,5 +1,6 @@
 from yarn.models import Thread, Artifact, Person
 import simplejson as json
+from datetime import datetime
 from django.http import HttpResponse
 from django.template import RequestContext
 from django.shortcuts import render_to_response
@@ -7,22 +8,36 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def thread_info(request, thread_id):
-    """ Returns the initial data needed for a thread """
     thread = Thread.objects.get(pk=thread_id)
-    person = Person.objects.filter(login_name = request.user.username)
+    person = Person.objects.filter(login_name = request.user.username)[0]
 
     if not thread.person_has_access(person):
         return HttpResponse()
 
-    #artifacts = Artifact.objects.filter(thread_id__exact = thread.pk).order_by(pk)[:10]
-    artifacts = Artifact.objects.filter(thread_id = thread.pk).order_by('-pk')[:50]
+    if request.method == "GET":
+        """ Returns the initial data needed for a thread """
 
-    artifact_data = []
-    for artifact in artifacts:
-        artifact_data.append(artifact.json_data())
 
-    data = { "thread": thread.json_data(), "artifacts": artifact_data }
-    return HttpResponse(json.dumps(data), { "Content-type": "application/json" })
+        #artifacts = Artifact.objects.filter(thread_id__exact = thread.pk).order_by(pk)[:10]
+        artifacts = Artifact.objects.filter(thread_id = thread.pk).order_by('-pk')[:50]
+
+        artifact_data = []
+        for artifact in artifacts:
+            artifact_data.append(artifact.json_data())
+
+        data = { "thread": thread.json_data(), "artifacts": artifact_data }
+        return HttpResponse(json.dumps(data), { "Content-type": "application/json" })
+
+    if request.method == "POST":
+        json_data = json.loads(request.raw_post_data)
+        artifact = Artifact.objects.create(
+            thread_id = thread.pk,
+            person_id =  person.person_id,
+            description = json_data["value"],
+            timestamp = datetime.now(),
+            artifact_type = None,
+        )
+        return HttpResponse()
 
 @login_required
 def thread_list(request):
@@ -32,6 +47,8 @@ def thread_list(request):
     person = Person.objects.filter(login_name = request.user.username)
     if not person:
         person = Person.objects.create(login_name = request.user.username)
+    else:
+        person = person[0]
 
     data = []
     for thread in threads:

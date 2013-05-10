@@ -9,6 +9,15 @@
         {{/each}}
         </ul>
     </div>
+    <div class="channel_input">
+        <div class="channel-topic"><strong>Current topic:</strong> {{ topic }}</div>
+        <div class="channel-sub-actions">A</div>
+        <div class="channel-textarea">
+            <p class="offscreen">Type your message and hit enter to post.</p>
+            <textarea class="thread-text-input-{{ thread_id }}" ></textarea>
+        </div>
+    </div>
+
 
 
 {% endtplhandlebars %}

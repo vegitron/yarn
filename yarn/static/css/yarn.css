@@ -143,9 +143,9 @@ h3 { font-size: 90%; text-align: center; color: #58595b; text-transform: upperca
 #channel_tabs a { display: inline-block; padding: 0 10px; }
 #channel_tabs .current { background-color: #fff; }
 
-#channel_input { position: fixed; bottom: 40px; left: 0px; right: 0px; background-color: #aaa; }
-#channel_input .channel-textarea { padding: 10px; }
-#channel_input textarea { height: 35px; width: 100%; max-width: 100%; padding: 0; resize: none; }
+.channel_input { position: fixed; bottom: 40px; left: 0px; right: 0px; background-color: #aaa; }
+.channel_input .channel-textarea { padding: 10px; }
+.channel_input textarea { height: 35px; width: 100%; max-width: 100%; padding: 0; resize: none; }
 
 #user_list_container { background-color: #ddd; margin: 10px;
 -webkit-border-radius: 5px;
@@ -204,7 +204,7 @@ border-radius: 5px;
 
 
 
-#channel_input .yui3-aclist-content { display: none; }
+.channel_input .yui3-aclist-content { display: none; }
 
 .mobile-hidden { display: none; }
 
@@ -235,8 +235,8 @@ border-radius: 5px;
 ---------------------------------------- */
 @media only screen and (min-width: 721px) and (max-width: 820px) { 
     
-    #channel_input div.input-helper div.input-helptext-container {font-size: 80%; width:370px;}
-    #channel_input div.input-helper .commands-container, #channel_input div.input-helper .formatting-container {width:160px;}
+    .channel_input div.input-helper div.input-helptext-container {font-size: 80%; width:370px;}
+    .channel_input div.input-helper .commands-container, .channel_input div.input-helper .formatting-container {width:160px;}
     .create-shown .home-create {overflow-y:auto;}
     div#user_settings_display {overflow-y:auto;}
     div.yarn-sidebar {overflow-y:auto;overflow-x: hidden;}
@@ -605,50 +605,50 @@ border-radius: 5px;
     .yarn-avatar-crop { width: 75%; position: absolute; left: 50%; margin-left: -40%; line-height: 20px; top: 50%; margin-top: -10px; text-align: center; color: #aaa; }
              
     /* Thread Input */
-    #channel_input { position: fixed; height: 110px; bottom: 36px; left: 30px; right: 300px; background-color: transparent; }    
-    #channel_input .channel-textarea { position: absolute; z-index: 2; left: 0; right: 16px; }
-    #channel_input textarea { height: 51px; width: 100%; max-width: 100%; padding: 0; resize: none; border: solid 1px #777; }
+    .channel_input { position: fixed; height: 110px; bottom: 36px; left: 30px; right: 300px; background-color: transparent; }    
+    .channel_input .channel-textarea { position: absolute; z-index: 2; left: 0; right: 16px; }
+    .channel_input textarea { height: 51px; width: 100%; max-width: 100%; padding: 0; resize: none; border: solid 1px #777; }
     
     
     /* Thread Input - commands display */
-    #channel_input .yui3-aclist-content { display:block; background-color: #888; padding: 10px;
+    .channel_input .yui3-aclist-content { display:block; background-color: #888; padding: 10px;
     -webkit-box-shadow: 0px 0px 6px #aaa;
     -moz-box-shadow: 0px 0px 6px #aaa;
     box-shadow: 0px 0px 6px #aaa; }
     
-    #channel_input .yui3-aclist-content ul { background-color: #fff; max-height: 400px; max-width: 500px; overflow-y: auto; }
+    .channel_input .yui3-aclist-content ul { background-color: #fff; max-height: 400px; max-width: 500px; overflow-y: auto; }
     
-    #channel_input .yui3-aclist-content img { margin: 0; }
-    #channel_input .yui3-aclist-item { padding: 3px 5px; overflow: hidden; }
+    .channel_input .yui3-aclist-content img { margin: 0; }
+    .channel_input .yui3-aclist-item { padding: 3px 5px; overflow: hidden; }
     
-    #channel_input .yui3-aclist-item-active { background-color: #f1f1f1; } 
-    #channel_input .yui3-aclist-item-hover { background-color: #f1f1f1; } 
+    .channel_input .yui3-aclist-item-active { background-color: #f1f1f1; } 
+    .channel_input .yui3-aclist-item-hover { background-color: #f1f1f1; } 
     
     
-    #channel_input .command_name { font-weight: bold; color: #000; }
-    #channel_input .command_description { text-transform:lowercase; font-size: smaller; color:#777; }
+    .channel_input .command_name { font-weight: bold; color: #000; }
+    .channel_input .command_description { text-transform:lowercase; font-size: smaller; color:#777; }
     
-    #channel_input .person_name {text-transform:lowercase; font-size: smaller; color:#777; }
-    #channel_input .person_img { margin-right: 5px; }
+    .channel_input .person_name {text-transform:lowercase; font-size: smaller; color:#777; }
+    .channel_input .person_img { margin-right: 5px; }
     
-    #channel_input .login_name { font-weight: bold; color: #000; }
+    .channel_input .login_name { font-weight: bold; color: #000; }
     
-    #channel_input .thread_match { overflow-x: hidden; text-overflow: ellipsis; } 
-    #channel_input .thread_name, #channel_input .thread_description { display: inline; white-space: nowrap; }
-    #channel_input .thread_name { font-weight: bold; color: #000; margin-right: 8px; }
-    #channel_input .thread_description {text-transform:lowercase; font-size: smaller; color:#777; white-space: nowrap; }
+    .channel_input .thread_match { overflow-x: hidden; text-overflow: ellipsis; } 
+    .channel_input .thread_name, .channel_input .thread_description { display: inline; white-space: nowrap; }
+    .channel_input .thread_name { font-weight: bold; color: #000; margin-right: 8px; }
+    .channel_input .thread_description {text-transform:lowercase; font-size: smaller; color:#777; white-space: nowrap; }
     
-    #channel_input .channel-topic { width: auto; padding: 0 20px 0 10px; line-height: 25px; border: solid 1px #f5f5f5; font-size: 85%; display: inline-block; margin-left: 10px; max-width: 90%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    #channel_input .channel-topic strong { font-weight: bold; color: #aaa; }
-    #channel_input .channel-topic span { color: #444; margin-left: 10px; }
+    .channel_input .channel-topic { width: auto; padding: 0 20px 0 10px; line-height: 25px; border: solid 1px #f5f5f5; font-size: 85%; display: inline-block; margin-left: 10px; max-width: 90%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .channel_input .channel-topic strong { font-weight: bold; color: #aaa; }
+    .channel_input .channel-topic span { color: #444; margin-left: 10px; }
     
-    #channel_input .channel-sub-actions { width: 25px; position:absolute; right: 0; top: 37px; }
-    .gecko #channel_input .channel-sub-actions { top: 42px; }
+    .channel_input .channel-sub-actions { width: 25px; position:absolute; right: 0; top: 37px; }
+    .gecko .channel_input .channel-sub-actions { top: 42px; }
     
-    #channel_input .channel-upload {  position: absolute; height: 35px; position: absolute; height: 84px; left: 10px; border: solid 1px #777; bottom: 20px; right: -2px; z-index: 3; background: #fff; padding: 2px; }
+    .channel_input .channel-upload {  position: absolute; height: 35px; position: absolute; height: 84px; left: 10px; border: solid 1px #777; bottom: 20px; right: -2px; z-index: 3; background: #fff; padding: 2px; }
     
     /* Thread input - uploaded files container */
-    #channel_input .upload-container { display: block; }
+    .channel_input .upload-container { display: block; }
     div.uploaded-file { margin-bottom: 12px; }
     div.uploaded-file img { margin-bottom: 0; }
     .uploaded-file .remove_upload_file { margin-left: 10px; }
@@ -657,22 +657,22 @@ border-radius: 5px;
 
 
     /* Thread input - help widget */   
-    #channel_input .input-helper { display: block; position: absolute; border: solid 1px #ddd; width: 25px; top: 26px; }    
-    #channel_input .input-helper span.input-helper-instruction { line-height: 25px; width: 25px; display: block; text-align: center; background: #fff url(../images/desktop/lightning.png) no-repeat 50% 50%; text-indent: -9999px; }
-    #channel_input .input-helper div.input-helptext-container { background: #888; padding: 10px; width: 540px; position: absolute; bottom: 30px; right: -7px; height: 285px; z-index: 10; 
+    .channel_input .input-helper { display: block; position: absolute; border: solid 1px #ddd; width: 25px; top: 26px; }    
+    .channel_input .input-helper span.input-helper-instruction { line-height: 25px; width: 25px; display: block; text-align: center; background: #fff url(../images/desktop/lightning.png) no-repeat 50% 50%; text-indent: -9999px; }
+    .channel_input .input-helper div.input-helptext-container { background: #888; padding: 10px; width: 540px; position: absolute; bottom: 30px; right: -7px; height: 285px; z-index: 10; 
         line-height: auto; text-align: left; 
         -webkit-box-shadow: 0px 0px 6px #aaa;
         -moz-box-shadow: 0px 0px 6px #aaa;
         box-shadow: 0px 0px 6px #aaa; }
-    #channel_input .input-helper span.help-header { width: 265px; display: inline-block; margin-right: 10px; }
-    #channel_input .input-helper .commands-container,
-    #channel_input .input-helper .formatting-container { background: white; display: inline-block; width: 245px; padding: 10px; }
+    .channel_input .input-helper span.help-header { width: 265px; display: inline-block; margin-right: 10px; }
+    .channel_input .input-helper .commands-container,
+    .channel_input .input-helper .formatting-container { background: white; display: inline-block; width: 245px; padding: 10px; }
     
     .input-helper .commands-container { float:left; margin-right: 10px; }
     
     .input-helper .formatting-container { float: left; }
     
-    #channel_input .input-helper dd { font-size: 85%; color: #777; margin-left: 15px; margin-bottom: 8px; }
+    .channel_input .input-helper dd { font-size: 85%; color: #777; margin-left: 15px; margin-bottom: 8px; }
     
     .commands-container h3, .formatting-container h3 { padding: 0; margin-bottom: 10px; text-transform: none; color: #333; font-weight: bold; line-height: 20px; }
     

@@ -28,6 +28,7 @@ function draw_new_thread(data) {
 
     var initial_content = template({
         thread_id: data.thread.id,
+        topic: data.thread.description,
         artifacts: rendered_artifacts
     });
 
@@ -43,5 +44,40 @@ function draw_new_thread(data) {
     var index = $('#tabs a[href="#thread_'+data.thread.id+'"]').parent().index(); 
     $("#tabs").tabs("option", "active", index);
 
+    $(".thread-text-input-"+data.thread.id).on("keydown", handle_thread_input_keydown);
+}
+
+function handle_thread_input_keydown(e) {
+    if (e.keyCode == 13) {
+        var target = e.target;
+        var matches = target.className.match(/[0-9]+$/);
+
+        if (target.value != "") {
+            post_text_artifact(matches[0], target.value);
+        }
+        e.preventDefault();
+        target.value = "";
+    }
+}
+
+function post_text_artifact(thread_id, content) {
+    console.log("Posting: ", content, " for thread ", thread_id);
+    var csrf_value = $("input[name='csrfmiddlewaretoken']")[0].value;
+    $.ajax('rest/v1/thread/'+thread_id, {
+        type: "POST",
+        headers: {
+            "X-CSRFToken": csrf_value
+        },
+        data: JSON.stringify({ type: "text", value: content }),
+        dataType: 'json',
+        success: handle_successful_artifact_post,
+        error: handle_error_artifact_post
+    });
+}
+
+function handle_successful_artifact_post() {
+}
+
+function handle_error_artifact_post() {
 }
 
