@@ -1,4 +1,4 @@
-from yarn.models import Thread, Artifact, Person, PersonAttribute, SolsticeFile
+from yarn.models import Thread, Artifact, Person, PersonAttribute, SolsticeFile, User
 import simplejson as json
 import md5
 from django.conf import settings
@@ -28,6 +28,14 @@ def thread_info(request, thread_id):
             artifact_data.append(artifact.json_data())
 
         data = { "thread": thread.json_data(), "artifacts": artifact_data }
+
+        online_list = User.objects.filter(thread = thread, is_online = True)
+        online_users = []
+        for user in online_list:
+            online_users.append(user.person.json_data())
+
+        data["online_users"] = online_users
+
         return HttpResponse(json.dumps(data), { "Content-type": "application/json" })
 
     if request.method == "POST":
@@ -40,6 +48,7 @@ def thread_info(request, thread_id):
             artifact_type = None,
         )
         return HttpResponse()
+
 
 @login_required
 def thread_list(request):

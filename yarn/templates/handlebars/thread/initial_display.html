@@ -17,7 +17,31 @@
             <textarea class="thread-text-input-{{ thread_id }}" ></textarea>
         </div>
     </div>
-
+    <div class="yarn-sidebar">
+        <div class="yarn-sidebar-actions">
+            <a style="top:0; right:0;" href="javascript:void(0)" rel="{{thread_id}}" class="thread-security thread-public" title="This thread is public.">Change security settings</a>
+            <a style="top:31px; right:0;" href="javascript:void(0)" class="thread-history" title="View thread history" rel="{{thread_id}}">View thread history</a>
+            <a style="top: 62px; right: 0" href="javascript:void(0)" class="thread-delete" title="Delete this thread." rel="{{thread_id}}">Delete thread</a>
+        </div>
+        <div class="yarn-sidebar-thread-meta">
+            <h1 class="thread_name_panel">{{thread.name}}</h1>
+            <span>
+                <strong>Current topic:</strong>
+            </span>
+            <p class="thread_topic_panel">{{topic}}</p>
+        </div>
+        <div id="online_user_list_{{thread_id}}">
+            <div class="yarn-sidebar-user-list">
+                <ul>
+                    {{#each online_users}}
+                    <li>
+                        {{{user}}}
+                    </li>
+                    {{/each}}
+                </ul>
+            </div>
+        </div>
+    </div>
 
 
 {% endtplhandlebars %}

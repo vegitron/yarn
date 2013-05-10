@@ -13,10 +13,12 @@ function draw_new_thread(data) {
     var source = $("#initial_thread_display").html();
     var tab_source = $("#thread_tab_display").html();
     var artifact_source = $("#artifact_display").html();
+    var online_user_source = $("#online_user_display").html();
 
     var template = Handlebars.compile(source);
     var tab_template = Handlebars.compile(tab_source);
     var artifact_template = Handlebars.compile(artifact_source);
+    var online_user_template = Handlebars.compile(online_user_source);
 
     var rendered_artifacts = [];
     for (var i = 0; i < data.artifacts.length; i++) {
@@ -24,12 +26,22 @@ function draw_new_thread(data) {
         rendered_artifacts.push({
             artifact: artifact_template(artifact)
         });
-   }
+    }
+
+    var rendered_users = [];
+    for (var i = 0; i < data.online_users.length; i++) {
+        var user = data.online_users[i];
+        rendered_users.push({
+            user: online_user_template(user)
+        });
+    }
 
     var initial_content = template({
+        thread: data.thread,
         thread_id: data.thread.id,
         topic: data.thread.description,
-        artifacts: rendered_artifacts
+        artifacts: rendered_artifacts,
+        online_users: rendered_users
     });
 
     var tab_content = tab_template({
@@ -61,7 +73,6 @@ function handle_thread_input_keydown(e) {
 }
 
 function post_text_artifact(thread_id, content) {
-    console.log("Posting: ", content, " for thread ", thread_id);
     var csrf_value = $("input[name='csrfmiddlewaretoken']")[0].value;
     $.ajax('rest/v1/thread/'+thread_id, {
         type: "POST",

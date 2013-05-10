@@ -1,0 +1,12 @@
+{% load templatetag_handlebars %}
+    {% tplhandlebars "online_user_display" %}
+    <div class="user_avatar">
+        {{#if avatar_url}}
+            <img src="{{avatar_url}}"/>
+        {{/if}}
+    </div>
+    <span class="user_name">{{name}}</span>
+    <span class="user_id">{{login_name}}</span>
+    <div class="cf"></div>
+
+{% endtplhandlebars %}
