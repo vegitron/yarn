@@ -57,7 +57,7 @@ function upload_new_artifact(thread_id) {
                 "X-CSRFToken": csrf_value
             },
             data: JSON.stringify(upload_data),
-            dataType: 'json',
+            dataType: 'text',
             success: function() {
                 $("#artifact_uploading_"+thread_id).hide();
                 $("#artifact_text_input_"+thread_id).show();

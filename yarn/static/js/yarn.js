@@ -46,4 +46,4 @@ function handle_window_click(e) {
 }
 
 $(window).on("click", handle_window_click);
-
+start_period_updates();
