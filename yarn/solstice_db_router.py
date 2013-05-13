@@ -6,3 +6,6 @@ class SolsticeDBRouter(object):
 
     def db_for_write(self, model, **hints):
         return self.db_for_read(model, **hints)
+
+    def allow_relation(self, obj1, obj2, **hints):
+        return True

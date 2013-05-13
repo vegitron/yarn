@@ -26,7 +26,9 @@ function refresh_thread_tabs() {
         handle: ".handle",
         items: "li:not(#home_tab)",
         stop: function() {
-        },
+            save_thread_preference();
+            return true;
+        }
     });
 
 
@@ -43,6 +45,32 @@ function handle_window_click(e) {
     else if (target.className == "upload_artifact") {
         upload_new_artifact(target.rel);
     }
+}
+
+function save_thread_preference() {
+    var ids = [];
+    var items = $("#tab_list > li");
+    for (var i = 0; i < items.length; i++) {
+        var item = items[i];
+
+        var item_id = item.id;
+
+        var matches = item_id.match(/thread_tab_([0-9]+)/);
+        if (matches) {
+            ids.push(matches[1]);
+        }
+    }
+
+    var csrf_value = $("input[name='csrfmiddlewaretoken']")[0].value;
+    $.ajax('rest/v1/set_fav_threads', {
+        type: "POST",
+        headers: {
+            "X-CSRFToken": csrf_value
+        },
+        data: JSON.stringify(ids),
+        dataType: 'text'
+    });
+
 }
 
 $(window).on("click", handle_window_click);

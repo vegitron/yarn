@@ -147,3 +147,8 @@ class SolsticeFileAttribute(models.Model):
 
     class Meta:
         db_table = 'FileAttribute'
+
+class FavoriteThreads(models.Model):
+    person = models.ForeignKey(Person, unique = True)
+    threads = models.TextField()
+

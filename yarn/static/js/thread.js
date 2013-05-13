@@ -73,6 +73,8 @@ function draw_new_thread(data) {
     $(".thread-text-input-"+data.thread.id).on("keydown", handle_thread_input_keydown);
 
     open_threads[data.thread.id] = data.max_artifact_id;
+
+    save_thread_preference();
 }
 
 function handle_thread_input_keydown(e) {

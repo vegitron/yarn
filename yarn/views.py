@@ -1,9 +1,10 @@
-from yarn.models import Thread, Artifact, Person, PersonAttribute, SolsticeFile, User
+from yarn.models import Thread, Artifact, Person, PersonAttribute, SolsticeFile, User, FavoriteThreads
 import simplejson as json
 import md5
 import base64
 from django.conf import settings
 from datetime import datetime
+from django.db import IntegrityError
 from django.http import HttpResponse
 from django.template import RequestContext
 from django.shortcuts import render_to_response
@@ -182,4 +183,24 @@ def update_threads(request, thread_info):
 
     return HttpResponse(json.dumps(response_data), { "Content-type": "application/json" })
 
+def set_fav_threads(request):
+    if request.method != "POST":
+        return HttpResponse(status = 405)
 
+    json_data = json.loads(request.raw_post_data)
+    person = Person.objects.get(login_name = request.user.username)
+
+    save_values = []
+
+    for thread_id in json_data:
+        thread = Thread.objects.get(pk=thread_id)
+
+        if thread.person_has_access(person) and not thread.is_private:
+            save_values.append(thread_id)
+
+
+    favorites = FavoriteThreads.objects.get_or_create(person = person)[0]
+    favorites.threads = json.dumps(save_values)
+    favorites.save()
+
+    return HttpResponse()
