@@ -15,6 +15,50 @@ class Thread(models.Model):
         # XXX - needs to check the auth_list and group_auth, as well
         # as checking for private threads that the person is one of the 2
         # participants
+
+        # Private threads
+        if self.is_private:
+            person_ids = self.name.split("|")
+            for pid in person_ids:
+                if pid == person.person_id:
+                    return True
+            return False
+
+        # thread managers
+        try:
+            manager_entry = ThreadManager.objects.get(thread = self, person = person)
+            if manager_entry.pk:
+                return True
+        except ThreadManager.DoesNotExist:
+            pass
+
+        # Legacy auth
+        try:
+            auth_entry = AuthList.objects.get(thread = self, person = person)
+            if auth_entry.pk:
+                return True
+        except AuthList.DoesNotExist:
+            pass
+
+        try:
+            has_auth_entry = AuthList.objects.get(thread = self)
+            if has_auth_entry.pk:
+                return False
+        except AuthList.DoesNotExist:
+            pass
+
+
+        # Group auth
+        try:
+            group_links = GroupLink.objects.filter(thread = self)
+            # XXX - need to iterate over the groups, and get membership
+            for link in group_links:
+                return False
+
+        except GroupLink.DoesNotExist:
+            pass
+
+
         return True
 
     def json_data(self):
@@ -64,6 +108,32 @@ class PersonAttribute(models.Model):
 
     class Meta:
         db_table = 'PersonAttribute'
+
+class AuthList(models.Model):
+    """ Legacy access controls - should use group access now """
+    person = models.ForeignKey(Person)
+    thread = models.ForeignKey(Thread)
+
+    class Meta:
+        db_table = 'auth_list'
+        unique_together = ('thread', 'person')
+
+class GroupLink(models.Model):
+    thread = models.ForeignKey(Thread)
+    group_id = models.IntegerField(db_column = 'group_id')
+
+    class Meta:
+        db_table = 'group_auth'
+        unique_together = ('thread', 'group_id')
+
+class ThreadManager(models.Model):
+    person = models.ForeignKey(Person)
+    thread = models.ForeignKey(Thread)
+
+    class Meta:
+        db_table = 'thread_manager'
+        unique_together = ('thread', 'person')
+
 
 class Artifact(models.Model):
     description = models.TextField(db_column='description')
