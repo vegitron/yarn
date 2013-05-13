@@ -31,6 +31,7 @@ def thread_info(request, thread_id):
                 max_artifact_id = artifact.pk
             artifact_data.append(artifact.json_data())
 
+        artifact_data.reverse()
         data = { "thread": thread.json_data(), "artifacts": artifact_data, "max_artifact_id": max_artifact_id }
 
         online_list = User.objects.filter(thread = thread, is_online = True)
@@ -173,6 +174,7 @@ def update_threads(request, thread_info):
                         new_max_id = artifact.pk
                     artifact_data.append(artifact.json_data())
 
+                artifact_data.reverse()
                 response_data[thread_id] = {
                     "max_artifact_id": new_max_id or max_artifact_id,
                     "artifacts": artifact_data

@@ -1,9 +1,9 @@
 {% load templatetag_handlebars %}
     {% tplhandlebars "artifact_display" %}
-        <li class="artifact">
+        <li class="artifact" id="artifact_{{id}}">
             <div class="yarn-artifact-left">
                 <span class="artifact-timestamp">{{ format_time timestamp }}</span>
-                <span class="artifact-avatar">
+                <span class="artifact_avatar">
                     {{#if author.avatar_url }}
                         <img src="{{author.avatar_url}}"/>
                     {{/if}}
@@ -15,7 +15,7 @@
                 <div class="artifact_content">
                     {{#if_eq type "file" }}
                         {{#if is_image }}
-                            <img src="{{ thumbnail_url }}" /> <br />
+                            <img src="{{ thumbnail_url }}" id="artifact_img_{{id}}" onload="adjust_thread_scroll({{ id }}, {{thread_id}})" /> <br />
                         {{/if }}
                         <a href="{{ download_url }}">Download</a> {{ file_name }}
                     {{else}}

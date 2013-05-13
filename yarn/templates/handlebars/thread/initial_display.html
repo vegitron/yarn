@@ -3,7 +3,7 @@
     {% tplhandlebars "initial_thread_display" %}
 
     <div id="thread_{{ thread_id }}">
-        <div class="yarn-artifacts">
+        <div class="yarn-artifacts" id="artifact_container_{{thread_id}}">
         <ul id="yarn_artifact_list_{{thread_id}}">
         {{#each artifacts}}
             {{{ artifact }}}

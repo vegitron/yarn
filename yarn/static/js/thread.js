@@ -61,6 +61,10 @@ function draw_new_thread(data) {
 
     $($.parseHTML(tab_content)).appendTo("#tab_list");
     $($.parseHTML(initial_content)).appendTo("#tabs");
+
+    var container = $("#artifact_container_"+data.thread.id);
+    container.scrollTop(container[0].scrollHeight);
+
     refresh_thread_tabs();
 
     var index = $('#tabs a[href="#thread_'+data.thread.id+'"]').parent().index(); 
@@ -137,6 +141,8 @@ function periodic_thread_update() {
 
 function update_threads(data) {
     for (var thread_id in data) {
+        var do_scroll = false;
+
         var thread_data = data[thread_id];
 
         var artifacts = thread_data.artifacts;
@@ -145,9 +151,23 @@ function update_threads(data) {
 
         var list = $("#yarn_artifact_list_"+thread_id);
 
+        var container = $("#artifact_container_"+thread_id);
+        var scroll_pos = container.scrollTop();
+        var content_height = container.prop("scrollHeight");
+        var display_height = container.prop("offsetHeight");
+        var slop = 20;
+
+        if (scroll_pos + display_height + slop >= content_height) {
+            do_scroll = true;
+        }
+
         for (var i = 0; i < rendered_artifacts.length; i++) {
             var rendered = rendered_artifacts[i];
-            list.prepend(rendered.artifact);
+            list.append(rendered.artifact);
+        }
+
+        if (do_scroll) {
+            container.animate({ scrollTop: container[0].scrollHeight}, 1000);
         }
 
         open_threads[thread_id] = thread_data.max_artifact_id;
@@ -159,6 +179,18 @@ function update_threads(data) {
 function show_update_error() {
     console.log("Oh no, error time");
     window.yarn_periodic = setTimeout(periodic_thread_update, 5000);
+}
+
+function adjust_thread_scroll(artifact_id, thread_id) {
+    var img = $("#artifact_img_"+artifact_id);
+    var artifact = $("#artifact_"+artifact_id);
+
+    var img_height = img.prop('height');
+    var artifact_height = artifact.prop('scrollHeight');
+
+    container = $("#artifact_container_"+thread_id);
+    container.scrollTop(container.scrollTop() + (img_height));
+
 }
 
 
