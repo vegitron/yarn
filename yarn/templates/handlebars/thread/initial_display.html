@@ -37,7 +37,7 @@
             </ul>
             </div>
             <div class="channel_input">
-                <div class="channel-topic"><strong>Current topic:</strong> {{ topic }}</div>
+                <div class="channel-topic"><strong>Current topic:</strong><span class="thread_topic_{{thread_id}}">{{ topic }}</span></div>
                 <div class="channel-sub-actions">
                     <input type="file" class="artifact_upload_chooser" id="artifact_upload_chooser_{{ thread_id }}" onchange="handle_artifact_upload(this.files, {{ thread_id }})"/>
                     <a href="javascript:void(0);" class="artifact_upload_interface" rel="{{thread_id}}">UP</a>
@@ -71,7 +71,7 @@
                     <span>
                         <strong>Current topic:</strong>
                     </span>
-                    <p class="thread_topic_panel">{{topic}}</p>
+                    <p class="thread_topic_panel thread_topic_{{thread_id}}">{{topic}}</p>
                 </div>
                 <div id="online_user_list_{{thread_id}}">
                     <div class="yarn-sidebar-user-list">

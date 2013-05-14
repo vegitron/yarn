@@ -19,7 +19,11 @@
                         {{/if }}
                         <a href="{{ artifact.download_url }}">Download</a> {{ artifact.file_name }}
                     {{else}}
-                        {{ formatted_artifact artifact.description }}
+                        {{#if_eq artifact.type "new_description" }}
+                            <strong>changed the topic to:</strong> {{artifact.description }}
+                        {{else}}
+                            {{ formatted_artifact artifact.description }}
+                        {{/if_eq }}
                     {{/if_eq }}
                 </div>
             </div>

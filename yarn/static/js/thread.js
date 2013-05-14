@@ -191,6 +191,13 @@ function update_threads(data) {
 
         var artifacts = thread_data.artifacts;
 
+        for (var i = 0; i < artifacts.length; i++) {
+            var artifact = artifacts[i];
+            if (artifact.type == "new_description") {
+                $(".thread_topic_"+thread_id).text(artifact.description);
+            }
+        }
+
         var rendered_artifacts = render_artifacts(artifacts);
 
         var list = $("#yarn_artifact_list_"+thread_id);
