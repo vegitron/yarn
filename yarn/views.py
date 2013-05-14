@@ -94,10 +94,20 @@ def thread_list(request):
     if not person:
         person = Person.objects.create(login_name = request.user.username)
 
-    data = []
+
+    data = {}
+    thread_data = []
     for thread in threads:
         if thread.person_has_access(person):
-            data.append(thread.json_data())
+            thread_data.append(thread.json_data())
+
+    data["threads"] = thread_data
+    data["favorites"] = []
+    try:
+        fav_threads = FavoriteThreads.objects.get(person = person)
+        data["favorites"] = json.loads(fav_threads.threads)
+    except FavoriteThreads.DoesNotExist:
+        pass
 
     return HttpResponse(json.dumps(data), { "Content-type": "application/json" })
 
@@ -106,6 +116,7 @@ def home(request):
     return render_to_response("home.html", {}, RequestContext(request))
 
 
+@login_required
 def download_file(request, thread_id, file_id, verify_hash):
     if verify_hash != md5.new("%s-%s-%s" % (thread_id, file_id, settings.SECRET_KEY)).hexdigest():
         raise Exception("Invalid file hash")
@@ -123,6 +134,7 @@ def download_file(request, thread_id, file_id, verify_hash):
 
     return response
 
+@login_required
 def thumbnail_file(request, thread_id, file_id, verify_hash):
     if verify_hash != md5.new("%s-%s-%s" % (thread_id, file_id, settings.SECRET_KEY)).hexdigest():
         raise Exception("Invalid file hash")
@@ -140,6 +152,7 @@ def thumbnail_file(request, thread_id, file_id, verify_hash):
 
     return response
 
+@login_required
 def view_avatar(request, person_id, verify_hash):
     person = Person.objects.get(pk = person_id)
 
@@ -154,6 +167,7 @@ def view_avatar(request, person_id, verify_hash):
 
     return response
 
+@login_required
 def update_threads(request, thread_info):
     person = Person.objects.get(login_name = request.user.username)
 
@@ -183,6 +197,7 @@ def update_threads(request, thread_info):
 
     return HttpResponse(json.dumps(response_data), { "Content-type": "application/json" })
 
+@login_required
 def set_fav_threads(request):
     if request.method != "POST":
         return HttpResponse(status = 405)
@@ -191,12 +206,15 @@ def set_fav_threads(request):
     person = Person.objects.get(login_name = request.user.username)
 
     save_values = []
+    seen_thread_ids = {}
 
     for thread_id in json_data:
         thread = Thread.objects.get(pk=thread_id)
 
         if thread.person_has_access(person) and not thread.is_private:
-            save_values.append(thread_id)
+            if thread_id not in seen_thread_ids:
+                save_values.append(thread_id)
+                seen_thread_ids[thread_id] = True
 
 
     favorites = FavoriteThreads.objects.get_or_create(person = person)[0]

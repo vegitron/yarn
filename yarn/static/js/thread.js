@@ -1,11 +1,16 @@
 var open_threads = {};
 
 function load_thread_from_href(e) {
-    load_thread(e.target.rel);
+    load_thread(e.target.rel, { highlight: true, save_preference: true });
 }
 
-function load_thread(thread_id) {
-    $.ajax('rest/v1/thread/'+thread_id, { success: draw_new_thread, error: show_thread_error});
+function load_thread(thread_id, args) {
+    $.ajax('rest/v1/thread/'+thread_id, {
+        success: function(data) {
+            draw_new_thread(data, args);
+        },
+        error: show_thread_error
+    });
 }
 
 function show_thread_error() {
@@ -27,7 +32,21 @@ function render_artifacts(artifacts) {
 
 }
 
-function draw_new_thread(data) {
+function pre_load_thread(thread_id) {
+    var source = $("#preload_initial_thread_display").html();
+    var template = Handlebars.compile(source);
+    var initial_content = template({ thread_id: thread_id });
+
+
+    var tab_source = $("#preload_thread_tab_display").html();
+    var tab_template = Handlebars.compile(tab_source);
+    var tab_content = tab_template({ thread_id: thread_id });
+
+    $($.parseHTML(tab_content)).appendTo("#tab_list");
+    $($.parseHTML(initial_content)).appendTo("#tabs");
+}
+
+function draw_new_thread(data, args) {
     var source = $("#initial_thread_display").html();
     var tab_source = $("#thread_tab_display").html();
     var online_user_source = $("#online_user_display").html();
@@ -59,22 +78,35 @@ function draw_new_thread(data) {
         thread_name: data.thread.name
     });
 
-    $($.parseHTML(tab_content)).appendTo("#tab_list");
-    $($.parseHTML(initial_content)).appendTo("#tabs");
+    var thread_id = data.thread.id;
+
+    // Thread pre-loaded
+    if ($("#thread_"+thread_id)) {
+        $("#thread_"+thread_id).replaceWith($.parseHTML(initial_content));
+        $("#thread_tab_"+thread_id).replaceWith($.parseHTML(tab_content));
+    }
+    else {
+        $($.parseHTML(tab_content)).appendTo("#tab_list");
+        $($.parseHTML(initial_content)).appendTo("#tabs");
+    }
 
     var container = $("#artifact_container_"+data.thread.id);
     container.scrollTop(container[0].scrollHeight);
 
     refresh_thread_tabs();
 
-    var index = $('#tabs a[href="#thread_'+data.thread.id+'"]').parent().index(); 
-    $("#tabs").tabs("option", "active", index);
+    if (args && args.highlight) {
+        var index = $('#tabs a[href="#thread_'+data.thread.id+'"]').parent().index(); 
+        $("#tabs").tabs("option", "active", index);
+    }
 
     $(".thread-text-input-"+data.thread.id).on("keydown", handle_thread_input_keydown);
 
     open_threads[data.thread.id] = data.max_artifact_id;
 
-    save_thread_preference();
+    if (args && args.save_preference) {
+        save_thread_preference();
+    }
 }
 
 function handle_thread_input_keydown(e) {
@@ -192,7 +224,14 @@ function adjust_thread_scroll(artifact_id, thread_id) {
 
     container = $("#artifact_container_"+thread_id);
     container.scrollTop(container.scrollTop() + (img_height));
-
 }
 
+
+function select_thread_tab_event(ev, ui) {
+    var matches = ui.newTab[0].id.match(/thread_tab_([0-9]+)/);
+    if (matches) {
+        var container = $("#artifact_container_"+matches[1]);
+        container.scrollTop(container[0].scrollHeight);
+    }
+}
 

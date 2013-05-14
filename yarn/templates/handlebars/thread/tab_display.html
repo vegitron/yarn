@@ -1,4 +1,7 @@
 {% load templatetag_handlebars %}
+    {% tplhandlebars "preload_thread_tab_display" %}
+    <li id="thread_tab_{{thread_id}}"></li>
+    {% endtplhandlebars %}
     {% tplhandlebars "thread_tab_display" %}
     <li id="thread_tab_{{thread_id}}"><a href="#thread_{{ thread_id }}" class="handle">{{ thread_name }}</a></li>
 {% endtplhandlebars %}

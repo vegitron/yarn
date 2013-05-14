@@ -1,5 +1,9 @@
 
 {% load templatetag_handlebars %}
+    {% tplhandlebars "preload_initial_thread_display" %}
+    <div id="thread_{{ thread_id }}">
+    </div>
+    {% endtplhandlebars %}
     {% tplhandlebars "initial_thread_display" %}
 
     <div id="thread_{{ thread_id }}">

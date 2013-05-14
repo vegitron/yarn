@@ -11,10 +11,26 @@ function draw_available_threads(data) {
     var source = $("#available_threads").html();
     var template = Handlebars.compile(source);
 
-    $("#available_thread_list").html(template({ threads: data }));
+    $("#available_thread_list").html(template({ threads: data["threads"] }));
 
-    var tabs = $( "#tabs" ).tabs();
+
+    var tabs = $( "#tabs" ).tabs({
+        activate: function(ev, ui) {
+            select_thread_tab_event(ev, ui);
+        }
+    });
     refresh_thread_tabs();
+
+    var favs = data["favorites"];
+    for (var i = 0; i < favs.length; i++) {
+        pre_load_thread(favs[i]);
+    }
+
+    for (var i = 0; i < favs.length; i++) {
+        load_thread(favs[i]);
+    }
+    refresh_thread_tabs();
+
 
     $(".open_thread").on("click", load_thread_from_href);
 }
