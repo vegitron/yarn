@@ -32,9 +32,13 @@ function render_artifacts(artifacts, id_addon) {
 
     for (var i = 0; i < artifacts.length; i++) {
         var artifact = artifacts[i];
-        rendered_artifacts.push({
-            artifact: artifact_template({ artifact: artifact, id_addon: id_addon })
-        });
+
+        if ((artifact.type == "") ||
+            (artifact.type == "new_description") ||
+            (artifact.type == "file")) {
+
+            rendered_artifacts.push({ artifact: artifact_template({ artifact: artifact, id_addon: id_addon })});
+        }
     }
 
     return rendered_artifacts;
