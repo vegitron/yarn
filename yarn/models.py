@@ -20,7 +20,7 @@ class Thread(models.Model):
         if self.is_private:
             person_ids = self.name.split("|")
             for pid in person_ids:
-                if pid == person.person_id:
+                if int(pid) == int(person.person_id):
                     return True
             return False
 

@@ -11,6 +11,30 @@ from django.shortcuts import render_to_response
 from django.contrib.auth.decorators import login_required
 
 @login_required
+def private_thread_info(request, login_name):
+    person = Person.objects.get(login_name = request.user.username)
+    talk_with = Person.objects.get(login_name = login_name)
+
+    channel_name = ""
+
+    if person.person_id < talk_with.person_id:
+        channel_name = "%d|%d" % (person.person_id, talk_with.person_id)
+    else:
+        channel_name = "%d|%d" % (talk_with.person_id, person.person_id)
+
+    thread = None
+    try:
+        thread = Thread.objects.get(name = channel_name, is_private = True)
+    except Thread.DoesNotExist:
+        thread = Thread.objects.create(
+            name = channel_name,
+            is_private = True,
+        )
+
+    return thread_info(request, thread.pk)
+
+
+@login_required
 def thread_info(request, thread_id):
     thread = Thread.objects.get(pk=thread_id)
     person = Person.objects.get(login_name = request.user.username)

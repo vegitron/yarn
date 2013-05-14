@@ -13,6 +13,15 @@ function load_thread(thread_id, args) {
     });
 }
 
+function open_private_chat(person_id, args) {
+    $.ajax('rest/v1/private/'+person_id, {
+        success: function(data) {
+            draw_new_thread(data, args);
+        },
+        error: show_thread_error
+    });
+}
+
 function show_thread_error() {
 }
 
@@ -81,7 +90,7 @@ function draw_new_thread(data, args) {
     var thread_id = data.thread.id;
 
     // Thread pre-loaded
-    if ($("#thread_"+thread_id)) {
+    if ($("#thread_"+thread_id).length) {
         $("#thread_"+thread_id).replaceWith($.parseHTML(initial_content));
         $("#thread_tab_"+thread_id).replaceWith($.parseHTML(tab_content));
     }

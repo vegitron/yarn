@@ -61,6 +61,9 @@ function handle_window_click(e) {
     else if (target.className == "upload_artifact") {
         upload_new_artifact(target.rel);
     }
+    else if (target.className == "private_chat") {
+        open_private_chat(target.rel, { "highlight": true });
+    }
 }
 
 function save_thread_preference() {
