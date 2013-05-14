@@ -28,9 +28,35 @@ function draw_history_calendar(data) {
                 return [true, class_name];
             }
             return [false, class_name];
+        },
+        onSelect: function(date) {
+            var formatted_date = date.replace(/\//g, '-');
+            $.ajax('rest/v1/history/'+data["thread_id"]+'/'+formatted_date, {
+                success: draw_history_artifacts,
+                error: show_history_artifacts_error
+            });
+
         }
     });
     picker.show();
+}
+
+function draw_history_artifacts(data) {
+    var rendered_artifacts = render_artifacts(data.artifacts, "history");
+
+    var source = $("#artifact_history_display").html();
+    var template = Handlebars.compile(source);
+
+    var artifact_display = template({
+        thread: data.thread,
+        thread_id: data.thread.id,
+        artifacts: rendered_artifacts
+    });
+
+    $("#thread_history_artifacts_"+data.thread.id).replaceWith(artifact_display);
+}
+
+function show_history_artifacts_error() {
 }
 
 function show_history_calendar_error() {

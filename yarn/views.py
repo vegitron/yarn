@@ -6,6 +6,7 @@ import time
 import base64
 from django.conf import settings
 from datetime import datetime
+from datetime import timedelta
 from django.db import IntegrityError
 from django.http import HttpResponse
 from django.template import RequestContext
@@ -250,6 +251,7 @@ def set_fav_threads(request):
 
     return HttpResponse()
 
+@login_required
 def thread_history(request, thread_id):
     thread = Thread.objects.get(pk=thread_id)
     person = Person.objects.get(login_name = request.user.username)
@@ -267,3 +269,28 @@ def thread_history(request, thread_id):
             data.append(format_date_time(time.mktime(date.timetuple())))
 
     return HttpResponse(json.dumps({ "thread_id": thread_id, "dates": data }), { "Content-type": "application/json" })
+
+@login_required
+def thread_history_date(request, thread_id, date):
+    thread = Thread.objects.get(pk=thread_id)
+    person = Person.objects.get(login_name = request.user.username)
+
+    if not thread.person_has_access(person):
+        return HttpResponse()
+
+    month, day, year = date.split('-')
+
+    min_date = datetime(int(year), int(month), int(day))
+
+    max_date = min_date + timedelta(days = 1)
+
+    artifacts = Artifact.objects.filter(thread_id = thread.pk, timestamp__gt = min_date, timestamp__lt = max_date).order_by('pk')
+    artifact_data = []
+    for artifact in artifacts:
+        artifact_data.append(artifact.json_data())
+        artifact_data.reverse()
+
+
+    data = { "thread": thread.json_data(person), "artifacts": artifact_data }
+
+    return HttpResponse(json.dumps(data), { "Content-type": "application/json; charset=utf-8" })

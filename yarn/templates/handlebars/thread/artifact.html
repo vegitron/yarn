@@ -1,25 +1,25 @@
 {% load templatetag_handlebars %}
     {% tplhandlebars "artifact_display" %}
-        <li class="artifact" id="artifact_{{id}}">
+        <li class="artifact" id="artifact_{{id_addon}}{{artifact.id}}">
             <div class="yarn-artifact-left">
-                <span class="artifact-timestamp">{{ format_time timestamp }}</span>
+                <span class="artifact-timestamp">{{ format_time artifact.timestamp }}</span>
                 <span class="artifact_avatar">
-                    {{#if author.avatar_url }}
-                        <img src="{{author.avatar_url}}"/>
+                    {{#if artifact.author.avatar_url }}
+                        <img src="{{artifact.author.avatar_url}}"/>
                     {{/if}}
                 </span>
             </div>
             <div class="yarn-artifact-right">
-                <span class="artifact_user"><a href="javascript:void(0);" class="private_chat" rel="{{ author.login_name }}">{{ author.name }}</a></span>
-                <span class="artifact_user_id">{{ author.login_name }}</span>
+                <span class="artifact_user"><a href="javascript:void(0);" class="private_chat" rel="{{ artifact.author.login_name }}">{{ artifact.author.name }}</a></span>
+                <span class="artifact_user_id">{{ artifact.author.login_name }}</span>
                 <div class="artifact_content">
-                    {{#if_eq type "file" }}
-                        {{#if is_image }}
-                            <img src="{{ thumbnail_url }}" id="artifact_img_{{id}}" onload="adjust_thread_scroll({{ id }}, {{thread_id}})" /> <br />
+                    {{#if_eq artifact.type "file" }}
+                        {{#if artifact.is_image }}
+                            <img src="{{ artifact.thumbnail_url }}" id="artifact_img_{{id_addon}}{{artifact.id}}" onload="adjust_thread_scroll({{ artifact.id }}, {{artifact.thread_id}})" /> <br />
                         {{/if }}
-                        <a href="{{ download_url }}">Download</a> {{ file_name }}
+                        <a href="{{ artifact.download_url }}">Download</a> {{ artifact.file_name }}
                     {{else}}
-                        {{ formatted_artifact description }}
+                        {{ formatted_artifact artifact.description }}
                     {{/if_eq }}
                 </div>
             </div>

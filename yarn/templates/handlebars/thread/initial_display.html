@@ -4,11 +4,25 @@
     <div id="thread_{{ thread_id }}">
     </div>
     {% endtplhandlebars %}
+    {% tplhandlebars "artifact_history_display" %}
+    <div id="thread_history_artifacts_{{thread_id}}"></div>
+        <ul>
+            {{#each artifacts}}
+                {{{ artifact }}}
+            {{/each}}
+        </ul>
+    </div>
+    {% endtplhandlebars %}
     {% tplhandlebars "initial_thread_display" %}
 
     <div id="thread_{{ thread_id }}">
         <div id="thread_history_{{ thread_id }}" style="display: none;">
-        Thread history <a href="javascript:void(0);" rel="{{ thread_id }}" class="close-history">Close</a>
+            <div class="yarn-history">
+                Thread history <a href="javascript:void(0);" rel="{{ thread_id }}" class="close-history">Close</a>
+                <div class="yarn-history-thread">
+                <div id="thread_history_artifacts_{{thread_id}}"></div>
+                </div>
+            </div>
             <div class="yarn-sidebar">
                 <div id="thread_calendar_{{ thread_id }}">
                 </div>

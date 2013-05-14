@@ -916,5 +916,6 @@ border-radius: 5px;
 
 .day_with_artifacts { background-color: #cf9; }
 .day_with_artifacts a.ui-state-default { background: #cf9; }
+.day_with_artifacts.ui-datepicker-current-day a.ui-state-default { background: #b3d4ff; }
 
 .ui-state-disabled, .ui-widget-content .ui-state-disabled.ui-datepicker-today, .ui-widget-header .ui-state-disabled.ui-datepicker-today { border: 1px solid black; }

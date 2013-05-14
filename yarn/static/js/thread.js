@@ -25,7 +25,7 @@ function open_private_chat(person_id, args) {
 function show_thread_error() {
 }
 
-function render_artifacts(artifacts) {
+function render_artifacts(artifacts, id_addon) {
     var rendered_artifacts = [];
     var artifact_source = $("#artifact_display").html();
     var artifact_template = Handlebars.compile(artifact_source);
@@ -33,7 +33,7 @@ function render_artifacts(artifacts) {
     for (var i = 0; i < artifacts.length; i++) {
         var artifact = artifacts[i];
         rendered_artifacts.push({
-            artifact: artifact_template(artifact)
+            artifact: artifact_template({ artifact: artifact, id_addon: id_addon })
         });
     }
 
