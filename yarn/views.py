@@ -57,7 +57,7 @@ def thread_info(request, thread_id):
             artifact_data.append(artifact.json_data())
 
         artifact_data.reverse()
-        data = { "thread": thread.json_data(), "artifacts": artifact_data, "max_artifact_id": max_artifact_id }
+        data = { "thread": thread.json_data(person), "artifacts": artifact_data, "max_artifact_id": max_artifact_id }
 
         online_list = User.objects.filter(thread = thread, is_online = True)
         online_users = []

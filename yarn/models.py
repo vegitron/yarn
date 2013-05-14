@@ -61,14 +61,28 @@ class Thread(models.Model):
 
         return True
 
-    def json_data(self):
-        return {
+    def json_data(self, person=None):
+        data = {
             "id": self.pk,
             "name": self.name,
             "description": self.description,
             "is_private": self.is_private,
             "has_groups": self.has_groups,
         }
+
+        if self.is_private and person:
+            person_ids = self.name.split("|")
+            pid = None
+            if int(person_ids[0]) == person.pk:
+                pid = person_ids[1]
+            else:
+                pid = person_ids[0]
+
+            other_person = Person.objects.get(person_id = pid)
+            data["login_name"] = other_person.login_name
+
+        return data
+
 
     class Meta:
         db_table = 'thread'

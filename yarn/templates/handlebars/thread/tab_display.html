@@ -3,5 +3,5 @@
     <li id="thread_tab_{{thread_id}}"></li>
     {% endtplhandlebars %}
     {% tplhandlebars "thread_tab_display" %}
-    <li id="thread_tab_{{thread_id}}"><a href="#thread_{{ thread_id }}" class="handle">{{ thread_name }}</a></li>
+    <li id="thread_tab_{{thread_id}}"><a href="#thread_{{ thread_id }}" class="handle">{{#if other_login }}&lt;{{other_login}}&gt;{{else}}{{ thread_name }}{{/if}}</a></li>
 {% endtplhandlebars %}

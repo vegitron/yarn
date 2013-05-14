@@ -84,7 +84,8 @@ function draw_new_thread(data, args) {
 
     var tab_content = tab_template({
         thread_id: data.thread.id,
-        thread_name: data.thread.name
+        thread_name: data.thread.name,
+        other_login: data.thread.login_name
     });
 
     var thread_id = data.thread.id;
