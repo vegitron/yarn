@@ -914,3 +914,7 @@ border-radius: 5px;
 
 .upload_file_info { overflow-y: scroll; height: 84px; }
 
+.day_with_artifacts { background-color: #cf9; }
+.day_with_artifacts a.ui-state-default { background: #cf9; }
+
+.ui-state-disabled, .ui-widget-content .ui-state-disabled.ui-datepicker-today, .ui-widget-header .ui-state-disabled.ui-datepicker-today { border: 1px solid black; }

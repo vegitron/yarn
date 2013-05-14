@@ -64,6 +64,12 @@ function handle_window_click(e) {
     else if (target.className == "private_chat") {
         open_private_chat(target.rel, { "highlight": true });
     }
+    else if (target.className == "thread-history") {
+        show_thread_history(target.rel);
+    }
+    else if (target.className == "close-history") {
+        close_thread_history(target.rel);
+    }
 }
 
 function save_thread_preference() {

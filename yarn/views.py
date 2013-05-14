@@ -1,6 +1,8 @@
 from yarn.models import Thread, Artifact, Person, PersonAttribute, SolsticeFile, User, FavoriteThreads
 import simplejson as json
 import md5
+import sys
+import time
 import base64
 from django.conf import settings
 from datetime import datetime
@@ -9,6 +11,7 @@ from django.http import HttpResponse
 from django.template import RequestContext
 from django.shortcuts import render_to_response
 from django.contrib.auth.decorators import login_required
+from wsgiref.handlers import format_date_time
 
 @login_required
 def private_thread_info(request, login_name):
@@ -66,7 +69,7 @@ def thread_info(request, thread_id):
 
         data["online_users"] = online_users
 
-        return HttpResponse(json.dumps(data), { "Content-type": "application/json" })
+        return HttpResponse(json.dumps(data), { "Content-type": "application/json; charset=utf-8" })
 
     if request.method == "POST":
         json_data = json.loads(request.raw_post_data)
@@ -246,3 +249,21 @@ def set_fav_threads(request):
     favorites.save()
 
     return HttpResponse()
+
+def thread_history(request, thread_id):
+    thread = Thread.objects.get(pk=thread_id)
+    person = Person.objects.get(login_name = request.user.username)
+
+    if not thread.person_has_access(person):
+        return HttpResponse()
+
+
+    dates = set(Artifact.objects.filter(thread_id = thread_id).values('timestamp').order_by('timestamp').dates("timestamp", "day"))
+
+
+    data = []
+    for date in dates:
+        if date:
+            data.append(format_date_time(time.mktime(date.timetuple())))
+
+    return HttpResponse(json.dumps({ "thread_id": thread_id, "dates": data }), { "Content-type": "application/json" })
