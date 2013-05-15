@@ -61,9 +61,12 @@ function upload_new_artifact(thread_id) {
             success: function() {
                 $("#artifact_uploading_"+thread_id).hide();
                 $("#artifact_text_input_"+thread_id).show();
+                $("#error_uploading").hide();
             },
             error: function() {
-                alert("Error uploading file :(");
+                $("#artifact_uploading_"+thread_id).hide();
+                $("#artifact_upload_preview_"+thread_id).show();
+                $("#error_uploading").show();
             }
         });
 
