@@ -74,15 +74,7 @@
                     <p class="thread_topic_panel thread_topic_{{thread_id}}">{{topic}}</p>
                 </div>
                 <div id="online_user_list_{{thread_id}}">
-                    <div class="yarn-sidebar-user-list">
-                        <ul>
-                            {{#each online_users}}
-                            <li>
-                                {{{user}}}
-                            </li>
-                            {{/each}}
-                        </ul>
-                    </div>
+                    {{{ online_users }}}
                 </div>
             </div>
         </div>

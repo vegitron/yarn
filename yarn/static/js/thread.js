@@ -25,6 +25,13 @@ function open_private_chat(person_id, args) {
 function show_thread_error() {
 }
 
+function render_online_users(online_users) {
+    var online_user_source = $("#online_user_display").html();
+    var online_user_template = Handlebars.compile(online_user_source);
+
+    return online_user_template({ online_users: online_users });
+}
+
 function render_artifacts(artifacts, id_addon) {
     var rendered_artifacts = [];
     var artifact_source = $("#artifact_display").html();
@@ -66,21 +73,13 @@ function pre_load_thread(thread_id) {
 function draw_new_thread(data, args) {
     var source = $("#initial_thread_display").html();
     var tab_source = $("#thread_tab_display").html();
-    var online_user_source = $("#online_user_display").html();
 
     var template = Handlebars.compile(source);
     var tab_template = Handlebars.compile(tab_source);
-    var online_user_template = Handlebars.compile(online_user_source);
 
     var rendered_artifacts = render_artifacts(data.artifacts);
 
-    var rendered_users = [];
-    for (var i = 0; i < data.online_users.length; i++) {
-        var user = data.online_users[i];
-        rendered_users.push({
-            user: online_user_template(user)
-        });
-    }
+    var rendered_users = render_online_users(data.online_users);
 
     var initial_content = template({
         thread: data.thread,
@@ -249,6 +248,11 @@ function update_threads(data) {
             if (thread_id != active_thread_id) {
                 highlight_thread(thread_id);
             }
+        }
+
+        if (thread_data.online_users) {
+            var rendered_users = render_online_users(thread_data.online_users);
+            $("#online_user_list_"+thread_id).html(rendered_users);
         }
 
         open_threads[thread_id] = thread_data.max_artifact_id;

@@ -63,12 +63,7 @@ def thread_info(request, thread_id):
         artifact_data.reverse()
         data = { "thread": thread.json_data(person), "artifacts": artifact_data, "max_artifact_id": max_artifact_id }
 
-        online_list = User.objects.filter(thread = thread, is_online = True)
-        online_users = []
-        for user in online_list:
-            online_users.append(user.person.json_data())
-
-        data["online_users"] = online_users
+        data["online_users"] = _get_online_users(thread)
 
         return HttpResponse(json.dumps(data), { "Content-type": "application/json; charset=utf-8" })
 
@@ -209,10 +204,13 @@ def update_threads(request, thread_info):
         if thread.person_has_access(person):
             artifacts = Artifact.objects.filter(thread_id = thread.pk, pk__gt = max_artifact_id).order_by('-pk')
 
+            needs_online_update = False
             if artifacts:
                 new_max_id = 0
                 artifact_data = []
                 for artifact in artifacts:
+                    if artifact.artifact_type == "online_notice" or artifact.artifact_type == "offline_notice":
+                        needs_online_update = True
                     if artifact.pk > new_max_id:
                         new_max_id = artifact.pk
                     artifact_data.append(artifact.json_data())
@@ -222,6 +220,9 @@ def update_threads(request, thread_info):
                     "max_artifact_id": new_max_id or max_artifact_id,
                     "artifacts": artifact_data
                 }
+
+                if needs_online_update:
+                    response_data[thread_id]["online_users"] = _get_online_users(thread)
 
     return HttpResponse(json.dumps(response_data), { "Content-type": "application/json" })
 
@@ -294,3 +295,12 @@ def thread_history_date(request, thread_id, date):
     data = { "thread": thread.json_data(person), "artifacts": artifact_data }
 
     return HttpResponse(json.dumps(data), { "Content-type": "application/json; charset=utf-8" })
+
+def _get_online_users(thread):
+    online_list = User.objects.filter(thread = thread, is_online = True)
+    online_users = []
+    for user in online_list:
+        online_users.append(user.person.json_data())
+
+    return online_users
+

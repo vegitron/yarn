@@ -1,12 +1,20 @@
 {% load templatetag_handlebars %}
     {% tplhandlebars "online_user_display" %}
-    <div class="user_avatar">
-        {{#if avatar_url}}
-            <img src="{{avatar_url}}"/>
-        {{/if}}
+    <div class="yarn-sidebar-user-list">
+        <ul>
+            {{#each online_users}}
+            <li>
+                <div class="user_avatar">
+                    {{#if avatar_url}}
+                        <img src="{{avatar_url}}"/>
+                    {{/if}}
+                </div>
+                <span class="user_name">{{name}}</span>
+                <span class="user_id">{{login_name}}</span>
+                <div class="cf"></div>
+            </li>
+            {{/each}}
+        </ul>
     </div>
-    <span class="user_name">{{name}}</span>
-    <span class="user_id">{{login_name}}</span>
-    <div class="cf"></div>
 
 {% endtplhandlebars %}
