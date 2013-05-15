@@ -13,7 +13,6 @@ function draw_available_threads(data) {
 
     $("#available_thread_list").html(template({ threads: data["threads"] }));
 
-
     var tabs = $( "#tabs" ).tabs({
         activate: function(ev, ui) {
             select_thread_tab_event(ev, ui);

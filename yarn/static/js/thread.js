@@ -34,10 +34,14 @@ function render_artifacts(artifacts, id_addon) {
         var artifact = artifacts[i];
 
         if ((artifact.type == "") ||
+            (artifact.type == null) ||
             (artifact.type == "new_description") ||
             (artifact.type == "file")) {
 
             rendered_artifacts.push({ artifact: artifact_template({ artifact: artifact, id_addon: id_addon })});
+        }
+        else {
+            //console.log("Unknown type: ", artifact.type);
         }
     }
 
@@ -188,6 +192,22 @@ function periodic_thread_update() {
 }
 
 function update_threads(data) {
+
+    var active_thread_id = -1;
+
+    if (Object.keys(data).length) {
+        var active_index =  $("#tabs").tabs("option", "active");
+        var active_thread_el_id = $("#tab_list > li:nth-child("+(active_index+1)+")").prop("id");
+
+        if (active_thread_el_id) {
+            var matches = active_thread_el_id.match(/thread_tab_([0-9]+)/);
+            if (matches) {
+                active_thread_id = matches[1];
+            }
+        }
+    }
+
+
     for (var thread_id in data) {
         var do_scroll = false;
 
@@ -204,28 +224,35 @@ function update_threads(data) {
 
         var rendered_artifacts = render_artifacts(artifacts);
 
-        var list = $("#yarn_artifact_list_"+thread_id);
+        if (rendered_artifacts.length) {
+            var list = $("#yarn_artifact_list_"+thread_id);
 
-        var container = $("#artifact_container_"+thread_id);
-        var scroll_pos = container.scrollTop();
-        var content_height = container.prop("scrollHeight");
-        var display_height = container.prop("offsetHeight");
-        var slop = 20;
+            var container = $("#artifact_container_"+thread_id);
+            var scroll_pos = container.scrollTop();
+            var content_height = container.prop("scrollHeight");
+            var display_height = container.prop("offsetHeight");
+            var slop = 20;
 
-        if (scroll_pos + display_height + slop >= content_height) {
-            do_scroll = true;
-        }
+            if (scroll_pos + display_height + slop >= content_height) {
+                do_scroll = true;
+            }
 
-        for (var i = 0; i < rendered_artifacts.length; i++) {
-            var rendered = rendered_artifacts[i];
-            list.append(rendered.artifact);
-        }
+            for (var i = 0; i < rendered_artifacts.length; i++) {
+                var rendered = rendered_artifacts[i];
+                list.append(rendered.artifact);
+            }
 
-        if (do_scroll) {
-            container.animate({ scrollTop: container[0].scrollHeight}, 1000);
+            if (do_scroll) {
+                container.animate({ scrollTop: container[0].scrollHeight}, 1000);
+            }
+
+            if (thread_id != active_thread_id) {
+                highlight_thread(thread_id);
+            }
         }
 
         open_threads[thread_id] = thread_data.max_artifact_id;
+
     }
 
     window.yarn_periodic = setTimeout(periodic_thread_update, 2000);
@@ -249,10 +276,15 @@ function adjust_thread_scroll(artifact_id, thread_id) {
 
 
 function select_thread_tab_event(ev, ui) {
+    ui.newTab.removeClass("notification");
     var matches = ui.newTab[0].id.match(/thread_tab_([0-9]+)/);
     if (matches) {
         var container = $("#artifact_container_"+matches[1]);
         container.scrollTop(container[0].scrollHeight);
     }
+}
+
+function highlight_thread(thread_id) {
+    $("#thread_tab_"+thread_id).addClass("notification");
 }
 
