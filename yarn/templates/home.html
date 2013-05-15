@@ -24,7 +24,6 @@
         <!--[if lt IE 7]>
             <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
         <![endif]-->
-
         <div id="main" class="content">
             <div id="tabs">
                 <ul id="tab_list">
@@ -34,6 +33,12 @@
                 </div>
             </div>
         </div>
+        <div id="error_contacting" style="display: none;">
+            <div id="error_periodic" style="display: none;">
+                Error contacting yarn.  Retrying in <span id="error_periodic_retry_time"></span> seconds.
+            </div>
+        </div>
+
 
         {% compress js %}
             <script src="{{STATIC_URL}}js/jquery-1.9.1.js"></script>

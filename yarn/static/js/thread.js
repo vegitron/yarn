@@ -191,7 +191,7 @@ function periodic_thread_update() {
 }
 
 function update_threads(data) {
-
+    $("#error_periodic").hide();
     var active_thread_id = -1;
 
     if (Object.keys(data).length) {
@@ -263,8 +263,19 @@ function update_threads(data) {
 }
 
 function show_update_error() {
-    console.log("Oh no, error time");
-    window.yarn_periodic = setTimeout(periodic_thread_update, 5000);
+    retry_countdown(5);
+    $("#error_periodic").show();
+    $("#error_contacting").show();
+}
+
+function retry_countdown(time) {
+    $("#error_periodic_retry_time").text(time);
+    if (time == 0) {
+        periodic_thread_update();
+    }
+    else {
+        setTimeout(function() { retry_countdown(time-1); }, 1000);
+    }
 }
 
 function adjust_thread_scroll(artifact_id, thread_id) {
