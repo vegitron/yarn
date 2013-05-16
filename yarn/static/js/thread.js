@@ -39,6 +39,7 @@ function render_artifacts(artifacts, id_addon) {
     var artifact_source = $("#artifact_display").html();
     var artifact_template = Handlebars.compile(artifact_source);
 
+    var has_alert_text = false;
     for (var i = 0; i < artifacts.length; i++) {
         var artifact = artifacts[i];
 
@@ -54,7 +55,7 @@ function render_artifacts(artifacts, id_addon) {
         }
     }
 
-    return rendered_artifacts;
+    return { rendered_artifacts: rendered_artifacts, has_alert_text: has_alert_text };
 
 }
 
@@ -79,7 +80,10 @@ function draw_new_thread(data, args) {
     var template = Handlebars.compile(source);
     var tab_template = Handlebars.compile(tab_source);
 
-    var rendered_artifacts = render_artifacts(data.artifacts);
+    var artifact_data = render_artifacts(data.artifacts);
+    var rendered_artifacts = artifact_data.rendered_artifacts;
+    // has_alert_text not used here
+
 
     var rendered_users = render_online_users(data.online_users);
 
@@ -310,7 +314,9 @@ function update_threads(data) {
             }
         }
 
-        var rendered_artifacts = render_artifacts(artifacts);
+        var artifact_data = render_artifacts(artifacts);
+        var rendered_artifacts = artifact_data.rendered_artifacts;
+        var has_alert_text = artifact_data.has_alert_text;
 
         if (rendered_artifacts.length) {
             var list = $("#yarn_artifact_list_"+thread_id);
@@ -336,6 +342,13 @@ function update_threads(data) {
 
             if (thread_id != active_thread_id) {
                 highlight_thread(thread_id);
+            }
+
+            if (has_alert_text) {
+                set_alert_title();
+            }
+            else {
+                set_highlight_title();
             }
         }
 

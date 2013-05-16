@@ -97,5 +97,52 @@ function save_thread_preference() {
 
 }
 
+function window_focus_event() {
+    window.is_blurred = false;
+    document.title = yarn_headers["normal"];
+    clearTimeout(window.alert_title_timeout);
+    window.alert_title_timeout = null;
+}
+
+function window_blur_event() {
+    window.is_blurred = true;
+}
+
+function set_highlight_title() {
+    if (window.is_blurred && !window.alert_title_timeout) {
+        document.title = yarn_headers["highlight"];
+    }
+}
+
+function set_alert_title() {
+    if (window.alert_title_timeout || !window.is_blurred) {
+        return;
+    }
+    document.title = yarn_headers["alert"][0];
+    window.alert_title_position = 0;
+
+    window.alert_title_timeout = setTimeout(toggle_alert_title, 200);
+}
+
+function toggle_alert_title() {
+    if (!window.is_blurred) {
+        return;
+    }
+
+    var next_pos = window.alert_title_position + 1;
+
+    if (next_pos >= yarn_headers["alert"].length) {
+        next_pos = 0;
+    }
+
+    document.title = yarn_headers["alert"][next_pos];
+    window.alert_title_position = next_pos;
+
+    window.alert_title_timeout = setTimeout(toggle_alert_title, 400);
+}
+
+$(window).on("blur", window_blur_event);
+$(window).on("focus", window_focus_event);
+
 $(window).on("click", handle_window_click);
 start_period_updates();
