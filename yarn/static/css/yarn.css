@@ -925,4 +925,5 @@ border-radius: 5px;
 #error_contacting { position: absolute; left: 0px; top: 0px; }
 #error_periodic { height: 2em; width: 100%; background-color: #33cccc;}
 #error_uploading { height: 2em; width: 100%; background-color: #33cccc;}
+#error_posting_text { height: 2em; width: 100%; background-color: #33cccc;}
 

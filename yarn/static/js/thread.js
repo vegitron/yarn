@@ -1,5 +1,7 @@
 var open_threads = {};
 
+var artifact_post_errors = [];
+
 function load_thread_from_href(e) {
     load_thread(e.target.rel, { highlight: true, save_preference: true });
 }
@@ -149,14 +151,48 @@ function post_text_artifact(thread_id, content) {
         data: JSON.stringify({ type: "text", value: content }),
         dataType: 'text',
         success: handle_successful_artifact_post,
-        error: handle_error_artifact_post
+        error: function() {
+            handle_error_artifact_post(thread_id, content);
+        }
     });
 }
 
 function handle_successful_artifact_post() {
+    $("#error_posting_text").hide();
 }
 
-function handle_error_artifact_post() {
+function handle_error_artifact_post(thread_id, content) {
+    window.artifact_post_errors.push({
+        thread_id: thread_id,
+        content: content
+    });
+    error_artifact_post_retry_init();
+}
+
+function error_artifact_post_retry_init() {
+    if (!window.retry_post_timeout) {
+        display_retry_post_timeout(5);
+    }
+}
+
+function display_retry_post_timeout(time) {
+    window.retry_post_timeout = null;
+    $("#error_posting_text").show();
+    $("#error_post_count").text(artifact_post_errors.length);
+    $("#error_post_retry_time").text(time);
+
+    if (time == 0) {
+        var len = artifact_post_errors.length;
+        for (var i = 0; i < len; i++) {
+            // Try to post them in basically the same order
+            // XXX - this really needs to put them in the proper order
+            var new_attempt = artifact_post_errors.shift();
+            post_text_artifact(new_attempt["thread_id"], new_attempt["content"]);
+        }
+    }
+    else {
+        window.retry_post_timeout = setTimeout(function() { display_retry_post_timeout(time-1); }, 1000);
+    }
 }
 
 function start_period_updates() {
