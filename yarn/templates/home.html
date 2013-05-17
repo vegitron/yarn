@@ -16,6 +16,8 @@
                 highlight: "* Yarn *",
                 alert: ["* Yarn ****", "** Yarn ***", "*** Yarn **", "**** Yarn *", "*** Yarn **", "** Yarn ***"]
             };
+
+            yarn_alert_terms = ['{{ login_name }}'];
         </script>
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
@@ -38,7 +40,7 @@
         <div class="yarn-header-title" style="margin-right:10px;"><span id="js-yarn-header-thread"></span></div>
         <div class="yarn-header-right">
 
-            <span class="yarn-header-user-name js_user_display_name_<!-- sol_var login_name -->">[User's name goes here]</span>
+            <span class="yarn-header-user-name js_user_display_name_{{ login_name }}">{{ name }}</span>
 
             <span class="yarn-header-settings"><a href="javascript:void(0)" id="open_settings_dialog">Edit</a></span>
             <span class="yarn-header-users" id="header_show_all_users" style="display:none;"><a href="javascript:void(0)" id="header_show_all_users_link">Mobile link for all users</a></span>

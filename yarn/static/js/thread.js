@@ -49,6 +49,15 @@ function render_artifacts(artifacts, id_addon) {
             (artifact.type == "file")) {
 
             rendered_artifacts.push({ artifact: artifact_template({ artifact: artifact, id_addon: id_addon })});
+
+            for (var term_index = 0; term_index < yarn_alert_terms.length; term_index++) {
+                var term = yarn_alert_terms[term_index];
+                if (!term.match(/[^a-z0-9]/)) {
+                    if (artifact.description.match(term)) {
+                        has_alert_text = true;
+                    }
+                }
+            }
         }
         else {
             //console.log("Unknown type: ", artifact.type);
@@ -427,7 +436,9 @@ function select_thread_tab_event(ev, ui) {
 }
 
 function highlight_thread(thread_id) {
-    $("#thread_tab_"+thread_id).addClass("notification");
+    if (!$("#thread_tab_"+thread_id).hasClass("alert")) {
+        $("#thread_tab_"+thread_id).addClass("notification");
+    }
 }
 
 

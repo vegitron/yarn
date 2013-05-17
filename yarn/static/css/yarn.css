@@ -411,10 +411,10 @@ border-radius: 5px;
     #channel_tabs a:hover { text-decoration: none; color: #555; }
     
     #channel_tabs .current a { color: #222; }
-    #channel_tabs .alert a { color: #ef3e36; }
-    #tab_list .alert a { color: #ef3e36; }
     #channel_tabs .notification a { color: #39b54a; }
     #tab_list .notification a { color: #39b54a; }
+    #channel_tabs .alert a { color: #ef3e36; }
+    #tab_list .alert a { color: #ef3e36; }
     #channel_tabs .added a { color: aqua; }
     #channel_tabs a.open_thread { padding: 0 10px 0 10px; }
     #channel_tabs a.leave-channel { display: inline-block; width: 10px; text-align: right; color: #ccc; padding-right: 8px; }

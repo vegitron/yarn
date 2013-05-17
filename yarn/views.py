@@ -143,7 +143,11 @@ def thread_list(request):
 
 @login_required
 def home(request):
-    return render_to_response("home.html", {}, RequestContext(request))
+    person = Person.objects.get(login_name = request.user.username)
+    return render_to_response("home.html", {
+        "login_name": person.login_name,
+        "name": person.name,
+    }, RequestContext(request))
 
 
 @login_required
