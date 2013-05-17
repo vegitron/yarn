@@ -922,6 +922,8 @@ border-radius: 5px;
 
 .ui-state-disabled, .ui-widget-content .ui-state-disabled.ui-datepicker-today, .ui-widget-header .ui-state-disabled.ui-datepicker-today { border: 1px solid black; }
 
+#messaging { position: absolute; left: 50%; top: 0px; z-index: 2 }
+#new_private_chat_open { height: 2em; width: 100%; background-color: #c33; }
 
 #error_contacting { position: absolute; left: 0px; top: 0px; z-index: 2 }
 #error_periodic { height: 2em; width: 100%; background-color: #33cccc;}

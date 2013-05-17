@@ -388,6 +388,7 @@ function update_threads(data) {
     var new_private_chats = data.new_private_chats;
     for (var i = 0; i < new_private_chats.length; i++) {
         if (!open_threads[new_private_chats[i].thread_id]) {
+            show_new_private_chat_alert(new_private_chats[i].login_name);
             open_private_chat(new_private_chats[i].login_name, {
                 alert_on_load: true
             });
@@ -395,6 +396,25 @@ function update_threads(data) {
     }
 
     window.yarn_periodic = setTimeout(periodic_thread_update, 2000);
+}
+
+function show_new_private_chat_alert(login_name) {
+    if (window.new_alert_fadeout) {
+        clearTimeout(window.new_alert_fadeout);
+    }
+    $("#new_private_chat_login_name").text(login_name);
+    $("#new_private_chat_open").show();
+    $("#messaging").show();
+
+    window.new_alert_fadeout = setTimeout(function() {
+        window.new_alert_fadeout = null;
+        $("#new_private_chat_open").fadeOut({
+            complete: function() {
+                $("#new_private_chat_open").hide();
+                $("#messaging").hide();
+            }
+        });
+    }, 5000);
 }
 
 function show_update_error() {
