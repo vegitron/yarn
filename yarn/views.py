@@ -231,6 +231,8 @@ def update_threads(request, thread_info):
                 if needs_online_update:
                     response_data[thread_id]["online_users"] = _get_online_users(thread)
 
+                response_data[thread_id]["is_private"] = thread.is_private
+
     new_private_chat_notifications = ThreadNotification.objects.filter(person = person, is_new = True)
 
     private_chats = []

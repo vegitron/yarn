@@ -127,6 +127,11 @@ function draw_new_thread(data, args) {
 
     open_threads[data.thread.id] = data.max_artifact_id;
 
+    if (args && args.alert_on_load) {
+        alert_thread(thread_id);
+        set_alert_title();
+    }
+
     if (args && args.save_preference) {
         save_thread_preference();
     }
@@ -337,12 +342,21 @@ function update_threads(data) {
                 list.append(rendered.artifact);
             }
 
+            if (thread_data.is_private) {
+                has_alert_text = true;
+            }
+
             if (do_scroll) {
                 container.animate({ scrollTop: container[0].scrollHeight}, 1000);
             }
 
             if (thread_id != active_thread_id) {
-                highlight_thread(thread_id);
+                if (has_alert_text) {
+                    alert_thread(thread_id);
+                }
+                else {
+                    highlight_thread(thread_id);
+                }
             }
 
             if (has_alert_text) {
@@ -364,9 +378,11 @@ function update_threads(data) {
 
     var new_private_chats = data.new_private_chats;
     for (var i = 0; i < new_private_chats.length; i++) {
-        open_private_chat(new_private_chats[i].login_name, {
-            background: true
-        });
+        if (!open_threads[new_private_chats[i].thread_id]) {
+            open_private_chat(new_private_chats[i].login_name, {
+                alert_on_load: true
+            });
+        }
     }
 
     window.yarn_periodic = setTimeout(periodic_thread_update, 2000);
@@ -402,6 +418,7 @@ function adjust_thread_scroll(artifact_id, thread_id) {
 
 function select_thread_tab_event(ev, ui) {
     ui.newTab.removeClass("notification");
+    ui.newTab.removeClass("alert");
     var matches = ui.newTab[0].id.match(/thread_tab_([0-9]+)/);
     if (matches) {
         var container = $("#artifact_container_"+matches[1]);
@@ -411,5 +428,10 @@ function select_thread_tab_event(ev, ui) {
 
 function highlight_thread(thread_id) {
     $("#thread_tab_"+thread_id).addClass("notification");
+}
+
+
+function alert_thread(thread_id) {
+    $("#thread_tab_"+thread_id).addClass("alert");
 }
 

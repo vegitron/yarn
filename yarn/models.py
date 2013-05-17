@@ -165,14 +165,12 @@ class ThreadNotification(models.Model):
     is_new = models.BooleanField(db_column = "is_new")
 
     def json_data(self, person):
-        id1, id2 = self.thread.name.split('|')
+        other_person = self.thread.get_other_person(person)
 
-        person1 = Person.objects.get(person_id = id1)
-        person2 = Person.objects.get(person_id = id2)
-        if person1.login_name == person.login_name:
-            return { "login_name": person2.login_name }
-        else:
-            return { "login_name": person1.login_name }
+        return {
+            "login_name": other_person.login_name,
+            "thread_id": self.thread.pk,
+        }
 
     class Meta:
         db_table = 'thread_notifications'
