@@ -287,7 +287,8 @@ function update_threads(data) {
     $("#error_periodic").hide();
     var active_thread_id = -1;
 
-    if (Object.keys(data).length) {
+    var thread_updates = data.updates;
+    if (Object.keys(thread_updates).length) {
         var active_index =  $("#tabs").tabs("option", "active");
         var active_thread_el_id = $("#tab_list > li:nth-child("+(active_index+1)+")").prop("id");
 
@@ -300,10 +301,10 @@ function update_threads(data) {
     }
 
 
-    for (var thread_id in data) {
+    for (var thread_id in thread_updates) {
         var do_scroll = false;
 
-        var thread_data = data[thread_id];
+        var thread_data = thread_updates[thread_id];
 
         var artifacts = thread_data.artifacts;
 
@@ -359,6 +360,13 @@ function update_threads(data) {
 
         open_threads[thread_id] = thread_data.max_artifact_id;
 
+    }
+
+    var new_private_chats = data.new_private_chats;
+    for (var i = 0; i < new_private_chats.length; i++) {
+        open_private_chat(new_private_chats[i].login_name, {
+            background: true
+        });
     }
 
     window.yarn_periodic = setTimeout(periodic_thread_update, 2000);

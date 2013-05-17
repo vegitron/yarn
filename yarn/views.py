@@ -1,4 +1,4 @@
-from yarn.models import Thread, Artifact, Person, PersonAttribute, SolsticeFile, User, FavoriteThreads
+from yarn.models import Thread, Artifact, Person, PersonAttribute, SolsticeFile, User, FavoriteThreads, ThreadNotification
 import simplejson as json
 import md5
 import sys
@@ -104,6 +104,13 @@ def thread_info(request, thread_id):
                 timestamp = datetime.now(),
                 artifact_type = "file",
             )
+
+        if thread.is_private:
+            other_person = thread.get_other_person(person)
+            thread_notification = ThreadNotification.objects.get_or_create(person = other_person, thread = thread)[0]
+            thread_notification.is_new = True
+            thread_notification.save()
+
 
         return HttpResponse('""')
 
@@ -224,10 +231,19 @@ def update_threads(request, thread_info):
                 if needs_online_update:
                     response_data[thread_id]["online_users"] = _get_online_users(thread)
 
-    # For new private threads:
-    # SELECT thread_id from $db_name.thread_notifications where person_id = ? AND is_new = 1"
-    # "UPDATE $db_name.thread_notifications SET is_new = 0 WHERE person_id = ? AND thread_id IN ($placeholders)"
-    return HttpResponse(json.dumps(response_data), { "Content-type": "application/json" })
+    new_private_chat_notifications = ThreadNotification.objects.filter(person = person, is_new = True)
+
+    private_chats = []
+    for notification in new_private_chat_notifications:
+        notification.is_new = False
+        notification.save()
+        private_chats.append(notification.json_data(person))
+
+    data = {
+        "new_private_chats": private_chats,
+        "updates": response_data,
+    }
+    return HttpResponse(json.dumps(data), { "Content-type": "application/json" })
 
 @login_required
 def set_fav_threads(request):

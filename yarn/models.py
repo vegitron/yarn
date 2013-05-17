@@ -61,6 +61,17 @@ class Thread(models.Model):
 
         return True
 
+    def get_other_person(self, person):
+        if not self.is_private:
+            raise Exception("No other person for non-private thread")
+
+        id1, id2 = self.name.split('|')
+        person1, person2 = Person.objects.filter(person_id__in = [id1, id2])
+
+        if person1.person_id == person.person_id:
+            return person2
+        return person1
+
     def json_data(self, person=None):
         data = {
             "id": self.pk,
@@ -148,6 +159,24 @@ class ThreadManager(models.Model):
         db_table = 'thread_manager'
         unique_together = ('thread', 'person')
 
+class ThreadNotification(models.Model):
+    thread = models.ForeignKey(Thread)
+    person = models.ForeignKey(Person)
+    is_new = models.BooleanField(db_column = "is_new")
+
+    def json_data(self, person):
+        id1, id2 = self.thread.name.split('|')
+
+        person1 = Person.objects.get(person_id = id1)
+        person2 = Person.objects.get(person_id = id2)
+        if person1.login_name == person.login_name:
+            return { "login_name": person2.login_name }
+        else:
+            return { "login_name": person1.login_name }
+
+    class Meta:
+        db_table = 'thread_notifications'
+        unique_together = ('thread', 'person')
 
 class Artifact(models.Model):
     description = models.TextField(db_column='description')
