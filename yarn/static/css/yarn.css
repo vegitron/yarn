@@ -922,7 +922,7 @@ border-radius: 5px;
 .ui-state-disabled, .ui-widget-content .ui-state-disabled.ui-datepicker-today, .ui-widget-header .ui-state-disabled.ui-datepicker-today { border: 1px solid black; }
 
 
-#error_contacting { position: absolute; left: 0px; top: 0px; }
+#error_contacting { position: absolute; left: 0px; top: 0px; z-index: 2 }
 #error_periodic { height: 2em; width: 100%; background-color: #33cccc;}
 #error_uploading { height: 2em; width: 100%; background-color: #33cccc;}
 #error_posting_text { height: 2em; width: 100%; background-color: #33cccc;}
