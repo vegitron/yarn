@@ -927,3 +927,11 @@ border-radius: 5px;
 #error_uploading { height: 2em; width: 100%; background-color: #33cccc;}
 #error_posting_text { height: 2em; width: 100%; background-color: #33cccc;}
 
+#main {
+    position: absolute;
+    left: 30px;
+    right: 30px;
+    top: 70px;
+    bottom: 40px;
+}
+

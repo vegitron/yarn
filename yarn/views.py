@@ -224,6 +224,9 @@ def update_threads(request, thread_info):
                 if needs_online_update:
                     response_data[thread_id]["online_users"] = _get_online_users(thread)
 
+    # For new private threads:
+    # SELECT thread_id from $db_name.thread_notifications where person_id = ? AND is_new = 1"
+    # "UPDATE $db_name.thread_notifications SET is_new = 0 WHERE person_id = ? AND thread_id IN ($placeholders)"
     return HttpResponse(json.dumps(response_data), { "Content-type": "application/json" })
 
 @login_required
