@@ -144,6 +144,10 @@ function draw_new_thread(data, args) {
     if (args && args.save_preference) {
         save_thread_preference();
     }
+
+    if (args && args.initial_message) {
+        post_text_artifact(data.thread.id, args.initial_message);
+    }
 }
 
 function handle_thread_input_keydown(e) {
@@ -190,7 +194,34 @@ function _post_text_artifact(thread_id, content, args) {
 
 }
 
+function _open_chat_by_msg(content) {
+    var msg_matches = content.match(/^\s*\/msg\s+([\w]+)/);
+    if (msg_matches) {
+        var first_post_match = content.match(/^\s*\/msg\s+([\w]+)\s+(.*)$/);
+
+        var args = {
+            highlight: true
+        };
+
+        if (first_post_match) {
+            var message = first_post_match[2];
+            message = message.replace(/^[\s]+|[\s]+$/g, "");
+
+            if (message.length) {
+                args["initial_message"] = message;
+            }
+        }
+
+        open_private_chat(msg_matches[1], args);
+        return true;
+    }
+}
+
 function post_text_artifact(thread_id, content) {
+    if (_open_chat_by_msg(content)) {
+        return;
+    }
+
     // To prevent out of order messages...
     if (artifact_post_errors.length) {
         artifact_post_errors.push({
