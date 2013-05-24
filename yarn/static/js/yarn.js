@@ -51,23 +51,33 @@ function refresh_thread_tabs() {
 
 function handle_window_click(e) {
     var target = e.target;
-    if (target.className == "artifact_upload_interface") {
+    var classname = target.className;
+    if (classname == "artifact_upload_interface") {
         choose_file_to_upload(target.rel);
     }
-    else if (target.className == "cancel_upload_artifact") {
+    else if (classname == "cancel_upload_artifact") {
         cancel_file_upload(target.rel);
     }
-    else if (target.className == "upload_artifact") {
+    else if (classname == "upload_artifact") {
         upload_new_artifact(target.rel);
     }
-    else if (target.className == "private_chat") {
+    else if (classname == "private_chat") {
         open_private_chat(target.rel, { "highlight": true });
     }
-    else if (target.className == "thread-history") {
+    else if (classname == "thread-history") {
         show_thread_history(target.rel);
     }
-    else if (target.className == "close-history") {
+    else if (classname == "close-history") {
         close_thread_history(target.rel);
+    }
+    else if (classname == "create_new_thread_link") {
+        show_thread_creation_panel();
+    }
+    else if (classname == "cancel_new_thread_create") {
+        hide_thread_creation_panel();
+    }
+    else if (classname == "submit_new_thread") {
+        create_new_thread();
     }
 }
 
@@ -95,6 +105,18 @@ function save_thread_preference() {
         dataType: 'text'
     });
 
+}
+
+function show_thread_creation_panel() {
+    $("#err_new_thread_name_required").hide();
+    $("#err_new_thread_dupe").hide();
+    $("#new_thread_name").val("");
+    $("#new_thread_topic").val("");
+    $("#new_thread_creation_panel").show();
+}
+
+function hide_thread_creation_panel() {
+    $("#new_thread_creation_panel").hide();
 }
 
 function window_focus_event() {
