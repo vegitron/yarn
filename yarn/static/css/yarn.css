@@ -938,3 +938,7 @@ border-radius: 5px;
     bottom: 40px;
 }
 
+.ui-tabs .ui-tabs-nav li a.close_thread_tab { padding: .5em 0 }
+.ui-tabs .ui-tabs-nav li.ui-tabs-active a.close_thread_tab { cursor: pointer; }
+
+

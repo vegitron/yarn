@@ -82,6 +82,14 @@ function pre_load_thread(thread_id) {
     $($.parseHTML(initial_content)).appendTo("#tabs");
 }
 
+function close_thread(thread_id) {
+    delete open_threads[thread_id];
+    var panelId = $("#thread_tab_"+thread_id).remove().attr( "aria-controls" );
+    $( "#" + panelId ).remove();
+    refresh_thread_tabs();
+    save_thread_preference();
+}
+
 function draw_new_thread(data, args) {
     var source = $("#initial_thread_display").html();
     var tab_source = $("#thread_tab_display").html();
@@ -347,6 +355,10 @@ function update_threads(data) {
 
 
     for (var thread_id in thread_updates) {
+        // In case this came in after the thread was closed...
+        if (!open_threads[thread_id]) {
+            continue;
+        }
         var do_scroll = false;
 
         var thread_data = thread_updates[thread_id];

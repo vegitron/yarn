@@ -79,6 +79,9 @@ function handle_window_click(e) {
     else if (classname == "submit_new_thread") {
         create_new_thread();
     }
+    else if (classname == "close_thread_tab") {
+        close_thread(target.rel);
+    }
 }
 
 function save_thread_preference() {
