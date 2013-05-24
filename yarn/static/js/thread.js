@@ -194,10 +194,10 @@ function _post_text_artifact(thread_id, content, args) {
 
 }
 
-function _open_chat_by_msg(content) {
-    var msg_matches = content.match(/^\s*\/msg\s+([\w]+)/);
+function _open_chat_by_pm(content) {
+    var msg_matches = content.match(/^\s*\/pm\s+([\w]+)/);
     if (msg_matches) {
-        var first_post_match = content.match(/^\s*\/msg\s+([\w]+)\s+(.*)$/);
+        var first_post_match = content.match(/^\s*\/pm\s+([\w]+)\s+(.*)$/);
 
         var args = {
             highlight: true
@@ -218,7 +218,7 @@ function _open_chat_by_msg(content) {
 }
 
 function post_text_artifact(thread_id, content) {
-    if (_open_chat_by_msg(content)) {
+    if (_open_chat_by_pm(content)) {
         return;
     }
 
