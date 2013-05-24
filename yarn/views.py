@@ -117,6 +117,24 @@ def thread_info(request, thread_id):
 
 @login_required
 def thread_list(request):
+    if request.method == "POST":
+        return _create_new_thread(request)
+    elif request.method == "GET":
+        return _get_threads_for_current_user(request)
+
+def _create_new_thread(request):
+    json_data = json.loads(request.raw_post_data)
+
+    threads = Thread.objects.filter(is_private__isnull = True, name = json_data["name"])
+
+    if len(threads):
+        return HttpResponse(status=409)
+
+    thread = Thread.objects.create(name=json_data["name"], description=json_data["topic"], is_private=None)
+
+    return HttpResponse(thread.id)
+
+def _get_threads_for_current_user(request):
     """ Returns a list of all threads the user has access to """
     threads = Thread.objects.filter(is_private__isnull = True)
 

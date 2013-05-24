@@ -466,3 +466,45 @@ function alert_thread(thread_id) {
     $("#thread_tab_"+thread_id).addClass("alert");
 }
 
+function create_new_thread() {
+
+    var thread_name = $("#new_thread_name").val();
+    var thread_topic = $("#new_thread_topic").val();
+
+    thread_name = thread_name.replace(/^[\s]+|[\s]+$/g, "");
+    thread_name = thread_name.replace(/[\s]+/g, " ");
+    thread_topic = thread_topic.replace(/^[\s]+|[\s]+$/g, "");
+
+    $("#err_new_thread_name_required").hide();
+    $("#err_new_thread_dupe").hide();
+
+    if (thread_name == "") {
+        $("#err_new_thread_name_required").show();
+        return;
+    }
+
+    var csrf_value = $("input[name='csrfmiddlewaretoken']")[0].value;
+    $.ajax('rest/v1/threads', {
+        type: "POST",
+        headers: {
+            "X-CSRFToken": csrf_value
+        },
+        success: new_thread_created,
+        error: new_thread_error,
+        data: JSON.stringify({ name: thread_name, topic: thread_topic }),
+        dataType: 'text'
+    });
+}
+
+function new_thread_created(response) {
+    load_thread(response, { highlight: true, save_preference: true});
+    hide_thread_creation_panel();
+}
+
+function new_thread_error(response) {
+    if (response.status == 409) {
+        $("#err_new_thread_dupe").show();
+        return;
+    }
+}
+
