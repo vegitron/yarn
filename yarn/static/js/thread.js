@@ -203,9 +203,9 @@ function _post_text_artifact(thread_id, content, args) {
 }
 
 function _open_chat_by_pm(content) {
-    var msg_matches = content.match(/^\s*\/pm\s+([\w]+)/);
+    var msg_matches = content.match(/^\s*\/pm\s+@?([\w]+)/);
     if (msg_matches) {
-        var first_post_match = content.match(/^\s*\/pm\s+([\w]+)\s+(.*)$/);
+        var first_post_match = content.match(/^\s*\/pm\s+@?([\w]+)\s+(.*)$/);
 
         var args = {
             highlight: true
