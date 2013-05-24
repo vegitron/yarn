@@ -41,6 +41,42 @@
                 <div class="channel-sub-actions">
                     <input type="file" class="artifact_upload_chooser" id="artifact_upload_chooser_{{ thread_id }}" onchange="handle_artifact_upload(this.files, {{ thread_id }})"/>
                     <a href="javascript:void(0);" class="artifact_upload_interface" rel="{{thread_id}}">UP</a>
+                    <br />
+                    <div class="open_help_icon">HP
+                        <div class="formatting_help_text">
+                            <div class="formatting_background">
+                                <div class="commands-container">
+                                <h3>Text commands</h3>
+                                <dl>
+                                    <dt><strong>/topic <em>new text</em></strong></dt>
+                                    <dd>changes the discussion topic</dd>
+                                    <dt><strong>/me <em>status text</em></strong></dt>
+                                    <dd>posts a status</dd>
+                                    <dt><strong>/pm <em>@username</em></strong></dt>
+                                    <dd>opens a private message thread with that person</dd>
+                                    <dt><strong>@username</strong></dt>
+                                    <dd>sends a direct message to that person within the current thread (visible to everyone)</dd>
+                                    <dt><strong>/invite <em>@username</em> to <em>#threadname</em></strong></dt>
+                                    <dd>sends a message inviting that person to the thread</dd>
+                                </dl>
+                                </div>
+                                <div class="formatting-container">
+                                <h3>Formatting</h3>
+                                <dl>
+                                    <dt><strong>*bold text*</strong></dt>
+                                    <dt><em>_italic text_</em></dt>
+                                    <dt><strong><em>_*bold and italic text*_</em></strong></dt>
+                                    <dt><strong><em>#threadname</em></strong></dt>
+                                    <dd>creates link to the thread</dd>
+                                    <dt>http://www....</dt>
+                                    <dd>URLs will automatically be clickable when posted</dd>
+                                </dl>
+                                </div>
+                                <br clear="both"/>
+                            </div>
+                            <span class="yarn-help-popin-arrow"><img src="static/images/triangle.png" /></span>
+                        </div>
+                    </div>
                 </div>
                 <div class="channel-textarea" id="artifact_text_input_{{thread_id}}">
                     <p class="offscreen">Type your message and hit enter to post.</p>

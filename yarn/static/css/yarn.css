@@ -941,4 +941,32 @@ border-radius: 5px;
 .ui-tabs .ui-tabs-nav li a.close_thread_tab { padding: .5em 0 }
 .ui-tabs .ui-tabs-nav li.ui-tabs-active a.close_thread_tab { cursor: pointer; }
 
+.open_help_icon .formatting_help_text { display: none; }
+.open_help_icon:hover .formatting_help_text { display: block; }
 
+.formatting_help_text {
+position: absolute;
+right: 0px;
+bottom: 0px;
+width: 540px;
+height: 400px;
+z-index: 5;
+}
+
+.formatting_background { background: gray;
+position: absolute;
+bottom: 24px;
+right: 0px;
+}
+
+.formatting_help_text .commands-container { float: left; width: 245px; }
+.formatting_help_text .formatting-container { float: left; width: 245px;}
+
+.commands-container { background-color: white; margin: 10px;}
+.formatting-container { background-color: white; margin: 10px;}
+
+.yarn-help-popin-arrow {
+position: absolute;
+right: 0px;
+bottom: 12px;
+}
