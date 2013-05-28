@@ -175,6 +175,14 @@ function toggle_alert_title() {
     window.alert_title_timeout = setTimeout(toggle_alert_title, 400);
 }
 
+function stash_person_data(person) {
+    if (!window.all_person_data) {
+        window.all_person_data = {};
+    }
+
+    window.all_person_data[person.login_name] = person;
+}
+
 $(window).on("blur", window_blur_event);
 $(window).on("focus", window_focus_event);
 

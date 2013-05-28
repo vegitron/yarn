@@ -2,3 +2,20 @@
     {% tplhandlebars "thread_autocomplete" %}
     <b>{{ name }}</b> <i>{{ description }}</i>
     {% endtplhandlebars %}
+
+
+    {% tplhandlebars "person_autocomplete" %}
+    <div>
+        <div style="float: left;">
+        {{#if avatar_url }}
+            <img src="{{avatar_url}}" />
+        {{/if}}
+        </div>
+        <div style="float: right;">
+            <b>{{ login_name }}</b>
+            <br />
+            <span>{{ name }}</span>
+        </div>
+        <br clear="both">
+    </div>
+    {% endtplhandlebars %}

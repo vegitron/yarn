@@ -31,6 +31,9 @@ function render_online_users(online_users) {
     var online_user_source = $("#online_user_display").html();
     var online_user_template = Handlebars.compile(online_user_source);
 
+    for (var i = 0; i < online_users.length; i++) {
+        stash_person_data(online_users[i]);
+    }
     return online_user_template({ online_users: online_users });
 }
 
