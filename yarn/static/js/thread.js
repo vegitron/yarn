@@ -141,6 +141,12 @@ function draw_new_thread(data, args) {
     }
 
     $(".thread-text-input-"+data.thread.id).on("keydown", handle_thread_input_keydown);
+    $(".thread-text-input-"+data.thread.id).typeahead({
+        source: typeahead_data_source,
+        matcher: typeahead_matcher,
+        highlighter: typeahead_highlighter,
+        updater: typeahead_updater
+    });
 
     open_threads[data.thread.id] = data.max_artifact_id;
 
@@ -163,8 +169,15 @@ function handle_thread_input_keydown(e) {
         var target = e.target;
         var matches = target.className.match(/[0-9]+$/);
 
+        var thread_id = matches[0];
+
+        var typeaheads = $("#artifact_text_input_"+thread_id+" ul.typeahead");
+        if (typeaheads.is(':visible')) {
+            return;
+        }
+
         if (target.value != "") {
-            post_text_artifact(matches[0], target.value);
+            post_text_artifact(thread_id, target.value);
         }
         e.preventDefault();
         target.value = "";
@@ -369,6 +382,7 @@ function update_threads(data) {
             var artifact = artifacts[i];
             if (artifact.type == "new_description") {
                 $(".thread_topic_"+thread_id).text(artifact.description);
+                window.all_thread_data[thread_id]["description"] = artifact.description;
             }
         }
 

@@ -25,6 +25,7 @@
         {% compress css %}
         <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/bootstrap.2.2.1.min.css"/>
         <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/jquery-ui.css"/>
+        <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/bootstrap.min.css"/>
         <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/yarn.css"/>
         {% endcompress %}
     </head>
@@ -90,12 +91,14 @@
         {% compress js %}
             <script src="{{STATIC_URL}}js/jquery-1.9.1.js"></script>
             <script src="{{STATIC_URL}}js/jquery-ui.js"></script>
+            <script src="{{STATIC_URL}}js/bootstrap.min.js"></script>
             <script src="{{STATIC_URL}}js/handlebars.js"></script>
             <script src="{{STATIC_URL}}js/handlebar_utilities.js"></script>
             <script src="{{STATIC_URL}}js/thread.js"></script>
             <script src="{{STATIC_URL}}js/thread_history.js"></script>
             <script src="{{STATIC_URL}}js/format.js"></script>
             <script src="{{STATIC_URL}}js/upload.js"></script>
+            <script src="{{STATIC_URL}}js/typeahead.js"></script>
             <script src="{{STATIC_URL}}js/yarn.js"></script>
         {% endcompress %}
 
@@ -104,6 +107,7 @@
         {% include "handlebars/thread/tab_display.html" %}
         {% include "handlebars/thread/artifact.html" %}
         {% include "handlebars/user/online_display.html" %}
+        {% include "handlebars/autocomplete.html" %}
 
         <script>
             start_yarn();

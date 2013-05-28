@@ -11,6 +11,15 @@ function draw_available_threads(data) {
     var source = $("#available_threads").html();
     var template = Handlebars.compile(source);
 
+    window.all_thread_data = {};
+    for (var i = 0; i < data["threads"].length; i++) {
+        var thread = data["threads"][i];
+        window.all_thread_data[thread.id] = {
+            name: thread.name,
+            description: thread.description
+        };
+    }
+
     $("#available_thread_list").html(template({ threads: data["threads"] }));
 
     var tabs = $( "#tabs" ).tabs({
