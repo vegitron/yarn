@@ -220,6 +220,7 @@ class User(models.Model):
     person = models.ForeignKey(Person, db_column = 'person_id')
     is_online = models.BooleanField(db_column = 'is_online')
     last_message_id = models.IntegerField(db_column = 'last_message_id')
+    last_online = models.DateTimeField(db_column='last_online')
 
     class Meta:
         db_table = 'user'
