@@ -58,6 +58,7 @@ function refresh_thread_tabs() {
 function handle_window_click(e) {
     var target = e.target;
     var classname = target.className;
+
     if (classname == "artifact_upload_interface") {
         choose_file_to_upload(target.rel);
     }
