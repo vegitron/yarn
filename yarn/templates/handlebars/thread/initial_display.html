@@ -5,7 +5,7 @@
     </div>
     {% endtplhandlebars %}
     {% tplhandlebars "artifact_history_display" %}
-    <div id="thread_history_artifacts_{{thread_id}}"></div>
+    <div id="thread_history_artifacts_{{thread_id}}">
         <ul>
             {{#each artifacts}}
                 {{{ artifact }}}

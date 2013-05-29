@@ -42,7 +42,8 @@ function draw_history_calendar(data) {
 }
 
 function draw_history_artifacts(data) {
-    var rendered_artifacts = render_artifacts(data.artifacts, "history");
+    var artifact_data = render_artifacts(data.artifacts, "history");
+    var rendered_artifacts = artifact_data.rendered_artifacts;
 
     var source = $("#artifact_history_display").html();
     var template = Handlebars.compile(source);
