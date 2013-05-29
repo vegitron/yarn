@@ -22,7 +22,11 @@
                         {{#if_eq artifact.type "new_description" }}
                             <strong>changed the topic to:</strong> {{artifact.description }}
                         {{else}}
-                            {{ formatted_artifact artifact.description }}
+                            {{#if_eq artifact.type "new_thread_name" }}
+                                <span style="color:#7E53A9; font-weight:bold;">changed the thread name to:</span> {{ artifact.description }}
+                            {{else}}
+                                {{ formatted_artifact artifact.description }}
+                            {{/if_eq}}
                         {{/if_eq }}
                     {{/if_eq }}
                 </div>

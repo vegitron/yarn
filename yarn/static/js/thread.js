@@ -49,6 +49,7 @@ function render_artifacts(artifacts, id_addon) {
         if ((artifact.type == "") ||
             (artifact.type == null) ||
             (artifact.type == "new_description") ||
+            (artifact.type == "new_thread_name") ||
             (artifact.type == "file")) {
 
             rendered_artifacts.push({ artifact: artifact_template({ artifact: artifact, id_addon: id_addon })});
@@ -386,6 +387,10 @@ function update_threads(data) {
             if (artifact.type == "new_description") {
                 $(".thread_topic_"+thread_id).text(artifact.description);
                 window.all_thread_data[thread_id]["description"] = artifact.description;
+            }
+            else if (artifact.type == "new_thread_name") {
+                $(".thread_name_display_"+thread_id).text(artifact.description);
+                window.all_thread_data[thread_id]["name"] = artifact.description;
             }
         }
 
