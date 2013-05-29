@@ -322,7 +322,7 @@ def thread_history(request, thread_id):
         return HttpResponse()
 
 
-    dates = set(Artifact.objects.filter(thread_id = thread_id).values('timestamp').order_by('timestamp').dates("timestamp", "day"))
+    dates = set(Artifact.objects.filter(thread_id = thread_id, artifact_type__in=[None, 'file', 'new_description', 'new_thread_name']).values('timestamp').order_by('timestamp').dates("timestamp", "day"))
 
 
     data = []
