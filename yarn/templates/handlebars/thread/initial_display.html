@@ -108,6 +108,16 @@
                         <strong>Current topic:</strong>
                     </span>
                     <p class="thread_topic_panel thread_topic_{{thread_id}}">{{topic}}</p>
+
+                    <br />
+                    <span>
+                        <strong>Thread Managers:</strong>
+                    <span>
+                    <br />
+                    {{#each thread.managers}}
+                        {{ login_name }}
+                    {{/each}}
+                    <br />
                 </div>
                 <div id="online_user_list_{{thread_id}}">
                     {{{ online_users }}}

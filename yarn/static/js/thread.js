@@ -108,6 +108,13 @@ function draw_new_thread(data, args) {
 
     var rendered_users = render_online_users(data.online_users);
 
+    data.thread.managers = data.thread.managers.sort(function(a,b) {
+        if (a.login_name < b.login_name) {
+            return -1;
+        }
+        return 1;
+    });
+
     var initial_content = template({
         thread: data.thread,
         thread_id: data.thread.id,

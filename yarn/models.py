@@ -79,6 +79,7 @@ class Thread(models.Model):
             "description": self.description,
             "is_private": self.is_private,
             "has_groups": self.has_groups,
+            "managers": []
         }
 
         if self.is_private and person:
@@ -92,6 +93,11 @@ class Thread(models.Model):
             other_person = Person.objects.get(person_id = pid)
             data["login_name"] = other_person.login_name
 
+        managers = ThreadManager.objects.filter(thread = self)
+        for manager in managers:
+            data["managers"].append(manager.json_data())
+
+        print "D: ", data["managers"]
         return data
 
 
@@ -154,6 +160,9 @@ class GroupLink(models.Model):
 class ThreadManager(models.Model):
     person = models.ForeignKey(Person)
     thread = models.ForeignKey(Thread)
+
+    def json_data(self):
+        return self.person.json_data()
 
     class Meta:
         db_table = 'thread_manager'
