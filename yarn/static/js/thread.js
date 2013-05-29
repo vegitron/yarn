@@ -2,10 +2,6 @@ var open_threads = {};
 
 var artifact_post_errors = [];
 
-function load_thread_from_href(e) {
-    load_thread(e.target.rel, { highlight: true, save_preference: true });
-}
-
 function load_thread(thread_id, args) {
     $.ajax('rest/v1/thread/'+thread_id, {
         success: function(data) {

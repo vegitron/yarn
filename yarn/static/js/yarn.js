@@ -38,9 +38,6 @@ function draw_available_threads(data) {
         load_thread(favs[i]);
     }
     refresh_thread_tabs();
-
-
-    $(".open_thread").on("click", load_thread_from_href);
 }
 
 function refresh_thread_tabs() {
@@ -90,6 +87,9 @@ function handle_window_click(e) {
     }
     else if (classname == "close_thread_tab") {
         close_thread(target.rel);
+    }
+    else if (classname == "open_thread") {
+        load_thread(target.rel, { highlight: true, save_preference: true });
     }
 }
 
