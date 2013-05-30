@@ -43,9 +43,11 @@ function render_artifacts(artifacts, id_addon) {
     var has_alert_text = false;
     for (var i = 0; i < artifacts.length; i++) {
         var artifact = artifacts[i];
+        _artifact_pre_process(artifact);
 
         if ((artifact.type == "") ||
             (artifact.type == null) ||
+            (artifact.type == "action") ||
             (artifact.type == "new_description") ||
             (artifact.type == "new_thread_name") ||
             (artifact.type == "file")) {
@@ -78,6 +80,13 @@ function render_artifacts(artifacts, id_addon) {
 
     return { rendered_artifacts: rendered_artifacts, has_alert_text: has_alert_text };
 
+}
+
+function _artifact_pre_process(artifact) {
+    if ((artifact.type == "" || artifact.type == null) && artifact.description.match(/^\s*\/me\s+/)) {
+        artifact.type = "action";
+        artifact.description = artifact.description.replace(/^\s*\/me\s+/, "");
+    }
 }
 
 function pre_load_thread(thread_id) {
