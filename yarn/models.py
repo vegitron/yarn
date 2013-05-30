@@ -101,7 +101,6 @@ class Thread(models.Model):
         for manager in managers:
             data["managers"].append(manager.json_data())
 
-        print "D: ", data["managers"]
         return data
 
 
