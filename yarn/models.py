@@ -66,6 +66,10 @@ class Thread(models.Model):
             raise Exception("No other person for non-private thread")
 
         id1, id2 = self.name.split('|')
+
+        if id1 == id2:
+            return person
+
         person1, person2 = Person.objects.filter(person_id__in = [id1, id2])
 
         if person1.person_id == person.person_id:
