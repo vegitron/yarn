@@ -92,6 +92,12 @@ function handle_window_click(e) {
     else if (classname == "open_thread") {
         load_thread(target.rel, { highlight: true, save_preference: true });
     }
+    else if (classname == "show_more_artifact") {
+        show_more_artifact(target);
+    }
+    else if (classname == "show_less_artifact") {
+        show_less_artifact(target);
+    }
 }
 
 function save_thread_preference() {

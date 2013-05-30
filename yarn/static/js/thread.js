@@ -2,6 +2,8 @@ var open_threads = {};
 
 var artifact_post_errors = [];
 
+var MAX_ARTIFACT_HEIGHT = 80;
+
 function load_thread(thread_id, args) {
     $.ajax('rest/v1/thread/'+thread_id, {
         success: function(data) {
@@ -48,7 +50,17 @@ function render_artifacts(artifacts, id_addon) {
             (artifact.type == "new_thread_name") ||
             (artifact.type == "file")) {
 
-            rendered_artifacts.push({ artifact: artifact_template({ artifact: artifact, id_addon: id_addon })});
+            var artifact_html = artifact_template({ artifact: artifact, id_addon: id_addon });
+
+            var test_ul = $("<ul>").html(artifact_html);
+            $("#offscreen_test_render").append(test_ul);
+
+            if (test_ul.find('.artifact_content').height() > MAX_ARTIFACT_HEIGHT) {
+                test_ul.find('.artifact_content').addClass('artifact-oversized');
+            }
+
+            rendered_artifacts.push({ artifact: test_ul.html() });
+            test_ul.remove();
 
             for (var term_index = 0; term_index < yarn_alert_terms.length; term_index++) {
                 var term = yarn_alert_terms[term_index];
@@ -574,5 +586,13 @@ function new_thread_error(response) {
         $("#err_new_thread_dupe").show();
         return;
     }
+}
+
+function show_more_artifact(element) {
+    $(element).closest('.artifact-oversized').addClass('showing_more');
+}
+
+function show_less_artifact(element) {
+    $(element).closest('.artifact-oversized').removeClass('showing_more');
 }
 

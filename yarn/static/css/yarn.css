@@ -970,3 +970,22 @@ position: absolute;
 right: 0px;
 bottom: 12px;
 }
+
+
+.artifact-oversized {
+    height: 80px;
+}
+
+.artifact_content { position: relative; }
+
+.artifact_overflow_show_more { display: none; background-color: red;  position: absolute; top: 60px; height: 20px; width: 100% }
+.artifact_overflow_show_less { display: none; }
+
+.artifact-oversized .artifact_overflow_show_more { display: block;}
+
+.artifact-oversized.showing_more { height: auto; }
+.artifact-oversized.showing_more .artifact_overflow_show_more { display: none;}
+.artifact-oversized.showing_more .artifact_overflow_show_less { display: block;}
+
+
+
