@@ -190,6 +190,8 @@ function draw_new_thread(data, args) {
     if (args && args.initial_message) {
         post_text_artifact(data.thread.id, args.initial_message);
     }
+
+    $("#thread_"+thread_id+" .thread_name_panel").click_to_edit();
 }
 
 function handle_thread_input_keydown(e) {
