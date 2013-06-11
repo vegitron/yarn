@@ -191,7 +191,14 @@ function draw_new_thread(data, args) {
         post_text_artifact(data.thread.id, args.initial_message);
     }
 
-    $("#thread_"+thread_id+" .thread_name_panel").click_to_edit();
+    var managers = data.thread.managers;
+    for (var i = 0; i < managers.length; i++) {
+        if (managers[i].login_name == yarn_current_user) {
+            $("#thread_"+thread_id+" .thread_name_panel").click_to_edit();
+            $("#thread_"+thread_id+" .thread_topic_panel").click_to_edit();
+            $("#thread_"+thread_id+" .thread_managers_panel").click_to_edit();
+        }
+    }
 }
 
 function handle_thread_input_keydown(e) {
