@@ -4,6 +4,7 @@ import time
 import md5
 from wsgiref.handlers import format_date_time
 from django.core.urlresolvers import reverse
+from authz_group.models import Crowd
 
 class Thread(models.Model):
     name = models.CharField(max_length=100, unique=True, db_column='name')
@@ -12,10 +13,6 @@ class Thread(models.Model):
     has_groups = models.BooleanField(db_column='has_groups')
 
     def person_has_access(self, person):
-        # XXX - needs to check the auth_list and group_auth, as well
-        # as checking for private threads that the person is one of the 2
-        # participants
-
         # Private threads
         if self.is_private:
             person_ids = self.name.split("|")
@@ -51,8 +48,12 @@ class Thread(models.Model):
         # Group auth
         try:
             group_links = GroupLink.objects.filter(thread = self)
-            # XXX - need to iterate over the groups, and get membership
             for link in group_links:
+                crowd = Crowd.objects.get(pk = link.group_id)
+                if crowd.is_member(person.login_name):
+                    return True
+
+            if len(group_links):
                 return False
 
         except GroupLink.DoesNotExist:
