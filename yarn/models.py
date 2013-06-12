@@ -22,12 +22,8 @@ class Thread(models.Model):
             return False
 
         # thread managers
-        try:
-            manager_entry = ThreadManager.objects.get(thread = self, person = person)
-            if manager_entry.pk:
-                return True
-        except ThreadManager.DoesNotExist:
-            pass
+        if self.is_manager(person):
+            return True
 
         # Legacy auth
         try:
@@ -61,6 +57,14 @@ class Thread(models.Model):
 
 
         return True
+
+    def is_manager(self, person):
+        try:
+            manager_entry = ThreadManager.objects.get(thread = self, person = person)
+            if manager_entry.pk:
+                return True
+        except ThreadManager.DoesNotExist:
+            return False
 
     def get_other_person(self, person):
         if not self.is_private:

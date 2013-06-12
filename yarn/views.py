@@ -114,6 +114,34 @@ def thread_info(request, thread_id):
 
         return HttpResponse('""')
 
+    if request.method == "PUT":
+
+        json_data = json.loads(request.raw_post_data)
+
+        if "topic" in json_data:
+            thread.description = json_data["topic"]
+            artifact = Artifact.objects.create(
+                thread_id = thread.pk,
+                person_id =  person.person_id,
+                description = json_data["topic"],
+                timestamp = datetime.now(),
+                artifact_type = "new_description",
+            )
+
+        if "name" in json_data:
+            if thread.is_manager(person):
+                print "Name: ", json_data["name"]
+
+        if "managers" in json_data:
+            if thread.is_manager(person):
+                print "Managers: ", json_data["managers"]
+
+        thread.save()
+
+
+        return HttpResponse('""')
+
+
 
 @login_required
 def thread_list(request):

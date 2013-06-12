@@ -252,6 +252,35 @@ function _post_text_artifact(thread_id, content, args) {
 
 }
 
+function change_thread_topic(thread_id, topic) {
+    var csrf_value = $("input[name='csrfmiddlewaretoken']")[0].value;
+    var post_args = {
+        type: "PUT",
+        headers: {
+            "X-CSRFToken": csrf_value
+        },
+        data: JSON.stringify({ topic: topic }),
+        dataType: 'text',
+        error: function() {
+            handle_error_topic_change(thread_id, content);
+        }
+    };
+
+    $.ajax('rest/v1/thread/'+thread_id, post_args);
+}
+
+function _change_topic_by_message(thread_id, content) {
+    var msg_matches = content.match(/^\s*\/topic\s+(.*)$/);
+    if (msg_matches) {
+        var new_topic = msg_matches[1];
+        console.log("New topic: ", new_topic);
+
+        change_thread_topic(thread_id, new_topic);
+        return true;
+    }
+    return false;
+}
+
 function _open_chat_by_pm(content) {
     var msg_matches = content.match(/^\s*\/pm\s+@?([\w]+)/);
     if (msg_matches) {
@@ -277,6 +306,10 @@ function _open_chat_by_pm(content) {
 
 function post_text_artifact(thread_id, content) {
     if (_open_chat_by_pm(content)) {
+        return;
+    }
+
+    if (_change_topic_by_message(thread_id, content)) {
         return;
     }
 
