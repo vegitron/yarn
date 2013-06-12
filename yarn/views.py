@@ -130,7 +130,14 @@ def thread_info(request, thread_id):
 
         if "name" in json_data:
             if thread.is_manager(person):
-                print "Name: ", json_data["name"]
+                thread.name = json_data["name"]
+                artifact = Artifact.objects.create(
+                    thread_id = thread.pk,
+                    person_id =  person.person_id,
+                    description = json_data["name"],
+                    timestamp = datetime.now(),
+                    artifact_type = "new_thread_name",
+                )
 
         if "managers" in json_data:
             if thread.is_manager(person):

@@ -195,6 +195,7 @@ function draw_new_thread(data, args) {
     for (var i = 0; i < managers.length; i++) {
         if (managers[i].login_name == yarn_current_user) {
             $("#thread_"+thread_id+" .thread_name_panel").click_to_edit({
+                onChange: change_name_from_panel
             });
             $("#thread_"+thread_id+" .thread_topic_panel").click_to_edit({
                 onChange: change_topic_from_panel
@@ -290,6 +291,33 @@ function _change_topic_by_message(thread_id, content) {
         return true;
     }
     return false;
+}
+
+function change_name_from_panel(value) {
+    this.click_to_edit("stop_editing", value);
+    var id_matches = this.attr('class').match(/thread_id_([0-9]+)/);
+    if (id_matches) {
+        var thread_id = id_matches[1];
+        change_thread_name(thread_id, value);
+    }
+}
+
+function change_thread_name(thread_id, name) {
+    var csrf_value = $("input[name='csrfmiddlewaretoken']")[0].value;
+    var post_args = {
+        type: "PUT",
+        headers: {
+            "X-CSRFToken": csrf_value
+        },
+        data: JSON.stringify({ name: name}),
+        dataType: 'text',
+        error: function() {
+            handle_error_topic_change(thread_id, name);
+        }
+    };
+
+    $.ajax('rest/v1/thread/'+thread_id, post_args);
+
 }
 
 function _open_chat_by_pm(content) {
