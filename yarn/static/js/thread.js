@@ -194,8 +194,11 @@ function draw_new_thread(data, args) {
     var managers = data.thread.managers;
     for (var i = 0; i < managers.length; i++) {
         if (managers[i].login_name == yarn_current_user) {
-            $("#thread_"+thread_id+" .thread_name_panel").click_to_edit();
-            $("#thread_"+thread_id+" .thread_topic_panel").click_to_edit();
+            $("#thread_"+thread_id+" .thread_name_panel").click_to_edit({
+            });
+            $("#thread_"+thread_id+" .thread_topic_panel").click_to_edit({
+                onChange: change_topic_from_panel
+            });
             $("#thread_"+thread_id+" .thread_managers_panel").click_to_edit();
         }
     }
@@ -269,11 +272,19 @@ function change_thread_topic(thread_id, topic) {
     $.ajax('rest/v1/thread/'+thread_id, post_args);
 }
 
+function change_topic_from_panel(value) {
+    this.click_to_edit("stop_editing", value);
+    var id_matches = this.attr('class').match(/thread_id_([0-9]+)/);
+    if (id_matches) {
+        var thread_id = id_matches[1];
+        change_thread_topic(thread_id, value);
+    }
+}
+
 function _change_topic_by_message(thread_id, content) {
     var msg_matches = content.match(/^\s*\/topic\s+(.*)$/);
     if (msg_matches) {
         var new_topic = msg_matches[1];
-        console.log("New topic: ", new_topic);
 
         change_thread_topic(thread_id, new_topic);
         return true;

@@ -1,5 +1,10 @@
 (function($) {
-    $.fn.click_to_edit = function(options) {
+    $.fn.click_to_edit = function(options, arg) {
+        if (options && typeof(options) == "string") {
+            if (options == "stop_editing") {
+                return stop_editing.apply(this, [arg]);
+            }
+        }
         var opts = $.extend( {
             onChange: defaultChangeHandler,
             onCancel: defaultCancelHandler
@@ -57,7 +62,7 @@
         }
         else if (ev.keyCode == 13) {
             var value = instance.find("input.ce_edit").val();
-            instance.data("options").onChange(instance, value);
+            instance.data("options").onChange.call($(instance), value);
             return;
         }
     }
@@ -73,7 +78,7 @@
             instance.data("options").onCancel(instance);
         }
         else {
-            instance.data("options").onCancel(instance, value);
+            instance.data("options").onChange.call($(instance), value);
         }
     }
 
@@ -88,14 +93,19 @@
     }
 
     function defaultChangeHandler(instance, value) {
-        var input = instance.find("input.ce_edit");
-        var content_span = instance.find("span.content");
-        content_span.text(value);
+        $(instance).click_to_edit("stop_editing", value);
+    }
 
+
+    function stop_editing(content) {
+        var content_span = this.find("span.content");
+        content_span.text(content);
+
+        var input = this.find("input.ce_edit");
         input.remove();
         content_span.show();
 
-        instance.addClass('ce_editable');
+        this.addClass('ce_editable');
     }
 
 }(jQuery));
