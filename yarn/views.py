@@ -1,5 +1,6 @@
-from yarn.models import Thread, Artifact, Person, PersonAttribute, SolsticeFile, User, FavoriteThreads, ThreadNotification
+from yarn.models import Thread, Artifact, Person, PersonAttribute, SolsticeFile, User, FavoriteThreads, ThreadNotification, ThreadManager
 import simplejson as json
+import re
 import md5
 import sys
 import time
@@ -7,7 +8,7 @@ import base64
 from django.conf import settings
 from datetime import datetime
 from datetime import timedelta
-from django.db import IntegrityError
+from django.db import IntegrityError, transaction
 from django.http import HttpResponse
 from django.template import RequestContext
 from django.shortcuts import render_to_response
@@ -141,10 +142,22 @@ def thread_info(request, thread_id):
 
         if "managers" in json_data:
             if thread.is_manager(person):
-                print "Managers: ", json_data["managers"]
+                p = re.compile('[, ]+')
+                netids = p.split(json_data["managers"])
+                manager_people = Person.objects.filter(login_name__in = netids)
+
+                if len(manager_people):
+                    with transaction.commit_manually():
+                        ThreadManager.objects.filter(thread_id = thread.pk).delete()
+                        for person in manager_people:
+                            ThreadManager.objects.create(
+                                thread_id = thread.pk,
+                                person_id = person.pk,
+                            )
+
+                        transaction.commit()
 
         thread.save()
-
 
         return HttpResponse('""')
 

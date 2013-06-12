@@ -115,12 +115,8 @@
                     <span>
                         <strong>Thread Managers:</strong>
                     <span>
-                    <div class="thread_managers_panel">
-                    <span class="content">
-                    {{#each thread.managers}}
-                        {{ login_name }}
-                    {{/each}}
-                    </span>
+                    <div class="thread_managers_panel thread_id_{{ thread_id }}">
+                    <span class="content">{{#each thread.managers}}{{ login_name }} {{/each}}</span>
                     </div>
                 </div>
                 <div id="online_user_list_{{thread_id}}">

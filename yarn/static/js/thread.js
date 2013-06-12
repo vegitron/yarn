@@ -200,7 +200,9 @@ function draw_new_thread(data, args) {
             $("#thread_"+thread_id+" .thread_topic_panel").click_to_edit({
                 onChange: change_topic_from_panel
             });
-            $("#thread_"+thread_id+" .thread_managers_panel").click_to_edit();
+            $("#thread_"+thread_id+" .thread_managers_panel").click_to_edit({
+                onChange: change_managers_from_panel
+            });
         }
     }
 }
@@ -312,13 +314,42 @@ function change_thread_name(thread_id, name) {
         data: JSON.stringify({ name: name}),
         dataType: 'text',
         error: function() {
-            handle_error_topic_change(thread_id, name);
+            handle_error_name_change(thread_id, name);
         }
     };
 
     $.ajax('rest/v1/thread/'+thread_id, post_args);
 
 }
+
+function change_managers_from_panel(value) {
+    this.click_to_edit("stop_editing", value);
+    var id_matches = this.attr('class').match(/thread_id_([0-9]+)/);
+    if (id_matches) {
+        var thread_id = id_matches[1];
+        change_thread_managers(thread_id, value);
+    }
+}
+
+function change_thread_managers(thread_id, managers_string) {
+    var csrf_value = $("input[name='csrfmiddlewaretoken']")[0].value;
+    var post_args = {
+        type: "PUT",
+        headers: {
+            "X-CSRFToken": csrf_value
+        },
+        data: JSON.stringify({ managers: managers_string}),
+        dataType: 'text',
+        error: function() {
+            handle_error_managers_change(thread_id, managers_string);
+        }
+    };
+
+    $.ajax('rest/v1/thread/'+thread_id, post_args);
+
+}
+
+
 
 function _open_chat_by_pm(content) {
     var msg_matches = content.match(/^\s*\/pm\s+@?([\w]+)/);

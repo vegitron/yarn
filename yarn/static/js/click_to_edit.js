@@ -92,8 +92,8 @@
         instance.addClass('ce_editable');
     }
 
-    function defaultChangeHandler(instance, value) {
-        $(instance).click_to_edit("stop_editing", value);
+    function defaultChangeHandler(value) {
+        this.click_to_edit("stop_editing", value);
     }
 
 
