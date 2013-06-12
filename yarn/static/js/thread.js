@@ -5,6 +5,11 @@ var artifact_post_errors = [];
 var MAX_ARTIFACT_HEIGHT = 80;
 
 function load_thread(thread_id, args) {
+    if (thread_id == "thread_list") {
+        $("#tabs").tabs({ active: 0 });
+        return;
+    }
+
     $.ajax('rest/v1/thread/'+thread_id, {
         success: function(data) {
             draw_new_thread(data, args);
