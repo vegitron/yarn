@@ -968,7 +968,10 @@ right: 0px;
 .yarn-help-popin-arrow {
 position: absolute;
 right: 0px;
-bottom: 12px;
+bottom: 14px;
+background: url(../images/triangle.png) no-repeat center center;
+width: 19px;
+height: 10px;
 }
 
 
