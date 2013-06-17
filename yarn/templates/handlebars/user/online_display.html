@@ -6,7 +6,7 @@
             <li>
                 <div class="user_avatar">
                     {{#if avatar_url}}
-                        <img src="{{avatar_url}}"/>
+                        <img src="{{avatar_url}}" class="user_avatar {{login_name}}"/>
                     {{/if}}
                 </div>
                 <span class="user_name"><a href="javascript:void(0);" class="private_chat" rel="{{ login_name }}">{{name}}</a></span>

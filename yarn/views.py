@@ -65,6 +65,7 @@ def thread_info(request, thread_id):
         data = { "thread": thread.json_data(person), "artifacts": artifact_data, "max_artifact_id": max_artifact_id }
 
         data["online_users"] = _get_online_users(thread)
+        data["last_person_update"] = time.mktime(datetime.now().timetuple())
 
         return HttpResponse(json.dumps(data), { "Content-type": "application/json; charset=utf-8" })
 
@@ -268,7 +269,7 @@ def view_avatar(request, person_id, verify_hash):
     return response
 
 @login_required
-def update_threads(request, thread_info):
+def update_threads(request, thread_info, last_person_update=None):
     person = Person.objects.get(login_name = request.user.username)
 
     response_data = {}
@@ -329,7 +330,21 @@ def update_threads(request, thread_info):
         notification.save()
         private_chats.append(notification.json_data(person))
 
+    person_updates = {}
+    last_update_time = None
+    if last_person_update:
+        last_date = datetime.fromtimestamp(int(last_person_update))
+        people = Person.objects.filter(date_modified__gt=last_date)
+
+        for person in people:
+            person_updates[person.login_name] = person.json_data()
+
+        if len(people):
+            last_update_time = time.mktime(datetime.now().timetuple())
+
     data = {
+        "person_updates": person_updates,
+        "last_person_update": last_update_time,
         "new_private_chats": private_chats,
         "updates": response_data,
     }
@@ -408,6 +423,8 @@ def thread_history_date(request, thread_id, date):
 def _get_online_users(thread):
     online_list = User.objects.filter(thread = thread, is_online = True)
     online_users = []
+
+    max_date = datetime.now()
     for user in online_list:
         online_users.append(user.person.json_data())
 
@@ -443,3 +460,13 @@ def _set_user_online(user):
         artifact_type = "online_notice",
         timestamp = datetime.now(),
     )
+
+@login_required
+def client_error(request):
+    json_data = json.loads(request.raw_post_data)
+    msg = json_data["msg"]
+    url = json_data["url"]
+    line = json_data["line"]
+    print "User: ", request.user.username, "M: ", msg, "U: ", url, "L: ", line
+
+    return HttpResponse('""')

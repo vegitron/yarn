@@ -117,6 +117,7 @@ class Person(models.Model):
     person_id = models.AutoField(primary_key = True, db_column = 'person_id')
     login_name = models.TextField(max_length=128, db_column='login_name')
     name = models.TextField(max_length=255, db_column='name')
+    date_modified = models.DateTimeField(db_column='date_modified')
 
     def json_data(self):
         data = {

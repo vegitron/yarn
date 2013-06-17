@@ -5,7 +5,7 @@
                 <span class="artifact-timestamp">{{ format_time artifact.timestamp }}</span>
                 <span class="artifact_avatar">
                     {{#if artifact.author.avatar_url }}
-                        <img src="{{artifact.author.avatar_url}}"/>
+                        <img src="{{artifact.author.avatar_url}}" class="user_avatar {{artifact.author.login_name}}"/>
                     {{/if}}
                 </span>
             </div>

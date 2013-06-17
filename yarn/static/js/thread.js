@@ -129,6 +129,7 @@ function draw_new_thread(data, args) {
 
 
     var rendered_users = render_online_users(data.online_users);
+    window.last_person_change_timestamp = data.last_person_update;
 
     data.thread.managers = data.thread.managers.sort(function(a,b) {
         if (a.login_name < b.login_name) {
@@ -486,6 +487,7 @@ function periodic_thread_update() {
 
     if (run_update) {
         var url = ["rest/v1/update_threads/", threads_to_update.join(",")].join("");
+        url += ";"+window.last_person_change_timestamp;
         $.ajax(url, { success: update_threads, error: show_update_error});
     }
 
@@ -511,6 +513,9 @@ function update_threads(data) {
         }
     }
 
+    if (data.last_person_update) {
+        _update_person_displays(data.last_person_update, data.person_updates);
+    }
 
     for (var thread_id in thread_updates) {
         // In case this came in after the thread was closed...
@@ -602,6 +607,19 @@ function update_threads(data) {
     }
 
     window.yarn_periodic = setTimeout(periodic_thread_update, 2000);
+}
+
+function _update_person_displays(timestamp, data) {
+    var login_name, person_data;
+
+    window.last_person_change_timestamp = timestamp;
+    for (login_name in data) {
+        if (data.hasOwnProperty(login_name)) {
+            person_data = data[login_name];
+            $(".private_chat[rel="+login_name+"]").text(person_data['name']);
+            $("img.user_avatar."+login_name).attr('src', person_data["avatar_url"]);
+        }
+    }
 }
 
 function show_new_private_chat_alert(login_name) {
