@@ -1,7 +1,7 @@
 from django.db import models
 from django.conf import settings
 import time
-import md5
+import hashlib
 from wsgiref.handlers import format_date_time
 from django.core.urlresolvers import reverse
 from authz_group.models import Crowd
@@ -132,7 +132,7 @@ class Person(models.Model):
         for attribute in attributes:
             data["attributes"][attribute.attribute] = attribute.value
             if attribute.attribute == "yarn_avatar_id":
-                hashval = md5.new("%s-%s" % ( self.pk, settings.SECRET_KEY)).hexdigest()
+                hashval = hashlib.md5("%s-%s" % ( self.pk, settings.SECRET_KEY)).hexdigest()
                 data["avatar_url"] = reverse('yarn.views.view_avatar', kwargs = { 'person_id': self.pk, 'verify_hash': hashval })
 
         return data
@@ -216,7 +216,7 @@ class Artifact(models.Model):
             data["timestamp"] = format_date_time(time.mktime(self.timestamp.timetuple()))
 
         if self.artifact_type == "file":
-            hashval = md5.new("%s-%s-%s" % ( self.thread.pk, self.description, settings.SECRET_KEY)).hexdigest()
+            hashval = hashlib.md5("%s-%s-%s" % ( self.thread.pk, self.description, settings.SECRET_KEY)).hexdigest()
             data["download_url"] = reverse('yarn.views.download_file', kwargs = {'thread_id': self.thread.pk, 'file_id': self.description, 'verify_hash': hashval })
 
             sol_file = SolsticeFile.objects.get(pk = self.description)
@@ -264,7 +264,7 @@ class SolsticeFile(models.Model):
         if not hasattr(settings, "SOLSTICE_FILE_ROOT"):
             raise Exception("Need to have a defined SOLSTICE_FILE_ROOT path in settings, where files will live")
 
-        md5val = md5.new("%i" % self.person.pk).hexdigest()[:3]
+        md5val = hashlib.md5("%i" % self.person.pk).hexdigest()[:3]
         return "%s/%s/%s/%s" % (settings.SOLSTICE_FILE_ROOT, md5val, self.person.pk, self.pk)
 
     class Meta:
