@@ -1,7 +1,7 @@
 from yarn.models import Thread, Artifact, Person, PersonAttribute, SolsticeFile, User, FavoriteThreads, ThreadNotification, ThreadManager
 import simplejson as json
 import re
-import md5
+import hashlib
 import sys
 import time
 import base64
@@ -228,7 +228,7 @@ def home(request):
 
 @login_required
 def download_file(request, thread_id, file_id, verify_hash):
-    if verify_hash != md5.new("%s-%s-%s" % (thread_id, file_id, settings.SECRET_KEY)).hexdigest():
+    if verify_hash != hashlib.md5("%s-%s-%s" % (thread_id, file_id, settings.SECRET_KEY)).hexdigest():
         raise Exception("Invalid file hash")
 
     thread = Thread.objects.get(pk=thread_id)
@@ -246,7 +246,7 @@ def download_file(request, thread_id, file_id, verify_hash):
 
 @login_required
 def thumbnail_file(request, thread_id, file_id, verify_hash):
-    if verify_hash != md5.new("%s-%s-%s" % (thread_id, file_id, settings.SECRET_KEY)).hexdigest():
+    if verify_hash != hashlib.md5("%s-%s-%s" % (thread_id, file_id, settings.SECRET_KEY)).hexdigest():
         raise Exception("Invalid file hash")
 
     thread = Thread.objects.get(pk=thread_id)
@@ -266,7 +266,7 @@ def thumbnail_file(request, thread_id, file_id, verify_hash):
 def view_avatar(request, person_id, verify_hash):
     person = Person.objects.get(pk = person_id)
 
-    if verify_hash != md5.new("%s-%s" % (person_id, settings.SECRET_KEY)).hexdigest():
+    if verify_hash != hashlib.md5("%s-%s" % (person_id, settings.SECRET_KEY)).hexdigest():
         raise Exception("Invalid file hash")
 
     avatar_attribute = PersonAttribute.objects.get(person = person, attribute = "yarn_avatar_id")
