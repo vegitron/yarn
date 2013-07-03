@@ -9,6 +9,7 @@ from django.conf import settings
 from datetime import datetime
 from datetime import timedelta
 from django.db import IntegrityError, transaction
+from django.db.models import Q
 from django.http import HttpResponse
 from django.template import RequestContext
 from django.shortcuts import render_to_response
@@ -394,7 +395,7 @@ def thread_history(request, thread_id):
         return HttpResponse()
 
 
-    dates = set(Artifact.objects.filter(thread_id = thread_id, artifact_type__in=[None, 'file', 'new_description', 'new_thread_name']).values('timestamp').order_by('timestamp').dates("timestamp", "day"))
+    dates = set(Artifact.objects.filter(thread_id = thread_id).filter(Q(artifact_type__in=['file', 'new_description', 'new_thread_name']) | Q(artifact_type__isnull = True)).values('timestamp').order_by('timestamp').dates("timestamp", "day"))
 
 
     data = []
