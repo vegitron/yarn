@@ -185,7 +185,7 @@ def _create_new_thread(request):
 
 def _get_threads_for_current_user(request):
     """ Returns a list of all threads the user has access to """
-    threads = Thread.objects.filter(is_private__isnull = True)
+    threads = Thread.objects.filter(is_private__isnull = True).exclude(is_deleted = True)
 
     person = Person.objects.get(login_name = request.user.username)
     if not person:
@@ -211,9 +211,18 @@ def _get_threads_for_current_user(request):
 @login_required
 def home(request):
     person, was_created = Person.objects.get_or_create(login_name = request.user.username)
+
+    use_websockets = False
+    websockets_url = ''
+    if hasattr(settings, 'YARN_WEBSOCKETS_URL'):
+        use_websockets = True
+        websockets_url = settings.YARN_WEBSOCKETS_URL
+
     return render_to_response("home.html", {
         "login_name": person.login_name,
         "name": person.name,
+        "use_websockets": use_websockets,
+        "websockets_url": websockets_url,
     }, RequestContext(request))
 
 
@@ -470,3 +479,4 @@ def client_error(request):
     print "User: ", request.user.username, "M: ", msg, "U: ", url, "L: ", line
 
     return HttpResponse('""')
+

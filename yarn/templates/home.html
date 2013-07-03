@@ -19,6 +19,10 @@
 
             yarn_alert_terms = ['{{ login_name }}'];
             yarn_current_user = '{{ login_name }}';
+            {% if use_websockets %}
+                use_websockets = true;
+                websockets_url = '{{ websockets_url }}';
+            {% endif %}
         </script>
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
@@ -104,6 +108,7 @@
             <script src="{{STATIC_URL}}js/yarn.js"></script>
             <script src="{{STATIC_URL}}js/click_to_edit.js"></script>
             <script src="{{STATIC_URL}}js/errors.js"></script>
+            <script src="{{STATIC_URL}}js/socketio.js"></script>
         {% endcompress %}
 
         {% include "handlebars/available_threads.html" %}

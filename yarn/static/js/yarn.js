@@ -1,6 +1,19 @@
 
 function start_yarn() {
-    $.ajax('rest/v1/threads', { success: draw_available_threads, error: draw_launch_error });
+    if (window.use_websockets) {
+        var socket = io.connect(window.websockets_url);
+        socket.on('connect', function() {
+            start_sockets_yarn(socket);
+        });
+    }
+    else {
+        $.ajax('rest/v1/threads', { success: draw_available_threads, error: draw_launch_error });
+    }
+}
+
+function start_sockets_yarn(socket) {
+    console.log("OK?" , socket);
+    socket.emit('load_threads');
 }
 
 function draw_launch_error() {
