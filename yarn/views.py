@@ -185,7 +185,7 @@ def _create_new_thread(request):
 
 def _get_threads_for_current_user(request):
     """ Returns a list of all threads the user has access to """
-    threads = Thread.objects.filter(is_private__isnull = True)
+    threads = Thread.objects.filter(is_private__isnull = True).exclude(is_deleted = True)
 
     person = Person.objects.get(login_name = request.user.username)
     if not person:
