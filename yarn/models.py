@@ -50,7 +50,7 @@ class Thread(models.Model):
                 if crowd.is_member(person.login_name):
                     return True
 
-            if len(group_links):
+            if self.has_groups:
                 return False
 
         except GroupLink.DoesNotExist:
