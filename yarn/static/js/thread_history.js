@@ -3,7 +3,7 @@ function show_thread_history(thread_id) {
     $("#thread_live_"+thread_id).hide();
     $("#thread_history_"+thread_id).show();
 
-    $.ajax('rest/v1/history/'+thread_id, {
+    $.ajax('api/v1/history/'+thread_id, {
         success: draw_history_calendar,
         error: show_history_calendar_error
     });
@@ -31,7 +31,7 @@ function draw_history_calendar(data) {
         },
         onSelect: function(date) {
             var formatted_date = date.replace(/\//g, '-');
-            $.ajax('rest/v1/history/'+data["thread_id"]+'/'+formatted_date, {
+            $.ajax('api/v1/history/'+data["thread_id"]+'/'+formatted_date, {
                 success: draw_history_artifacts,
                 error: show_history_artifacts_error
             });

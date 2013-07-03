@@ -7,7 +7,7 @@ function start_yarn() {
         });
     }
     else {
-        $.ajax('rest/v1/threads', { success: draw_available_threads, error: draw_launch_error });
+        $.ajax('api/v1/threads', { success: draw_available_threads, error: draw_launch_error });
     }
 }
 
@@ -128,7 +128,7 @@ function save_thread_preference() {
     }
 
     var csrf_value = $("input[name='csrfmiddlewaretoken']")[0].value;
-    $.ajax('rest/v1/set_fav_threads', {
+    $.ajax('api/v1/set_fav_threads', {
         type: "POST",
         headers: {
             "X-CSRFToken": csrf_value

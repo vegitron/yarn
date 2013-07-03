@@ -10,7 +10,7 @@ function load_thread(thread_id, args) {
         return;
     }
 
-    $.ajax('rest/v1/thread/'+thread_id, {
+    $.ajax('api/v1/thread/'+thread_id, {
         success: function(data) {
             draw_new_thread(data, args);
         },
@@ -19,7 +19,7 @@ function load_thread(thread_id, args) {
 }
 
 function open_private_chat(person_id, args) {
-    $.ajax('rest/v1/private/'+person_id, {
+    $.ajax('api/v1/private/'+person_id, {
         success: function(data) {
             draw_new_thread(data, args);
         },
@@ -260,7 +260,7 @@ function _post_text_artifact(thread_id, content, args) {
         post_args.error = args.error;
     }
 
-    $.ajax('rest/v1/thread/'+thread_id, post_args);
+    $.ajax('api/v1/thread/'+thread_id, post_args);
 
 }
 
@@ -278,7 +278,7 @@ function change_thread_topic(thread_id, topic) {
         }
     };
 
-    $.ajax('rest/v1/thread/'+thread_id, post_args);
+    $.ajax('api/v1/thread/'+thread_id, post_args);
 }
 
 function change_topic_from_panel(value) {
@@ -324,7 +324,7 @@ function change_thread_name(thread_id, name) {
         }
     };
 
-    $.ajax('rest/v1/thread/'+thread_id, post_args);
+    $.ajax('api/v1/thread/'+thread_id, post_args);
 
 }
 
@@ -351,7 +351,7 @@ function change_thread_managers(thread_id, managers_string) {
         }
     };
 
-    $.ajax('rest/v1/thread/'+thread_id, post_args);
+    $.ajax('api/v1/thread/'+thread_id, post_args);
 
 }
 
@@ -486,7 +486,7 @@ function periodic_thread_update() {
     }
 
     if (run_update) {
-        var url = ["rest/v1/update_threads/", threads_to_update.join(",")].join("");
+        var url = ["api/v1/update_threads/", threads_to_update.join(",")].join("");
         url += ";"+window.last_person_change_timestamp;
         $.ajax(url, { success: update_threads, error: show_update_error});
     }
@@ -708,7 +708,7 @@ function create_new_thread() {
     }
 
     var csrf_value = $("input[name='csrfmiddlewaretoken']")[0].value;
-    $.ajax('rest/v1/threads', {
+    $.ajax('api/v1/threads', {
         type: "POST",
         headers: {
             "X-CSRFToken": csrf_value

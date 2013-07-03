@@ -51,7 +51,7 @@ function upload_new_artifact(thread_id) {
         };
 
         var csrf_value = $("input[name='csrfmiddlewaretoken']")[0].value;
-        $.ajax('rest/v1/thread/'+thread_id, {
+        $.ajax('api/v1/thread/'+thread_id, {
             type: "POST",
             headers: {
                 "X-CSRFToken": csrf_value
