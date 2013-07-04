@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 import time
 import hashlib
+import uuid
 from wsgiref.handlers import format_date_time
 from django.core.urlresolvers import reverse
 from authz_group.models import Crowd
@@ -283,3 +284,23 @@ class FavoriteThreads(models.Model):
     person = models.ForeignKey(Person, unique = True)
     threads = models.TextField()
 
+
+class WebsocketAuthToken(models.Model):
+    person = models.ForeignKey(Person)
+    secret = models.CharField(max_length=255)
+
+    def save(self, *args, **kwargs):
+        self.secret = str(uuid.uuid4())
+        super(WebsocketAuthToken, self).save(*args, **kwargs)
+
+    def get_token(self):
+        return hashlib.md5("%s-%s" % (self.person.pk, self.secret)).hexdigest()
+
+    def validate_token(self, test_token, login_name):
+        person = Person.objects.get(login_name = login_name)
+        tokens = WebsocketAuthToken.objects.filter(person = person)
+        for token in tokens:
+            if token.get_token() == test_token:
+                return True
+
+        return False
