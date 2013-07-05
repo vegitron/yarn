@@ -18,6 +18,7 @@ from yarn.models import Artifact, WebsocketAuthToken, Person
 from yarn.views import data_for_thread_list, data_for_thread_info, post_new_artifact
 from django.db.models import Max, F
 from django.contrib.sessions.middleware import SessionMiddleware
+from django.conf import settings
 
 
 
@@ -100,11 +101,24 @@ class Application(object):
             socketio_manage(environ, {'': Tester}, self.request)
 
 if __name__ == '__main__':
-    print 'Listening on port 8008'
 
-    # XXX - Make port, interface, and ssl stuff configuration driven
-    server = SocketIOServer(('192.168.1.99', 8008), Application(),
-        resource="socket.io")
+    listen_interface = settings.WEBSOCKETS_LISTEN_INTERFACE
+    listen_port = settings.WEBSOCKETS_LISTEN_PORT
+    keyfile = None
+    certfile = None
+
+
+    if hasattr(settings, "WEBSOCKETS_CERTIFICATE_FILE"):
+        certfile = settings.WEBSOCKETS_CERTIFICATE_FILE
+        keyfile = settings.WEBSOCKETS_KEY_FILE
+
+    if certfile:
+        print 'Listening on wss://%s:%s/' % (listen_interface, listen_port)
+    else:
+        print 'Listening on ws://%s:%s/' % (listen_interface, listen_port)
+
+    server = SocketIOServer((listen_interface, listen_port), Application(),
+        resource="socket.io", keyfile=keyfile, certfile=certfile)
 
     server.serve_forever()
 
