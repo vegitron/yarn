@@ -15,7 +15,7 @@ from socketio.server import SocketIOServer
 from socketio.namespace import BaseNamespace
 from socketio.mixins import RoomsMixin, BroadcastMixin
 from yarn.models import Artifact, WebsocketAuthToken, Person
-from yarn.views import data_for_thread_list, data_for_thread_info
+from yarn.views import data_for_thread_list, data_for_thread_info, post_new_artifact
 from django.db.models import Max, F
 from django.contrib.sessions.middleware import SessionMiddleware
 
@@ -48,6 +48,12 @@ class Tester(BaseNamespace, RoomsMixin, BroadcastMixin):
 
         data = data_for_thread_info(thread_id, self.person)
         self.emit('thread_info', json.dumps(data))
+
+    def on_text_artifact(self, args):
+        thread_id = args['thread_id']
+        content = args['content']
+
+        post_new_artifact('text', { "value": content }, thread_id, self.person)
 
     @staticmethod
     def update_messages(self):

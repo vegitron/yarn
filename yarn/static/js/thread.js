@@ -254,6 +254,10 @@ function handle_thread_input_keydown(e) {
     }
 }
 
+function _websocket_text_artifact(thread_id, content) {
+    window.yarn_websocket.emit('text_artifact', { thread_id: thread_id, content: content });
+}
+
 function _post_text_artifact(thread_id, content, args) {
     if (args == null) {
         args = {};
@@ -419,13 +423,17 @@ function post_text_artifact(thread_id, content) {
         return;
     }
 
-    _post_text_artifact(thread_id, content, {
-        success: handle_successful_artifact_post,
-        error: function() {
-            handle_error_artifact_post(thread_id, content);
-        }
-    });
-
+    if (window.yarn_websocket) {
+        _websocket_text_artifact(thread_id, content);
+    }
+    else {
+        _post_text_artifact(thread_id, content, {
+            success: handle_successful_artifact_post,
+            error: function() {
+                handle_error_artifact_post(thread_id, content);
+            }
+        });
+    }
 }
 
 function repost_text_artifact(thread_id, content) {

@@ -56,47 +56,7 @@ def thread_info(request, thread_id):
 
     if request.method == "POST":
         json_data = json.loads(request.raw_post_data)
-
-        if json_data["type"] == "text":
-            artifact = Artifact.objects.create(
-                thread_id = thread.pk,
-                person_id =  person.person_id,
-                description = json_data["value"],
-                timestamp = datetime.now(),
-                artifact_type = None,
-            )
-
-        elif json_data["type"] == "file":
-            raw_content = base64.b64decode(json_data["file"])
-            sol_file = SolsticeFile.objects.create(
-                person = person,
-                name = json_data["name"],
-                content_type = json_data["content_type"],
-                content_length = len(raw_content),
-                creation_date = datetime.now(),
-                modification_date = datetime.now(),
-                filestore_id = 0,
-            )
-
-            path = sol_file.path_to_file()
-            handle = open(path, "w")
-            handle.write(raw_content)
-            handle.close()
-
-
-            artifact = Artifact.objects.create(
-                thread_id = thread.pk,
-                person_id =  person.person_id,
-                description = sol_file.pk,
-                timestamp = datetime.now(),
-                artifact_type = "file",
-            )
-
-        if thread.is_private:
-            other_person = thread.get_other_person(person)
-            thread_notification = ThreadNotification.objects.get_or_create(person = other_person, thread = thread)[0]
-            thread_notification.is_new = True
-            thread_notification.save()
+        post_new_artifact(json_data["type"], json_data, thread_id, person)
 
 
         return HttpResponse('""')
@@ -499,3 +459,53 @@ def data_for_thread_info(thread_id, person):
     data["last_person_update"] = time.mktime(datetime.now().timetuple())
 
     return data
+
+def post_new_artifact(artifact_type, json_data, thread_id, person):
+    thread = Thread.objects.get(pk=thread_id)
+
+    if not thread.person_has_access(person):
+        raise Exception("No access to thread")
+
+    if artifact_type == "text":
+        artifact = Artifact.objects.create(
+            thread_id = thread.pk,
+            person_id =  person.person_id,
+            description = json_data["value"],
+            timestamp = datetime.now(),
+            artifact_type = None,
+        )
+
+    elif artifact_type == "file":
+        raw_content = base64.b64decode(json_data["file"])
+        sol_file = SolsticeFile.objects.create(
+            person = person,
+            name = json_data["name"],
+            content_type = json_data["content_type"],
+            content_length = len(raw_content),
+            creation_date = datetime.now(),
+            modification_date = datetime.now(),
+            filestore_id = 0,
+        )
+
+        path = sol_file.path_to_file()
+        handle = open(path, "w")
+        handle.write(raw_content)
+        handle.close()
+
+
+        artifact = Artifact.objects.create(
+            thread_id = thread.pk,
+            person_id =  person.person_id,
+            description = sol_file.pk,
+            timestamp = datetime.now(),
+            artifact_type = "file",
+        )
+
+    if thread.is_private:
+        other_person = thread.get_other_person(person)
+        thread_notification = ThreadNotification.objects.get_or_create(person = other_person, thread = thread)[0]
+        thread_notification.is_new = True
+        thread_notification.save()
+
+
+
