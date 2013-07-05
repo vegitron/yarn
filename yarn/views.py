@@ -51,23 +51,7 @@ def thread_info(request, thread_id):
     if request.method == "GET":
         """ Returns the initial data needed for a thread """
 
-
-        #artifacts = Artifact.objects.filter(thread_id__exact = thread.pk).order_by(pk)[:10]
-        artifacts = Artifact.objects.filter(thread_id = thread.pk).order_by('-pk')[:50]
-
-        max_artifact_id = 0
-        artifact_data = []
-        for artifact in artifacts:
-            if artifact.pk > max_artifact_id:
-                max_artifact_id = artifact.pk
-            artifact_data.append(artifact.json_data())
-
-        artifact_data.reverse()
-        data = { "thread": thread.json_data(person), "artifacts": artifact_data, "max_artifact_id": max_artifact_id }
-
-        data["online_users"] = _get_online_users(thread)
-        data["last_person_update"] = time.mktime(datetime.now().timetuple())
-
+        data = data_for_thread_info(thread_id, person)
         return HttpResponse(json.dumps(data), { "Content-type": "application/json; charset=utf-8" })
 
     if request.method == "POST":
@@ -493,3 +477,25 @@ def data_for_thread_list(person):
     return data
 
 
+def data_for_thread_info(thread_id, person):
+    thread = Thread.objects.get(pk=thread_id)
+
+    if not thread.person_has_access(person):
+        raise Exception("No access to thread")
+
+    artifacts = Artifact.objects.filter(thread_id = thread.pk).order_by('-pk')[:50]
+
+    max_artifact_id = 0
+    artifact_data = []
+    for artifact in artifacts:
+        if artifact.pk > max_artifact_id:
+            max_artifact_id = artifact.pk
+        artifact_data.append(artifact.json_data())
+
+    artifact_data.reverse()
+    data = { "thread": thread.json_data(person), "artifacts": artifact_data, "max_artifact_id": max_artifact_id }
+
+    data["online_users"] = _get_online_users(thread)
+    data["last_person_update"] = time.mktime(datetime.now().timetuple())
+
+    return data

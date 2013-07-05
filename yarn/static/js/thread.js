@@ -10,6 +10,23 @@ function load_thread(thread_id, args) {
         return;
     }
 
+    if (window.use_websockets) {
+        _load_thread_sockets(thread_id, args);
+    }
+    else {
+        _load_thread_rest(thread_id, args);
+    }
+}
+
+function _load_thread_sockets(thread_id, args) {
+    if (!args) {
+        args = {};
+    }
+    args["thread_id"] = thread_id;
+    window.yarn_websocket.emit('thread_info', args);
+}
+
+function _load_thread_rest(thread_id, args) {
     $.ajax('api/v1/thread/'+thread_id, {
         success: function(data) {
             draw_new_thread(data, args);
@@ -114,6 +131,10 @@ function close_thread(thread_id) {
     $( "#" + panelId ).remove();
     refresh_thread_tabs();
     save_thread_preference();
+}
+
+function socket_draw_new_thread(data) {
+    draw_new_thread(JSON.parse(data));
 }
 
 function draw_new_thread(data, args) {

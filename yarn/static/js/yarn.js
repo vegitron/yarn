@@ -12,7 +12,9 @@ function start_yarn() {
 }
 
 function start_sockets_yarn(socket) {
+    window.yarn_websocket = socket;
     socket.on('initial_thread_list', socket_draw_available_thread_list);
+    socket.on('thread_info', socket_draw_new_thread);
     console.log("OK?" , socket);
     socket.emit('load_threads', { token: websockets_token, user: yarn_current_user });
 }
@@ -22,16 +24,14 @@ function draw_launch_error() {
 }
 
 function socket_draw_available_thread_list(data) {
-    _draw_available_threads(JSON.parse(data), function() {
-        console.log("socket load thread");
-    });
+    _draw_available_threads(JSON.parse(data));
 }
 
 function rest_draw_available_threads(data) {
-    _draw_available_threads(data, load_thread);
+    _draw_available_threads(data);
 }
 
-function _draw_available_threads(data, load_thread_method) {
+function _draw_available_threads(data) {
     var source = $("#available_threads").html();
     var template = Handlebars.compile(source);
 
@@ -59,10 +59,9 @@ function _draw_available_threads(data, load_thread_method) {
     }
 
     for (var i = 0; i < favs.length; i++) {
-        load_thread_method(favs[i]);
+        load_thread(favs[i]);
     }
     refresh_thread_tabs();
-
 }
 
 function refresh_thread_tabs() {
