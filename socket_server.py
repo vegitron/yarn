@@ -68,11 +68,6 @@ class Tester(BaseNamespace, RoomsMixin, BroadcastMixin):
         self.disconnect(silent=True)
         self.kill_local_jobs()
 
-    def on_tester(self, message):
-        newest = Artifact.objects.get(pk = 539)
-        print "N: ", newest
-        self.emit('new_message', newest.description)
-
 
 #def update_messages(server):
 #    while True:
