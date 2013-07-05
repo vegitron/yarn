@@ -1,4 +1,4 @@
-from yarn.models import Thread, Artifact, Person, PersonAttribute, SolsticeFile, User, FavoriteThreads, ThreadNotification, ThreadManager
+from yarn.models import Thread, Artifact, Person, PersonAttribute, SolsticeFile, User, FavoriteThreads, ThreadNotification, ThreadManager, WebsocketAuthToken
 import simplejson as json
 import re
 import hashlib
@@ -186,26 +186,12 @@ def _create_new_thread(request):
 
 def _get_threads_for_current_user(request):
     """ Returns a list of all threads the user has access to """
-    threads = Thread.objects.filter(is_private__isnull = True).exclude(is_deleted = True)
 
     person = Person.objects.get(login_name = request.user.username)
     if not person:
         person = Person.objects.create(login_name = request.user.username)
 
-
-    data = {}
-    thread_data = []
-    for thread in threads:
-        if thread.person_has_access(person):
-            thread_data.append(thread.json_data())
-
-    data["threads"] = thread_data
-    data["favorites"] = []
-    try:
-        fav_threads = FavoriteThreads.objects.get(person = person)
-        data["favorites"] = json.loads(fav_threads.threads)
-    except FavoriteThreads.DoesNotExist:
-        pass
+    data = data_for_thread_list(person)
 
     return HttpResponse(json.dumps(data), { "Content-type": "application/json" })
 
@@ -215,15 +201,18 @@ def home(request):
 
     use_websockets = False
     websockets_url = ''
+    websockets_auth_token = ''
     if hasattr(settings, 'YARN_WEBSOCKETS_URL'):
         use_websockets = True
         websockets_url = settings.YARN_WEBSOCKETS_URL
+        websockets_auth_token = WebsocketAuthToken.objects.create(person = person).get_token()
 
     return render_to_response("home.html", {
         "login_name": person.login_name,
         "name": person.name,
         "use_websockets": use_websockets,
         "websockets_url": websockets_url,
+        "websockets_token": websockets_auth_token,
     }, RequestContext(request))
 
 
@@ -480,4 +469,27 @@ def client_error(request):
     print "User: ", request.user.username, "M: ", msg, "U: ", url, "L: ", line
 
     return HttpResponse('""')
+
+
+### XXX - these are used by the views and the websockets.  where should they go? ###
+
+
+def data_for_thread_list(person):
+    threads = Thread.objects.filter(is_private__isnull = True).exclude(is_deleted = True)
+    data = {}
+    thread_data = []
+    for thread in threads:
+        if thread.person_has_access(person):
+            thread_data.append(thread.json_data())
+
+    data["threads"] = thread_data
+    data["favorites"] = []
+    try:
+        fav_threads = FavoriteThreads.objects.get(person = person)
+        data["favorites"] = json.loads(fav_threads.threads)
+    except FavoriteThreads.DoesNotExist:
+        pass
+
+    return data
+
 

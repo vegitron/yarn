@@ -7,20 +7,31 @@ function start_yarn() {
         });
     }
     else {
-        $.ajax('api/v1/threads', { success: draw_available_threads, error: draw_launch_error });
+        $.ajax('api/v1/threads', { success: rest_draw_available_threads, error: draw_launch_error });
     }
 }
 
 function start_sockets_yarn(socket) {
+    socket.on('initial_thread_list', socket_draw_available_thread_list);
     console.log("OK?" , socket);
-    socket.emit('load_threads');
+    socket.emit('load_threads', { token: websockets_token, user: yarn_current_user });
 }
 
 function draw_launch_error() {
     console.log("Error launching yarn");
 }
 
-function draw_available_threads(data) {
+function socket_draw_available_thread_list(data) {
+    _draw_available_threads(JSON.parse(data), function() {
+        console.log("socket load thread");
+    });
+}
+
+function rest_draw_available_threads(data) {
+    _draw_available_threads(data, load_thread);
+}
+
+function _draw_available_threads(data, load_thread_method) {
     var source = $("#available_threads").html();
     var template = Handlebars.compile(source);
 
@@ -48,9 +59,10 @@ function draw_available_threads(data) {
     }
 
     for (var i = 0; i < favs.length; i++) {
-        load_thread(favs[i]);
+        load_thread_method(favs[i]);
     }
     refresh_thread_tabs();
+
 }
 
 function refresh_thread_tabs() {

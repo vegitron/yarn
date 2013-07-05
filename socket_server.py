@@ -8,12 +8,14 @@ os.environ['DJANGO_SETTINGS_MODULE'] = 'project.settings'
 
 import gevent
 import time
+import json
 from gevent import monkey; monkey.patch_all()
 from socketio import socketio_manage
 from socketio.server import SocketIOServer
 from socketio.namespace import BaseNamespace
 from socketio.mixins import RoomsMixin, BroadcastMixin
-from yarn.models import Artifact
+from yarn.models import Artifact, WebsocketAuthToken, Person
+from yarn.views import data_for_thread_list
 from django.db.models import Max, F
 from django.contrib.sessions.middleware import SessionMiddleware
 
@@ -25,12 +27,19 @@ class Tester(BaseNamespace, RoomsMixin, BroadcastMixin):
 #        print "A: ", args
 #        print "K: ", kwargs
 
-    def initialize(self):
-        print "S: ", self
-        print "Sock: ", self.socket
-#        print "E: ", BaseNamespace.environ
-        print "E2: ", self.environ
+    def on_load_threads(self, args):
+        token = args['token']
+        login_name = args['user']
 
+        if not WebsocketAuthToken().validate_token(token, login_name):
+            return
+
+        person = Person.objects.get(login_name = login_name)
+        self.person = person
+
+        thread_data = data_for_thread_list(person)
+
+        self.emit('initial_thread_list', json.dumps(thread_data))
         self.spawn(self.update_messages, server)
 
     @staticmethod
@@ -50,24 +59,22 @@ class Tester(BaseNamespace, RoomsMixin, BroadcastMixin):
         print "N: ", newest
         self.emit('new_message', newest.description)
 
-    def on_load_threads(self):
-        self.emit('thread_list', 'okok')
 
-def update_messages(server):
-    while True:
-        print "In update_messages"
-
-        for sessid, socket in server.sockets.iteritems():
-            print "S1: ", sessid, "S2: ", socket
-
-            pkt = dict(type="event",
-                   name="new_message",
-                   args=["What goes in here?"],
-                   endpoint="")
-
-            socket.send_packet(pkt)
-
-        time.sleep(2)
+#def update_messages(server):
+#    while True:
+#        print "In update_messages"
+#
+#        for sessid, socket in server.sockets.iteritems():
+#            print "S1: ", sessid, "S2: ", socket
+#
+#            pkt = dict(type="event",
+#                   name="new_message",
+#                   args=["What goes in here?"],
+#                   endpoint="")
+#
+#            socket.send_packet(pkt)
+#
+#        time.sleep(2)
 
 
 class Application(object):
@@ -83,10 +90,9 @@ if __name__ == '__main__':
     print 'Listening on port 8008'
 
     # XXX - Make port, interface, and ssl stuff configuration driven
-    server = SocketIOServer(('0.0.0.0', 8008), Application(),
+    server = SocketIOServer(('192.168.1.99', 8008), Application(),
         resource="socket.io")
 
-    gevent.spawn(update_messages, server)
     server.serve_forever()
 
 

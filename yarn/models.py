@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 import time
+from datetime import datetime
 import hashlib
 import uuid
 from wsgiref.handlers import format_date_time
@@ -288,9 +289,11 @@ class FavoriteThreads(models.Model):
 class WebsocketAuthToken(models.Model):
     person = models.ForeignKey(Person)
     secret = models.CharField(max_length=255)
+    date_created = models.DateTimeField()
 
     def save(self, *args, **kwargs):
         self.secret = str(uuid.uuid4())
+        self.date_created = datetime.now()
         super(WebsocketAuthToken, self).save(*args, **kwargs)
 
     def get_token(self):
@@ -299,8 +302,14 @@ class WebsocketAuthToken(models.Model):
     def validate_token(self, test_token, login_name):
         person = Person.objects.get(login_name = login_name)
         tokens = WebsocketAuthToken.objects.filter(person = person)
+        now = datetime.now()
         for token in tokens:
             if token.get_token() == test_token:
-                return True
+                delta = (now - token.date_created).seconds
+
+                # Only allow 5 minute old tokens
+                if delta < (5 * 60):
+                    token.delete()
+                    return True
 
         return False
