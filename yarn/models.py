@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 import time
+import json
 from datetime import datetime
 import hashlib
 import uuid
@@ -285,6 +286,11 @@ class FavoriteThreads(models.Model):
     person = models.ForeignKey(Person, unique = True)
     threads = models.TextField()
 
+    def favorite_id_list(self):
+        return json.loads(self.threads)
+
+    def set_favorite_id_list(self, ids):
+        self.threads = json.dumps(ids)
 
 class WebsocketAuthToken(models.Model):
     person = models.ForeignKey(Person)

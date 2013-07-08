@@ -301,22 +301,7 @@ def set_fav_threads(request):
     json_data = json.loads(request.raw_post_data)
     person = Person.objects.get(login_name = request.user.username)
 
-    save_values = []
-    seen_thread_ids = {}
-
-    for thread_id in json_data:
-        thread = Thread.objects.get(pk=thread_id)
-
-        if thread.person_has_access(person) and not thread.is_private:
-            if thread_id not in seen_thread_ids:
-                save_values.append(thread_id)
-                seen_thread_ids[thread_id] = True
-
-
-    favorites = FavoriteThreads.objects.get_or_create(person = person)[0]
-    favorites.threads = json.dumps(save_values)
-    favorites.save()
-
+    save_favorite_thread_list(person, json_data)
     return HttpResponse()
 
 @login_required
@@ -430,7 +415,7 @@ def data_for_thread_list(person):
     data["favorites"] = []
     try:
         fav_threads = FavoriteThreads.objects.get(person = person)
-        data["favorites"] = json.loads(fav_threads.threads)
+        data["favorites"] = fav_threads.favorite_id_list()
     except FavoriteThreads.DoesNotExist:
         pass
 
@@ -507,5 +492,19 @@ def post_new_artifact(artifact_type, json_data, thread_id, person):
         thread_notification.is_new = True
         thread_notification.save()
 
+def save_favorite_thread_list(person, ids):
+    save_values = []
+    seen_thread_ids = {}
 
+    for thread_id in ids:
+        thread = Thread.objects.get(pk=thread_id)
+
+        if thread.person_has_access(person) and not thread.is_private:
+            if thread_id not in seen_thread_ids:
+                save_values.append(thread_id)
+                seen_thread_ids[thread_id] = True
+
+    favorites = FavoriteThreads.objects.get_or_create(person = person)[0]
+    favorites.set_favorite_id_list(save_values)
+    favorites.save()
 

@@ -137,16 +137,24 @@ function save_thread_preference() {
         }
     }
 
-    var csrf_value = $("input[name='csrfmiddlewaretoken']")[0].value;
-    $.ajax('api/v1/set_fav_threads', {
-        type: "POST",
-        headers: {
-            "X-CSRFToken": csrf_value
-        },
-        data: JSON.stringify(ids),
-        dataType: 'text'
-    });
-
+    var json_ids = JSON.stringify(ids);
+    if (window.use_websockets) {
+        var socket = window.yarn_websocket;
+        socket.emit('set_favorite_threads', {
+            thread_ids: json_ids
+        });
+    }
+    else {
+        var csrf_value = $("input[name='csrfmiddlewaretoken']")[0].value;
+        $.ajax('api/v1/set_fav_threads', {
+            type: "POST",
+            headers: {
+                "X-CSRFToken": csrf_value
+            },
+            data: json_ids,
+            dataType: 'text'
+        });
+    }
 }
 
 function show_thread_creation_panel() {

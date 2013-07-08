@@ -14,8 +14,8 @@ from socketio import socketio_manage
 from socketio.server import SocketIOServer
 from socketio.namespace import BaseNamespace
 from socketio.mixins import RoomsMixin, BroadcastMixin
-from yarn.models import Artifact, WebsocketAuthToken, Person
-from yarn.views import data_for_thread_list, data_for_thread_info, post_new_artifact
+from yarn.models import Artifact, WebsocketAuthToken, Person, FavoriteThreads
+from yarn.views import data_for_thread_list, data_for_thread_info, post_new_artifact, save_favorite_thread_list
 from django.db.models import Max, F
 from django.contrib.sessions.middleware import SessionMiddleware
 from django.conf import settings
@@ -37,6 +37,7 @@ class Tester(BaseNamespace, RoomsMixin, BroadcastMixin):
 
         person = Person.objects.get(login_name = login_name)
         self.person = person
+        self.favorite_threads = FavoriteThreads.objects.get(person = person).favorite_id_list()
 
         thread_data = data_for_thread_list(person)
 
@@ -56,10 +57,14 @@ class Tester(BaseNamespace, RoomsMixin, BroadcastMixin):
 
         post_new_artifact('text', { "value": content }, thread_id, self.person)
 
+    def on_set_favorite_threads(self, args):
+        save_favorite_thread_list(self.person, json.loads(args['thread_ids']))
+        self.favorite_threads = args['thread_ids']
+
     @staticmethod
     def update_messages(self):
         while True:
-            print "In the per-request spawning"
+            print "In the per-request spawning: ", self
             time.sleep(3)
 
 
@@ -107,13 +112,19 @@ if __name__ == '__main__':
         certfile = settings.WEBSOCKETS_CERTIFICATE_FILE
         keyfile = settings.WEBSOCKETS_KEY_FILE
 
+    socketio_kwargs = {'resource': "socket.io"}
     if certfile:
         print 'Listening on wss://%s:%s/' % (listen_interface, listen_port)
+
+        socketio_kwargs['keyfile'] = keyfile
+        socketio_kwargs['certfile'] = certfile
+
     else:
         print 'Listening on ws://%s:%s/' % (listen_interface, listen_port)
 
+
     server = SocketIOServer((listen_interface, listen_port), Application(),
-        resource="socket.io", keyfile=keyfile, certfile=certfile)
+        **socketio_kwargs)
 
     server.serve_forever()
 
