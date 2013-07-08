@@ -1,10 +1,7 @@
 # XXX - at this point, this is just tracking the lifecycle of a
 # websockets app, it doesn't actually serve the app
 # usage:
-# in your virtualenv: python socket_server.py
-
-import os
-os.environ['DJANGO_SETTINGS_MODULE'] = 'project.settings'
+# in your virtualenv: DJANGO_SETTINGS_MODULE='project.settings' python socket_server.py
 
 import gevent
 import time
