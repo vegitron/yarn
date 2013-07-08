@@ -215,82 +215,15 @@ def view_avatar(request, person_id, verify_hash):
 def update_threads(request, thread_info, last_person_update=None):
     person = Person.objects.get(login_name = request.user.username)
 
-    response_data = {}
-
     threads = thread_info.split(",")
 
     max_artifact_lookup = {}
-    thread_ids = []
     for per_thread in threads:
         thread_id, max_artifact_id = per_thread.split(":")
-        thread_ids.append(thread_id)
         max_artifact_lookup[int(thread_id)] = max_artifact_id
 
-    threads = Thread.objects.filter(pk__in=thread_ids)
+    data = data_for_thread_updates(person, max_artifact_lookup, last_person_update)
 
-    thread_lookup = {}
-    for thread in threads:
-        if thread.person_has_access(person):
-            thread_lookup[thread.pk] = thread
-
-    threads = thread_lookup.values()
-
-    _mark_person_online(person, threads)
-
-    for thread in threads:
-        thread_id = thread.pk
-        max_artifact_id = max_artifact_lookup[thread_id]
-
-        artifacts = Artifact.objects.filter(thread_id = thread.pk, pk__gt = max_artifact_id).order_by('-pk')
-
-        needs_online_update = False
-        if artifacts:
-            new_max_id = 0
-            artifact_data = []
-            for artifact in artifacts:
-                if artifact.artifact_type == "online_notice" or artifact.artifact_type == "offline_notice":
-                    needs_online_update = True
-                if artifact.pk > new_max_id:
-                    new_max_id = artifact.pk
-                artifact_data.append(artifact.json_data())
-
-            artifact_data.reverse()
-            response_data[thread_id] = {
-                "max_artifact_id": new_max_id or max_artifact_id,
-                "artifacts": artifact_data
-            }
-
-            if needs_online_update:
-                response_data[thread_id]["online_users"] = _get_online_users(thread)
-
-            response_data[thread_id]["is_private"] = thread.is_private
-
-    new_private_chat_notifications = ThreadNotification.objects.filter(person = person, is_new = True)
-
-    private_chats = []
-    for notification in new_private_chat_notifications:
-        notification.is_new = False
-        notification.save()
-        private_chats.append(notification.json_data(person))
-
-    person_updates = {}
-    last_update_time = None
-    if last_person_update:
-        last_date = datetime.fromtimestamp(int(last_person_update))
-        people = Person.objects.filter(date_modified__gt=last_date)
-
-        for person in people:
-            person_updates[person.login_name] = person.json_data()
-
-        if len(people):
-            last_update_time = time.mktime(datetime.now().timetuple())
-
-    data = {
-        "person_updates": person_updates,
-        "last_person_update": last_update_time,
-        "new_private_chats": private_chats,
-        "updates": response_data,
-    }
     return HttpResponse(json.dumps(data), { "Content-type": "application/json" })
 
 @login_required
@@ -442,6 +375,79 @@ def data_for_thread_info(thread_id, person):
 
     data["online_users"] = _get_online_users(thread)
     data["last_person_update"] = time.mktime(datetime.now().timetuple())
+
+    return data
+
+def data_for_thread_updates(person, thread_info, last_person_update):
+    response_data = {}
+
+    thread_ids = thread_info.keys()
+    threads = Thread.objects.filter(pk__in=thread_ids)
+
+    thread_lookup = {}
+    for thread in threads:
+        if thread.person_has_access(person):
+            thread_lookup[thread.pk] = thread
+
+    threads = thread_lookup.values()
+
+    _mark_person_online(person, threads)
+
+    for thread in threads:
+        thread_id = thread.pk
+
+        max_artifact_id = thread_info[thread_id]
+
+        artifacts = Artifact.objects.filter(thread_id = thread.pk, pk__gt = max_artifact_id).order_by('-pk')
+
+        needs_online_update = False
+        if artifacts:
+            new_max_id = 0
+            artifact_data = []
+            for artifact in artifacts:
+                if artifact.artifact_type == "online_notice" or artifact.artifact_type == "offline_notice":
+                    needs_online_update = True
+                if artifact.pk > new_max_id:
+                    new_max_id = artifact.pk
+                artifact_data.append(artifact.json_data())
+
+            artifact_data.reverse()
+            response_data[thread_id] = {
+                "max_artifact_id": new_max_id or max_artifact_id,
+                "artifacts": artifact_data
+            }
+
+            if needs_online_update:
+                response_data[thread_id]["online_users"] = _get_online_users(thread)
+
+            response_data[thread_id]["is_private"] = thread.is_private
+
+    new_private_chat_notifications = ThreadNotification.objects.filter(person = person, is_new = True)
+
+    private_chats = []
+    for notification in new_private_chat_notifications:
+        notification.is_new = False
+        notification.save()
+        private_chats.append(notification.json_data(person))
+
+    person_updates = {}
+    last_update_time = None
+    if last_person_update:
+        last_date = datetime.fromtimestamp(int(last_person_update))
+        people = Person.objects.filter(date_modified__gt=last_date)
+
+        for person in people:
+            person_updates[person.login_name] = person.json_data()
+
+        if len(people):
+            last_update_time = time.mktime(datetime.now().timetuple())
+
+    data = {
+        "person_updates": person_updates,
+        "last_person_update": last_update_time,
+        "new_private_chats": private_chats,
+        "updates": response_data,
+    }
 
     return data
 

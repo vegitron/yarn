@@ -9,13 +9,15 @@ os.environ['DJANGO_SETTINGS_MODULE'] = 'project.settings'
 import gevent
 import time
 import json
+from datetime import datetime
+import time
 from gevent import monkey; monkey.patch_all()
 from socketio import socketio_manage
 from socketio.server import SocketIOServer
 from socketio.namespace import BaseNamespace
 from socketio.mixins import RoomsMixin, BroadcastMixin
 from yarn.models import Artifact, WebsocketAuthToken, Person, FavoriteThreads
-from yarn.views import data_for_thread_list, data_for_thread_info, post_new_artifact, save_favorite_thread_list
+from yarn.views import data_for_thread_list, data_for_thread_info, post_new_artifact, save_favorite_thread_list, data_for_thread_updates
 from django.db.models import Max, F
 from django.contrib.sessions.middleware import SessionMiddleware
 from django.conf import settings
@@ -23,10 +25,6 @@ from django.conf import settings
 
 
 class Tester(BaseNamespace, RoomsMixin, BroadcastMixin):
-#    def __init__(self, *args, **kwargs):
-#        print "S: ", self
-#        print "A: ", args
-#        print "K: ", kwargs
 
     def on_load_threads(self, args):
         token = args['token']
@@ -37,7 +35,10 @@ class Tester(BaseNamespace, RoomsMixin, BroadcastMixin):
 
         person = Person.objects.get(login_name = login_name)
         self.person = person
-        self.favorite_threads = FavoriteThreads.objects.get(person = person).favorite_id_list()
+
+        # These are used for the periodic message updates
+        self.thread_max_ids = {}
+        self.last_person_update = time.mktime(datetime.now().timetuple())
 
         thread_data = data_for_thread_list(person)
 
@@ -50,6 +51,9 @@ class Tester(BaseNamespace, RoomsMixin, BroadcastMixin):
         thread_id = args['thread_id']
 
         data = data_for_thread_info(thread_id, self.person)
+
+        self.thread_max_ids[int(thread_id)] = int(data['max_artifact_id'])
+
         self.emit('thread_info', json.dumps({
             'thread_info': data,
             'args': args,
@@ -63,14 +67,23 @@ class Tester(BaseNamespace, RoomsMixin, BroadcastMixin):
 
     def on_set_favorite_threads(self, args):
         save_favorite_thread_list(self.person, json.loads(args['thread_ids']))
-        self.favorite_threads = args['thread_ids']
 
-    @staticmethod
-    def update_messages(self):
+    def update_messages(self, server):
         while True:
-            print "In the per-request spawning: ", self
-            time.sleep(3)
+            try:
+                updates = data_for_thread_updates(self.person, self.thread_max_ids, self.last_person_update)
+                self.last_person_update = time.mktime(datetime.now().timetuple())
 
+                thread_data = updates['updates']
+                for thread_id in thread_data:
+                    self.thread_max_ids[int(thread_id)] = int(thread_data[int(thread_id)]['max_artifact_id'])
+
+                self.emit("messages", updates)
+
+            except Exception as ex:
+                print "Error running update: ", ex
+
+            time.sleep(2)
 
     def recv_disconnect(self):
         print "Disconnecting"

@@ -15,6 +15,7 @@ function start_sockets_yarn(socket) {
     window.yarn_websocket = socket;
     socket.on('initial_thread_list', socket_draw_available_thread_list);
     socket.on('thread_info', socket_draw_new_thread);
+    socket.on('messages', socket_update_threads);
     socket.emit('load_threads', { token: websockets_token, user: yarn_current_user });
 }
 

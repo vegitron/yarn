@@ -497,7 +497,7 @@ function display_retry_post_timeout(time) {
 }
 
 function start_period_updates() {
-    if (!window.yarn_periodic) {
+    if (!window.yarn_periodic && !window.use_websockets) {
         periodic_thread_update();
     }
 }
@@ -526,6 +526,10 @@ function periodic_thread_update() {
     else {
         window.yarn_periodic = setTimeout(periodic_thread_update, 5000);
     }
+}
+
+function socket_update_threads(data) {
+    update_threads(data);
 }
 
 function update_threads(data) {
@@ -638,7 +642,9 @@ function update_threads(data) {
         }
     }
 
-    window.yarn_periodic = setTimeout(periodic_thread_update, 2000);
+    if (!window.yarn_websocket) {
+        window.yarn_periodic = setTimeout(periodic_thread_update, 2000);
+    }
 }
 
 function _update_person_displays(timestamp, data) {
