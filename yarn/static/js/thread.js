@@ -134,7 +134,10 @@ function close_thread(thread_id) {
 }
 
 function socket_draw_new_thread(data) {
-    draw_new_thread(JSON.parse(data));
+    var json_data = JSON.parse(data);
+    var args = json_data['args'];
+    var thread_info = json_data['thread_info'];
+    draw_new_thread(thread_info, args);
 }
 
 function draw_new_thread(data, args) {

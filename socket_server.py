@@ -46,10 +46,14 @@ class Tester(BaseNamespace, RoomsMixin, BroadcastMixin):
 
 
     def on_thread_info(self, args):
+
         thread_id = args['thread_id']
 
         data = data_for_thread_info(thread_id, self.person)
-        self.emit('thread_info', json.dumps(data))
+        self.emit('thread_info', json.dumps({
+            'thread_info': data,
+            'args': args,
+        }))
 
     def on_text_artifact(self, args):
         thread_id = args['thread_id']
