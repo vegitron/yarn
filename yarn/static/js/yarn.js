@@ -1,7 +1,11 @@
 
 function start_yarn() {
     if (window.use_websockets) {
-        var socket = io.connect(window.websockets_url);
+        var socket_args = {};
+        if (window.websockets_url.match(/^wss:/)) {
+            socket_args['secure'] = true;
+        }
+        var socket = io.connect(window.websockets_url, socket_args);
         socket.on('connect', function() {
             start_sockets_yarn(socket);
         });
