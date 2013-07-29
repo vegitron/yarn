@@ -294,6 +294,7 @@ def _get_online_users(thread):
 def _mark_person_online(person, threads):
     users = User.objects.filter(person = person, thread__in = threads)
 
+
     existing_user_thread_ids = {}
     for user in users:
         existing_user_thread_ids[user.thread.pk] = True
@@ -313,6 +314,10 @@ def _mark_person_online(person, threads):
 def _set_user_online(user):
     user.last_online = datetime.now()
     user.is_online = True
+
+    if not user.last_message_id:
+        user.last_message_id = 0
+
     user.save()
 
     online_artifact = Artifact.objects.create(

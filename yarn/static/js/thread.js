@@ -555,7 +555,7 @@ function update_threads(data) {
 
     for (var thread_id in thread_updates) {
         // In case this came in after the thread was closed...
-        if (!open_threads[thread_id]) {
+        if (!thread_id in open_threads) {
             continue;
         }
         var do_scroll = false;
