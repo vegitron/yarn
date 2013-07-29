@@ -140,6 +140,10 @@ class Person(models.Model):
 
         return data
 
+    def save(self, *args, **kwargs):
+        self.date_modified = datetime.now()
+        super(Person, self).save(*args, **kwargs)
+
     class Meta:
         db_table = 'Person'
 
