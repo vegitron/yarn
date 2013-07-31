@@ -1,0 +1,8 @@
+{% load templatetag_handlebars %}
+{% tplhandlebars "thread_menu" %}
+<ul class="yarn-active-list slide-hide">
+    {{#each threads}}
+    <li><a href="javascript:void(0)" rel="{{ id }}" class="open_thread">{{ name }}</a></li>
+    {{/each}}
+</ul>
+{% endtplhandlebars %}

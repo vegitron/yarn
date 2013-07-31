@@ -1,7 +1,7 @@
 
 {% load templatetag_handlebars %}
     {% tplhandlebars "preload_initial_thread_display" %}
-    <div id="thread_{{ thread_id }}">
+    <div id="thread_{{ thread_id }}" class="content_area">
     </div>
     {% endtplhandlebars %}
     {% tplhandlebars "artifact_history_display" %}
@@ -29,8 +29,8 @@
             </div>
         </div>
         <div id="thread_live_{{ thread_id }}">
-            <div class="yarn-artifacts" id="artifact_container_{{thread_id}}">
-            <ul id="yarn_artifact_list_{{thread_id}}">
+            <div class="yarn-artifacts yarn-chat" id="artifact_container_{{thread_id}}">
+            <ul class="yarn-chat-list" id="yarn_artifact_list_{{thread_id}}">
             {{#each artifacts}}
                 {{{ artifact }}}
             {{/each}}
@@ -78,9 +78,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="channel-textarea" id="artifact_text_input_{{thread_id}}">
-                    <p class="offscreen">Type your message and hit enter to post.</p>
-                    <textarea class="thread-text-input-{{ thread_id }}" ></textarea>
+                <div class="channel-textarea yarn-input clearfix" id="artifact_text_input_{{thread_id}}">
+                    <textarea class="form-control thread-text-input-{{ thread_id }}" placeholder="Type something..."></textarea>
                 </div>
                 <div class="channel-upload" id="artifact_upload_preview_{{thread_id}}" style="display: none;">
                     <div style="float: left;">
@@ -94,33 +93,6 @@
                 </div>
                 <div class="channel-upload" id="artifact_uploading_{{thread_id}}" style="display: none;">
                     Uploading...
-                </div>
-            </div>
-            <div class="yarn-sidebar">
-                <div class="yarn-sidebar-actions">
-                    <a style="top:0; right:0;" href="javascript:void(0)" rel="{{thread_id}}" class="thread-security thread-public" title="This thread is public.">Change security settings</a>
-                    <a style="top:31px; right:0;" href="javascript:void(0)" class="thread-history" title="View thread history" rel="{{thread_id}}">View thread history</a>
-                    <a style="top: 62px; right: 0" href="javascript:void(0)" class="thread-delete" title="Delete this thread." rel="{{thread_id}}">Delete thread</a>
-                </div>
-                <div class="yarn-sidebar-thread-meta">
-                    <h1 class="thread_name_panel thread_id_{{ thread_id }}"><span class="thread_name_display_{{ thread_id }} content">{{thread.name}}</span></h1>
-                    <span>
-                        <strong>Current topic:</strong>
-                    </span>
-                    <div class="thread_topic_panel thread_id_{{ thread_id }}">
-                    <span class="thread_topic_{{thread_id}} content">{{topic}}</span>
-                    </div>
-
-                    <br />
-                    <span>
-                        <strong>Thread Managers:</strong>
-                    <span>
-                    <div class="thread_managers_panel thread_id_{{ thread_id }}">
-                    <span class="content">{{#each thread.managers}}{{ login_name }} {{/each}}</span>
-                    </div>
-                </div>
-                <div id="online_user_list_{{thread_id}}">
-                    {{{ online_users }}}
                 </div>
             </div>
         </div>

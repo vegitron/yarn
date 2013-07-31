@@ -188,24 +188,25 @@ function draw_new_thread(data, args) {
         $($.parseHTML(initial_content)).appendTo("#tabs");
     }
 
-    var container = $("#artifact_container_"+data.thread.id);
-    container.scrollTop(container[0].scrollHeight);
+//    var container = $("#artifact_container_"+data.thread.id);
+//    container.scrollTop(container[0].scrollHeight);
 
     refresh_thread_tabs();
 
     if (args && args.highlight) {
-        var index = $('#tabs a[href="#thread_'+data.thread.id+'"]').parent().index(); 
-        $("#tabs").tabs("option", "active", index);
+//        var index = $('#tabs a[href="#thread_'+data.thread.id+'"]').parent().index(); 
+//        $("#tabs").tabs("option", "active", index);
     }
 
     $(".thread-text-input-"+data.thread.id).on("keydown", handle_thread_input_keydown);
+/*
     $(".thread-text-input-"+data.thread.id).typeahead({
         source: typeahead_data_source,
         matcher: typeahead_matcher,
         highlighter: typeahead_highlighter,
         updater: typeahead_updater
     });
-
+*/
     open_threads[data.thread.id] = data.max_artifact_id;
 
     if (args && args.alert_on_load) {
@@ -537,6 +538,7 @@ function update_threads(data) {
     var active_thread_id = -1;
 
     var thread_updates = data.updates;
+    /*
     if (Object.keys(thread_updates).length) {
         var active_index =  $("#tabs").tabs("option", "active");
         var active_thread_el_id = $("#tab_list > li:nth-child("+(active_index+1)+")").prop("id");
@@ -548,6 +550,7 @@ function update_threads(data) {
             }
         }
     }
+    */
 
     if (data.last_person_update) {
         _update_person_displays(data.last_person_update, data.person_updates);

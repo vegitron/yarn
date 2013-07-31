@@ -50,11 +50,6 @@ function _draw_available_threads(data) {
 
     $("#available_thread_list").html(template({ threads: data["threads"] }));
 
-    var tabs = $( "#tabs" ).tabs({
-        activate: function(ev, ui) {
-            select_thread_tab_event(ev, ui);
-        }
-    });
     refresh_thread_tabs();
 
     var favs = data["favorites"];
@@ -69,18 +64,22 @@ function _draw_available_threads(data) {
 }
 
 function refresh_thread_tabs() {
-    $("#tabs").tabs("refresh");
-    $("#tabs").find( ".ui-tabs-nav" ).sortable({
-        axis: "x",
-        handle: ".handle",
-        items: "li:not(#home_tab)",
-        stop: function() {
-            save_thread_preference();
-            return true;
+    console.log("refresh_thread_tabs ?", window.all_thread_data);
+    var source = $("#thread_menu").html();
+    var template = Handlebars.compile(source);
+
+    var template_data = { threads: [] };
+    for (var thread_id in window.all_thread_data) {
+        if (window.all_thread_data.hasOwnProperty(thread_id)) {
+            template_data.threads.push({
+                id: thread_id,
+                name: window.all_thread_data[thread_id].name
+            });
         }
-    });
+    }
 
 
+    $("#top_thread_menu").html(template(template_data));
 }
 
 function handle_window_click(e) {

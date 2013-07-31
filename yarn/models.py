@@ -135,10 +135,13 @@ class Person(models.Model):
         for attribute in attributes:
             data["attributes"][attribute.attribute] = attribute.value
             if attribute.attribute == "yarn_avatar_id":
-                hashval = hashlib.md5("%s-%s" % ( self.pk, settings.SECRET_KEY)).hexdigest()
-                data["avatar_url"] = reverse('yarn.views.view_avatar', kwargs = { 'person_id': self.pk, 'verify_hash': hashval })
+                data["avatar_url"] = self.avatar_url()
 
         return data
+
+    def avatar_url(self):
+        hashval = hashlib.md5("%s-%s" % ( self.pk, settings.SECRET_KEY)).hexdigest()
+        return reverse('yarn.views.view_avatar', kwargs = { 'person_id': self.pk, 'verify_hash': hashval })
 
     def save(self, *args, **kwargs):
         self.date_modified = datetime.now()

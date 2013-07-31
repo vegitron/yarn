@@ -1,0 +1,83 @@
+@offcanvaswidth: 20em;
+@offcanvasbackground: red;
+
+body { background: @offcanvasbackground; }
+
+a.switch { color: #ccc; font-size: 140%; position:absolute; top: 1em; right:1em; }
+
+.viewport {
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+.sidebar {
+    background: @offcanvasbackground;
+    bottom: 0;
+    color: #888;
+    right: 0;
+    overflow: auto;
+    position: absolute;
+    top: 0;
+    width: @offcanvaswidth;
+    z-index: 0;
+}
+
+.content {
+
+    background: #fff;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    overflow: auto;
+    width: 100%;
+
+    /* set the content left side to 0 */
+    -webkit-transform: translate3d(0, 0, 0);
+    -moz-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+
+    -webkit-transition: .3s all ease;
+    -moz-transition: .3s all ease;
+    -o-transition: .3s all ease;
+    -ms-transition: .3s all ease;
+    transition: .3s all ease;
+}
+
+
+
+/* offcanvas has been activated */
+.offcanvas .content {
+
+    /* slide the content to the left -19em */
+    -webkit-transform: translate3d(-@offcanvaswidth, 0, 0);
+    -moz-transform: translate3d(-@offcanvaswidth, 0, 0);
+    transform: translate3d(-@offcanvaswidth, 0, 0);
+
+    -webkit-transition: .3s all ease;
+    -moz-transition: .3s all ease;
+    -o-transition: .3s all ease;
+    -ms-transition: .3s all ease;
+    transition: .3s all ease;
+
+}
+
+
+/*** desktop is 1000px and wider ***/
+@media only screen and (min-width: 1000px) {
+
+    a.switch { display: none; }
+    .sidebar { right: 0; }
+    .content { left: 0; right: @offcanvaswidth; width: auto; 
+        
+    -webkit-transition: none;
+    -moz-transition: none;
+    -o-transition: none;
+    -ms-transition: none;
+    transition: none;
+    
+    }
+}
+

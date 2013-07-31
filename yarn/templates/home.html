@@ -1,118 +1,274 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]><html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]><html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>Yarn</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width">
+<head>
+    <title>YARN 3</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
 
-        <script>
-            yarn_headers = {
-                normal: "Yarn",
-                highlight: "* Yarn *",
-                alert: ["* Yarn ****", "** Yarn ***", "*** Yarn **", "**** Yarn *", "*** Yarn **", "** Yarn ***"]
-            };
+    <meta name="apple-touch-fullscreen" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta names="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <!-- Bootstrap3 -->
+    <link href="{{STATIC_URL}}css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="{{STATIC_URL}}css/bootstrap-glyphicons.css" rel="stylesheet" type="text/css">
+    
+    <!-- Google WebFonts -->
+    <link href="{{STATIC_URL}}css/google_webfonts.css" rel="stylesheet" type="text/css">
 
-            yarn_alert_terms = ['{{ login_name }}'];
-            yarn_current_user = '{{ login_name }}';
-            {% if use_websockets %}
-                use_websockets = true;
-                websockets_url = '{{ websockets_url }}';
-                websockets_token = '{{ websockets_token }}';
-            {% endif %}
-        </script>
-        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- Mobile-first styles (Less) -->
+    <link href="{{STATIC_URL}}css/offcanvas.less" rel="stylesheet/less" type="text/css">
+    <link href="{{STATIC_URL}}css/small.less" rel="stylesheet/less" type="text/css">
+    <link href="{{STATIC_URL}}css/big.less" rel="stylesheet/less" type="text/css" media="screen and (min-width: 1000px)">
 
-        {% load compress %}
-        {% compress css %}
-        <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/bootstrap.2.2.1.min.css"/>
-        <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/jquery-ui.css"/>
-        <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/bootstrap.min.css"/>
-        <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/yarn.css"/>
-        <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/click_to_edit.css"/>
-        {% endcompress %}
-    </head>
-    <body>
-        {% csrf_token %}
-        <!--[if lt IE 7]>
-            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
-        <![endif]-->
-        <div class="yarn-header">
+    <link href="{{STATIC_URL}}css/yarn.css" rel="stylesheet" type="text/css">
+    <!-- Modernizr & Less.js -->
+    <script src="{{STATIC_URL}}js/modernizr.min.js"></script>
+    <script src="{{STATIC_URL}}js/less.min.js"></script>
 
-        <div class="yarn-header-inner">
-        <div class="yarn-header-left" style="margin-left:5px; margin-right:10px;"><span class="yarn-header-logo"><a id="js-yarn-header-threadlist" href="javascript:void(0)" class="open_thread" rel="thread_list">Yarn</a></span></div>
-        <div class="yarn-header-title" style="margin-right:10px;"><span id="js-yarn-header-thread"></span></div>
-        <div class="yarn-header-right">
 
-            <span class="yarn-header-user-name js_user_display_name_{{ login_name }}">{{ name }}</span>
+    <script>
+        yarn_headers = {
+            normal: "Yarn",
+            highlight: "* Yarn *",
+            alert: ["* Yarn ****", "** Yarn ***", "*** Yarn **", "**** Yarn *", "*** Yarn **", "** Yarn ***"]
+        };
 
-            <span class="yarn-header-settings"><a href="javascript:void(0)" id="open_settings_dialog">Edit</a></span>
-            <span class="yarn-header-users" id="header_show_all_users" style="display:none;"><a href="javascript:void(0)" id="header_show_all_users_link">Mobile link for all users</a></span>
-        </div>
-        <div class="clear"></div>
-    </div>
-</div>
-        <div id="main" class="content">
-            <div id="tabs">
-                <ul id="tab_list">
-                    <li id="home_tab"><a href="#available_thread_list">Threads</a></li>
-                </ul>
-                <div id="available_thread_list">
+        yarn_alert_terms = ['{{ login_name }}'];
+        yarn_current_user = '{{ login_name }}';
+        {% if use_websockets %}
+            use_websockets = true;
+            websockets_url = '{{ websockets_url }}';
+            websockets_token = '{{ websockets_token }}';
+        {% endif %}
+    </script>
+
+</head>
+<body>
+    {% csrf_token %}
+
+    <div class="viewport">
+    
+        <aside class="sidebar">
+            
+            <!-- user profile avatar -->
+            <div class="yarn-user clearfix">
+                <img class="yarn-user-avatar img-rounded" src="{{ avatar_url }}">
+                <span class="yarn-header-user-name js_user_display_name_{{ login_name }}">{{ name }}</span>
+
+                <span class="yarn-header-settings"><a href="javascript:void(0)" id="open_settings_dialog">edit profile</a></span>
+            </div>
+            
+            <!-- tab controller list -->
+            <ul id="myTab" class="yarn-tabs nav nav-tabs">
+              <li class="active"><a href="#people" data-toggle="tab"><span class="glyphicon glyphicon-user"></span></a></li>
+              <li><a href="#threads" data-toggle="tab"><span class="glyphicon glyphicon-list"></span></a></li>
+              <li><a href="#archive" data-toggle="tab"><span class="glyphicon glyphicon-search"></span></a></li>
+            </ul>
+            
+            <!-- tab content container -->
+            <div class="tab-content">
+            
+                <!-- tab contents: people -->
+                <div class="yarn-people tab-pane active" id="people">
+                    <h2>People </h2>
+                    <div><span class="label">ALL</span> <span class="label label-success">UX</span></div>
+                    <ul class="yarn-people-list">
+                        <li><img src="/img/avatars/adam.jpg" class="img-circle online"></li>
+                        <li><img src="/img/avatars/beth.jpg" class="img-circle offline"></li>
+                        <li><img src="/img/avatars/chuck.jpg" class="img-circle online"></li>
+                        <li><img src="/img/avatars/gene.jpg" class="img-circle online"></li>
+                        <li><img src="/img/avatars/james.jpg" class="img-circle offline"></li>
+                        <li><img src="/img/avatars/pink.jpg" class="img-circle offline"></li>
+                        <li><img src="/img/avatars/randy.jpg" class="img-circle offline"></li>
+                        <li><img src="/img/avatars/rob.jpg" class="img-circle offline"></li>
+                        <li><img src="/img/avatars/sue.jpg" class="img-circle offline"></li>
+                        <li><img src="/img/avatars/tasha.jpg" class="img-circle online"></li>
+                        <li><img src="/img/avatars/ted.jpg" class="img-circle offline"></li>
+                        <li><img src="/img/avatars/tommy.jpg" class="img-circle online offline"></li>
+                    </ul>
                 </div>
+                
+                <!-- tab contents: threads -->
+                <div class="yarn-threads tab-pane" id="threads">
+                    <h2>Threads</h2>
+                    <div><span class="label">RELATED</span> <span class="label label-success">ACTIVE</span> <span class="label">FAVORITE</span> <span class="label">OWNED</span> <span class="label">ALL</span></div>
+                    <ul style="margin-top:1.5em;">
+                        <li>UX</li>
+                        <li>Yarn</li>
+                        <li>ACA</li>
+                        <li>CSE 341 - Autumn 2014</li>
+                    </ul>
+                    <div class="input-group">
+                      <input class="form-control input-small" type="text" placeholder="Find threads">
+                      <span class="input-group-btn">
+                        <button class="btn btn-default btn-small" type="button">Find</button>
+                      </span>
+                    </div>
+                </div>
+                
+                <!-- tab contents: archive/find -->
+                <div class="yarn-archive tab-pane" id="archive">
+                    <h2>FIND</h2>
+                    <div>Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam quis risus eget urna mollis ornare vel eu leo. Curabitur blandit tempus porttitor. Donec sed odio dui.</div>
+                </div>
+            
             </div>
-        </div>
-        <div id="error_contacting" style="display: none;">
-            <div id="error_periodic" style="display: none;">
-                Error contacting yarn.  Retrying in <span id="error_periodic_retry_time"></span> seconds.
+            
+        </aside>
+        
+        <section class="content">
+            <div id="tabs">
+            <div id="available_thread_list" class="content_area"></div>
             </div>
+            <!-- header container -->
 
-            <div id="error_uploading" style="display: none;">
-                Error uploading file.  Click Post in the thread to try again.
+            <div class="yarn-header">
+                <h1><a href="#" id="current_thread"><span class='yarn-current-thread-name'>Threads</span></a>&nbsp;&nbsp;<span class="glyphicon glyphicon-filter" style="color:#ddd; font-size:80%; vertical-align:middle; display:inline-block;"></span></h1>
+                <div id="top_thread_menu">
+                </div>
+                <a href="#" class="switch"><span class="glyphicon glyphicon-align-justify"></span></a>
+            </div><!-- end yarn-header -->
+            
+            <div style="display: none;">
+            <!-- content container - all content gets dynamically drawn inside of yarn-content -->
+            <div class="yarn-content">
+                
+                <!-- fixed datebar -->
+                <div class="yarn-date-bar">
+                    <div class="clearfix" style="padding: 0 1.2em;">
+                        <div class="pull-left"><strong>MON JUL 29 2013</strong></div>
+                        <div class="pull-right"><span class="label">PREV</span>&nbsp;<span class="label">NEXT</span>&nbsp;<span class="label">NOW</span></div>
+                    </div>
+                </div>
+                
+                <!-- chat areas -->    
+                <div class="yarn-chat">
+                
+                    <ul class="yarn-chat-list">
+    
+                        <li class="clearfix">
+                            <div class="yarn-chat-meta">
+                                <img src="/img/avatars/adam.jpg" class="img-circle yarn-chat-user">
+                                <span class="glyphicon glyphicon-star-empty yarn-chat-action"></span>
+                                <span class="glyphicon glyphicon-comment yarn-chat-action"></span>
+                            </div>
+                            <div class="yarn-chat-message">Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam quis risus eget urna mollis ornare vel eu leo. Curabitur blandit tempus porttitor. Donec sed odio dui.</div>
+                        </li>
+                        <li class="clearfix">
+                            <div class="yarn-chat-meta">
+                                <img src="/img/avatars/pink.jpg" class="img-circle yarn-chat-user">
+                                <span class="glyphicon glyphicon-star-empty yarn-chat-action"></span>
+                                <span class="glyphicon glyphicon-comment yarn-chat-action"></span>
+                            </div>
+                            <div class="yarn-chat-message">Nullam quis risus eget urna mollis ornare vel eu leo.</div>
+                        </li>
+                        <li class="clearfix">
+                            <div class="yarn-chat-meta">
+                                <img src="/img/avatars/sue.jpg" class="img-circle yarn-chat-user">
+                                <span class="glyphicon glyphicon-star-empty yarn-chat-action"></span>
+                                <span class="glyphicon glyphicon-comment yarn-chat-action"></span>
+                            </div>
+                            <div class="yarn-chat-message">Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
+                        </li>
+    
+                        <li class="clearfix">
+                            <div class="yarn-chat-meta">
+                                <img src="/img/avatars/ted.jpg" class="img-circle yarn-chat-user">
+                                <span class="glyphicon glyphicon-star-empty yarn-chat-action"></span>
+                                <span class="glyphicon glyphicon-comment yarn-chat-action"></span>
+                            </div>
+                            <div class="yarn-chat-message">Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Nullam quis risus eget urna mollis ornare vel eu leo. Curabitur blandit tempus porttitor. Donec sed odio dui.</div>
+                        </li>
+                        <li class="clearfix">
+                            <div style="background:#dde4e6;line-height:2.5em;margin-left:-1.2em;margin-right:-1.2em;padding:0 1.2em;">TUE JUL 30 2013</div>
+                        </li>
+                        <li class="clearfix">
+                            <div class="yarn-chat-meta">
+                                <img src="/img/avatars/pink.jpg" class="img-circle yarn-chat-user">
+                                <span class="glyphicon glyphicon-star-empty yarn-chat-action"></span>
+                                <span class="glyphicon glyphicon-comment yarn-chat-action"></span>
+                            </div>
+                            <div class="yarn-chat-message">Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</div>
+                        </li>
+                        
+                        <li class="clearfix">
+                            <div class="yarn-chat-meta">
+                                <img src="/img/avatars/tommy.jpg" class="img-circle yarn-chat-user">
+                                <span class="glyphicon glyphicon-star-empty yarn-chat-action"></span>
+                                <span class="glyphicon glyphicon-comment yarn-chat-action"></span>
+                            </div>
+                            <div class="yarn-chat-message">Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam quis risus eget urna mollis ornare vel eu leo. Curabitur blandit tempus porttitor. Donec sed odio dui.</div>
+                        </li>
+    
+                        <li class="clearfix">
+                            <div class="yarn-chat-meta">
+                                <img src="/img/avatars/adam.jpg" class="img-circle yarn-chat-user">
+                                <span class="glyphicon glyphicon-star-empty yarn-chat-action"></span>
+                                <span class="glyphicon glyphicon-comment yarn-chat-action"></span>
+                            </div>
+                            <div class="yarn-chat-message">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam quis risus eget urna mollis ornare vel eu leo.</div>
+                        </li>
+                        
+                        <li class="clearfix">
+                            <div class="yarn-chat-meta">
+                                <img src="/img/avatars/tasha.jpg" class="img-circle yarn-chat-user">
+                                <span class="glyphicon glyphicon-star-empty yarn-chat-action"></span>
+                                <span class="glyphicon glyphicon-comment yarn-chat-action"></span>
+                            </div>
+                            <div class="yarn-chat-message">Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Nullam quis risus eget urna mollis ornare vel eu leo. Curabitur blandit tempus porttitor. Donec sed odio dui.</div>
+                        </li>
+                        <li class="clearfix">
+                            <div class="yarn-chat-meta">
+                                <img src="/img/avatars/beth.jpg" class="img-circle yarn-chat-user">
+                                <span class="glyphicon glyphicon-star-empty yarn-chat-action"></span>
+                                <span class="glyphicon glyphicon-comment yarn-chat-action"></span>
+                            </div>
+                            <div class="yarn-chat-message">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam quis risus eget urna mollis ornare vel eu leo.</div>
+                        </li>
+                        
+    
+                    </ul>
+    
+                </div>
+                
+                <!-- textarea input -->
+                <div class="yarn-input clearfix">
+                    <div class="pull-left"><span><strong>UX</strong></span>&nbsp;&nbsp;<span>What is UX?</span></div>
+                    <div class="pull-right"><span class="glyphicon glyphicon-camera"></span>&nbsp;&nbsp;<span class="glyphicon glyphicon-paperclip"></span></div>
+                    <textarea class="form-control" placeholder="Type something..."></textarea>
+                </div>
+            
+            </div><!-- end yarn-content -->
             </div>
+        </section>
 
-            <div id="error_posting_text" style="display: none;">
-                Error posting comment.  <span id="error_post_count"></span> post(s) waiting to try again in <span id="error_post_retry_time"></span> seconds.
-            </div>
-        </div>
-        <div id="messaging" style="display: none;">
-            <div id="new_private_chat_open" style="display: none;">New private chat opened with <span id="new_private_chat_login_name"></span></div>
-        </div>
-        <div class="yarn-footer">
+    </div>
 
-            <div class="copyright" style="margin-left:30px; font-size:smaller;">Copyright © 1998-2013 Learning &amp; Scholarly Technologies | <a href="http://www.washington.edu/online/privacy" target="_blank">Privacy</a> | <a href="http://www.washington.edu/online/terms" target="_blank">Terms</a></div>
-
-            <!-- ignore this stuff for now -->
-            <div class="mobile-tabs">
-                <div class='show_active_threads' style="width:49%;float:left;text-align:center;"><a href="javascript:void(0)">Active</a></div>
-                <div class='show_available_threads' style="width:50%;float:right;text-align:center;border-left:solid 1px #aaa;"><a href="javascript:void(0)">Available</a></div>
-                <div class="cf"></div>
-            </div>
-
-        </div>
-
-
-        {% compress js %}
-            <script src="{{STATIC_URL}}js/jquery-1.9.1.js"></script>
-            <script src="{{STATIC_URL}}js/jquery-ui-1.10.3.custom.js"></script>
-            <script src="{{STATIC_URL}}js/bootstrap.min.js"></script>
-            <script src="{{STATIC_URL}}js/handlebars.js"></script>
-            <script src="{{STATIC_URL}}js/handlebar_utilities.js"></script>
-            <script src="{{STATIC_URL}}js/thread.js"></script>
-            <script src="{{STATIC_URL}}js/thread_history.js"></script>
-            <script src="{{STATIC_URL}}js/format.js"></script>
-            <script src="{{STATIC_URL}}js/upload.js"></script>
-            <script src="{{STATIC_URL}}js/typeahead.js"></script>
-            <script src="{{STATIC_URL}}js/yarn.js"></script>
-            <script src="{{STATIC_URL}}js/click_to_edit.js"></script>
-            <script src="{{STATIC_URL}}js/errors.js"></script>
-            <script src="{{STATIC_URL}}js/socketio.js"></script>
-        {% endcompress %}
+    <!-- jQuery & Bootstrap3 via CDN -->
+    <script src="{{STATIC_URL}}js/jquery.min.js"></script>
+    <script src="{{STATIC_URL}}js/bootstrap.min.js"></script>
+    
+    <!-- Javascript -->
+    <script src="{{STATIC_URL}}js/offcanvas.js"></script>
+    <script src="{{STATIC_URL}}js/main.js"></script>
+    <script src="{{STATIC_URL}}js/handlebars.js"></script>
+    <script src="{{STATIC_URL}}js/handlebar_utilities.js"></script>
+    <script src="{{STATIC_URL}}js/thread.js"></script>
+    <script src="{{STATIC_URL}}js/thread_history.js"></script>
+    <script src="{{STATIC_URL}}js/format.js"></script>
+    <script src="{{STATIC_URL}}js/upload.js"></script>
+    <script src="{{STATIC_URL}}js/typeahead.js"></script>
+    <script src="{{STATIC_URL}}js/yarn.js"></script>
+    <script src="{{STATIC_URL}}js/click_to_edit.js"></script>
+    <script src="{{STATIC_URL}}js/errors.js"></script>
+    <script src="{{STATIC_URL}}js/socketio.js"></script>
 
         {% include "handlebars/available_threads.html" %}
+        {% include "handlebars/thread_menu.html" %}
         {% include "handlebars/thread/initial_display.html" %}
         {% include "handlebars/thread/tab_display.html" %}
         {% include "handlebars/thread/artifact.html" %}
@@ -120,8 +276,9 @@
         {% include "handlebars/autocomplete.html" %}
             <div style="visibility: hidden;" id="offscreen_test_render"></div>
 
-        <script>
-            start_yarn();
-        </script>
-    </body>
+
+    <script>
+        start_yarn();
+    </script>
+</body>
 </html>

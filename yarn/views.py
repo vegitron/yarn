@@ -154,6 +154,7 @@ def home(request):
     return render_to_response("home.html", {
         "login_name": person.login_name,
         "name": person.name,
+        "avatar": person.avatar_url(),
         "use_websockets": use_websockets,
         "websockets_url": websockets_url,
         "websockets_token": websockets_auth_token,
