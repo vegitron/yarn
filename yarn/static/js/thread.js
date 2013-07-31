@@ -182,10 +182,12 @@ function draw_new_thread(data, args) {
     if ($("#thread_"+thread_id).length) {
         $("#thread_"+thread_id).replaceWith($.parseHTML(initial_content));
         $("#thread_tab_"+thread_id).replaceWith($.parseHTML(tab_content));
+        $("#person_list_"+thread_id).replaceWith($.parseHTML(rendered_users));
     }
     else {
         $($.parseHTML(tab_content)).appendTo("#tab_list");
         $($.parseHTML(initial_content)).appendTo("#tabs");
+        $($.parseHTML(rendered_users)).appendTo("#people");
     }
 
 //    var container = $("#artifact_container_"+data.thread.id);

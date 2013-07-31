@@ -64,7 +64,6 @@ function _draw_available_threads(data) {
 }
 
 function refresh_thread_tabs() {
-    console.log("refresh_thread_tabs ?", window.all_thread_data);
     var source = $("#thread_menu").html();
     var template = Handlebars.compile(source);
 
