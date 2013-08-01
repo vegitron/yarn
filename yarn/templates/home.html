@@ -24,7 +24,7 @@
     <link href="{{STATIC_URL}}css/small.less" rel="stylesheet/less" type="text/css">
     <link href="{{STATIC_URL}}css/big.less" rel="stylesheet/less" type="text/css" media="screen and (min-width: 1000px)">
 
-    <link href="{{STATIC_URL}}css/yarn.css" rel="stylesheet" type="text/css">
+    <!--<link href="{{STATIC_URL}}css/yarn.css" rel="stylesheet" type="text/css">-->
     <!-- Modernizr & Less.js -->
     <script src="{{STATIC_URL}}js/modernizr.min.js"></script>
     <script src="{{STATIC_URL}}js/less.min.js"></script>
@@ -104,129 +104,20 @@
         </aside>
         
         <section class="content">
-            <div id="tabs">
-            <div id="available_thread_list" class="content_area"></div>
-            </div>
+      
             <!-- header container -->
-
             <div class="yarn-header">
-                <h1><a href="#" id="current_thread"><span class='yarn-current-thread-name'>Threads</span></a>&nbsp;&nbsp;<span class="glyphicon glyphicon-filter" style="color:#ddd; font-size:80%; vertical-align:middle; display:inline-block;"></span></h1>
+                <h1><a href="#" id="current_thread"><span class='yarn-current-thread-name'>Threads</span></a>&nbsp;&nbsp;<span class="glyphicon glyphicon-filter" style="color:#aaa; font-size:80%; vertical-align:middle; display:inline-block;"></span></h1>
                 <div id="top_thread_menu">
                 </div>
-                <a href="#" class="switch"><span class="glyphicon glyphicon-align-justify"></span></a>
+                <a href="#" class="switch" style="color:#aaa"><span class="glyphicon glyphicon-align-justify"></span></a>
             </div><!-- end yarn-header -->
             
-            <div style="display: none;">
-            <!-- content container - all content gets dynamically drawn inside of yarn-content -->
-            <div class="yarn-content">
-                
-                <!-- fixed datebar -->
-                <div class="yarn-date-bar">
-                    <div class="clearfix" style="padding: 0 1.2em;">
-                        <div class="pull-left"><strong>MON JUL 29 2013</strong></div>
-                        <div class="pull-right"><span class="label">PREV</span>&nbsp;<span class="label">NEXT</span>&nbsp;<span class="label">NOW</span></div>
-                    </div>
-                </div>
-                
-                <!-- chat areas -->    
-                <div class="yarn-chat">
-                
-                    <ul class="yarn-chat-list">
-    
-                        <li class="clearfix">
-                            <div class="yarn-chat-meta">
-                                <img src="/img/avatars/adam.jpg" class="img-circle yarn-chat-user">
-                                <span class="glyphicon glyphicon-star-empty yarn-chat-action"></span>
-                                <span class="glyphicon glyphicon-comment yarn-chat-action"></span>
-                            </div>
-                            <div class="yarn-chat-message">Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam quis risus eget urna mollis ornare vel eu leo. Curabitur blandit tempus porttitor. Donec sed odio dui.</div>
-                        </li>
-                        <li class="clearfix">
-                            <div class="yarn-chat-meta">
-                                <img src="/img/avatars/pink.jpg" class="img-circle yarn-chat-user">
-                                <span class="glyphicon glyphicon-star-empty yarn-chat-action"></span>
-                                <span class="glyphicon glyphicon-comment yarn-chat-action"></span>
-                            </div>
-                            <div class="yarn-chat-message">Nullam quis risus eget urna mollis ornare vel eu leo.</div>
-                        </li>
-                        <li class="clearfix">
-                            <div class="yarn-chat-meta">
-                                <img src="/img/avatars/sue.jpg" class="img-circle yarn-chat-user">
-                                <span class="glyphicon glyphicon-star-empty yarn-chat-action"></span>
-                                <span class="glyphicon glyphicon-comment yarn-chat-action"></span>
-                            </div>
-                            <div class="yarn-chat-message">Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
-                        </li>
-    
-                        <li class="clearfix">
-                            <div class="yarn-chat-meta">
-                                <img src="/img/avatars/ted.jpg" class="img-circle yarn-chat-user">
-                                <span class="glyphicon glyphicon-star-empty yarn-chat-action"></span>
-                                <span class="glyphicon glyphicon-comment yarn-chat-action"></span>
-                            </div>
-                            <div class="yarn-chat-message">Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Nullam quis risus eget urna mollis ornare vel eu leo. Curabitur blandit tempus porttitor. Donec sed odio dui.</div>
-                        </li>
-                        <li class="clearfix">
-                            <div style="background:#dde4e6;line-height:2.5em;margin-left:-1.2em;margin-right:-1.2em;padding:0 1.2em;">TUE JUL 30 2013</div>
-                        </li>
-                        <li class="clearfix">
-                            <div class="yarn-chat-meta">
-                                <img src="/img/avatars/pink.jpg" class="img-circle yarn-chat-user">
-                                <span class="glyphicon glyphicon-star-empty yarn-chat-action"></span>
-                                <span class="glyphicon glyphicon-comment yarn-chat-action"></span>
-                            </div>
-                            <div class="yarn-chat-message">Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</div>
-                        </li>
-                        
-                        <li class="clearfix">
-                            <div class="yarn-chat-meta">
-                                <img src="/img/avatars/tommy.jpg" class="img-circle yarn-chat-user">
-                                <span class="glyphicon glyphicon-star-empty yarn-chat-action"></span>
-                                <span class="glyphicon glyphicon-comment yarn-chat-action"></span>
-                            </div>
-                            <div class="yarn-chat-message">Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam quis risus eget urna mollis ornare vel eu leo. Curabitur blandit tempus porttitor. Donec sed odio dui.</div>
-                        </li>
-    
-                        <li class="clearfix">
-                            <div class="yarn-chat-meta">
-                                <img src="/img/avatars/adam.jpg" class="img-circle yarn-chat-user">
-                                <span class="glyphicon glyphicon-star-empty yarn-chat-action"></span>
-                                <span class="glyphicon glyphicon-comment yarn-chat-action"></span>
-                            </div>
-                            <div class="yarn-chat-message">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam quis risus eget urna mollis ornare vel eu leo.</div>
-                        </li>
-                        
-                        <li class="clearfix">
-                            <div class="yarn-chat-meta">
-                                <img src="/img/avatars/tasha.jpg" class="img-circle yarn-chat-user">
-                                <span class="glyphicon glyphicon-star-empty yarn-chat-action"></span>
-                                <span class="glyphicon glyphicon-comment yarn-chat-action"></span>
-                            </div>
-                            <div class="yarn-chat-message">Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Nullam quis risus eget urna mollis ornare vel eu leo. Curabitur blandit tempus porttitor. Donec sed odio dui.</div>
-                        </li>
-                        <li class="clearfix">
-                            <div class="yarn-chat-meta">
-                                <img src="/img/avatars/beth.jpg" class="img-circle yarn-chat-user">
-                                <span class="glyphicon glyphicon-star-empty yarn-chat-action"></span>
-                                <span class="glyphicon glyphicon-comment yarn-chat-action"></span>
-                            </div>
-                            <div class="yarn-chat-message">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam quis risus eget urna mollis ornare vel eu leo.</div>
-                        </li>
-                        
-    
-                    </ul>
-    
-                </div>
-                
-                <!-- textarea input -->
-                <div class="yarn-input clearfix">
-                    <div class="pull-left"><span><strong>UX</strong></span>&nbsp;&nbsp;<span>What is UX?</span></div>
-                    <div class="pull-right"><span class="glyphicon glyphicon-camera"></span>&nbsp;&nbsp;<span class="glyphicon glyphicon-paperclip"></span></div>
-                    <textarea class="form-control" placeholder="Type something..."></textarea>
-                </div>
-            
+            <!-- content container -->
+            <div id="tabs" class="yarn-content">
+                <div id="available_thread_list" class="content_area yarn-content-module"></div>
             </div><!-- end yarn-content -->
-            </div>
+            
         </section>
 
     </div>

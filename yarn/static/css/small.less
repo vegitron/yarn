@@ -14,7 +14,6 @@
 body { background: @asbestos; }
 
 a.switch {
-
     &:hover { text-decoration: none; }
 }
 .content { padding: 1.2em;
@@ -58,7 +57,7 @@ a.switch {
             a { color: @belizehole; text-decoration: none; }
         }
 
-        a.switch { top: .55em; color: @clouds; }
+        a.switch { top: .55em; color: @belizehole; }
         
         .yarn-active-list { list-style: none; background: @concrete; max-height: 280px; width: 250px; overflow: scroll; -webkit-overflow-scrolling: touch;  margin: 0; padding: 0;
             
@@ -92,8 +91,20 @@ a.switch {
         }
     }
     
-    .yarn-content { position: absolute; top: 50px; bottom: 0; left: 0; right: 0; background: url('/img/yarn-cat.jpg') no-repeat 50% 50%; background-size: 40%; }
+    .yarn-content { position: absolute; top: 50px; bottom: 0; left: 0; right: 0; background: #fff url('/static/images/spinner.gif') no-repeat 50% 50%; background-size: 30px; }
     
+    .yarn-content-module { position: absolute; top: 0; bottom: 0; left: 0; right: 0; background: @clouds; 
+        
+        -webkit-transform: translate3d(0, 0, 0);
+        -moz-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    
+        -webkit-transition: .3s all ease;
+        -moz-transition: .3s all ease;
+        -o-transition: .3s all ease;
+        -ms-transition: .3s all ease;
+        transition: .3s all ease;
+    }
     
     
     .yarn-date-bar { position:absolute; background:#dde4e6; top:0px; left:0; right:0; z-index:1; line-height: 2.5em; }
