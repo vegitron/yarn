@@ -1,15 +1,17 @@
 {% load templatetag_handlebars %}
     {% tplhandlebars "artifact_display" %}
-        <li class="artifact" id="artifact_{{id_addon}}{{artifact.id}}">
-            <div class="yarn-artifact-left">
+        <li class="artifact clearfix" id="artifact_{{id_addon}}{{artifact.id}}">
+            
+            <div class="yarn-chat-meta">
+                {{#if artifact.author.avatar_url }}
+                    <img src="{{artifact.author.avatar_url}}" class="user_avatar img-circle yarn-chat-user {{artifact.author.login_name}}"/>
+                {{else}}
+                    <img src="/static/images/user-generic.png" class="user_avatar img-circle yarn-chat-user"/>
+                {{/if}}                
                 <span class="artifact-timestamp">{{ format_time artifact.timestamp }}</span>
-                <span class="artifact_avatar">
-                    {{#if artifact.author.avatar_url }}
-                        <img src="{{artifact.author.avatar_url}}" class="user_avatar {{artifact.author.login_name}}"/>
-                    {{/if}}
-                </span>
             </div>
-            <div class="yarn-artifact-right">
+            
+            <div class="yarn-chat-message">
                 <span class="artifact_user"><a href="javascript:void(0);" class="private_chat" rel="{{ artifact.author.login_name }}">{{ artifact.author.name }}</a></span>
                 <span class="artifact_user_id">{{ artifact.author.login_name }}</span>
                 {{#if_eq artifact.type "action"}}

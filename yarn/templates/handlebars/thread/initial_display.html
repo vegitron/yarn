@@ -17,6 +17,7 @@
     {% tplhandlebars "initial_thread_display" %}
     
     <div id="thread_{{ thread_id }}" class="yarn-content-module">
+        
         <div id="thread_history_{{ thread_id }}" style="display: none;">
             <div class="yarn-history">
                 Thread history <a href="javascript:void(0);" rel="{{ thread_id }}" class="close-history">Close</a>
@@ -30,19 +31,41 @@
             </div>
         </div>
         <div id="thread_live_{{ thread_id }}">
-            <div class="yarn-artifacts yarn-chat" id="artifact_container_{{thread_id}}">
-            <ul class="yarn-chat-list" id="yarn_artifact_list_{{thread_id}}">
-            {{#each artifacts}}
-                {{{ artifact }}}
-            {{/each}}
-            </ul>
+            
+            <!-- anchored date bar -->
+            <div class="yarn-date-bar">
+                <div class="clearfix" style="padding: 0 1.2em;">
+                    <div class="pull-left"><strong>MON JUL 29 2013</strong></div>
+                    <div class="pull-right"><span class="label">PREV</span>&nbsp;<span class="label">NEXT</span>&nbsp;<span class="label">NOW</span></div>
+                </div>
             </div>
-            <div class="channel_input">
-                <div class="channel-topic"><strong>Current topic:</strong><span class="thread_topic_{{thread_id}}">{{ topic }}</span></div>
-                <div class="channel-sub-actions">
-                    <input type="file" class="artifact_upload_chooser" id="artifact_upload_chooser_{{ thread_id }}" onchange="handle_artifact_upload(this.files, {{ thread_id }})"/>
-                    <a href="javascript:void(0);" class="artifact_upload_interface" rel="{{thread_id}}">UP</a>
-                    <br />
+            
+            <!-- scrolling chat area -->    
+            <div class="yarn-artifacts yarn-chat" id="artifact_container_{{thread_id}}">
+                <ul class="yarn-chat-list" id="yarn_artifact_list_{{thread_id}}">
+                {{#each artifacts}}
+                    {{{ artifact }}}
+                {{/each}}
+                </ul>
+            </div>
+                        
+            <!-- anchored input area -->
+            <div class="yarn-input clearfix channel_input">
+                <div class="pull-left"><strong>Current topic:</strong>&nbsp;&nbsp;<span class="thread_topic_{{thread_id}}">{{ topic }}</span></div>
+                <div class="pull-right">
+                    <span class="glyphicon glyphicon-camera"></span>&nbsp;&nbsp;
+                    <input type="file" class="artifact_upload_chooser" style="display:none;" id="artifact_upload_chooser_{{ thread_id }}" onchange="handle_artifact_upload(this.files, {{ thread_id }})"/>
+                    <a href="javascript:void(0);" class="artifact_upload_interface" rel="{{thread_id}}">UP <span class="glyphicon glyphicon-paperclip"></span></a>
+                    
+                </div>
+                
+                    
+                    
+                <textarea id="artifact_text_input_{{thread_id}}" class="form-control thread-text-input-{{ thread_id }}" placeholder="Type something..."></textarea>
+                
+                
+                <div class="channel-sub-actions" style="display:none;">
+                    
                     <div class="open_help_icon">HP
                         <div class="formatting_help_text">
                             <div class="formatting_background">
@@ -79,9 +102,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="channel-textarea yarn-input clearfix" id="artifact_text_input_{{thread_id}}">
-                    <textarea class="form-control thread-text-input-{{ thread_id }}" placeholder="Type something..."></textarea>
-                </div>
+                
+                
                 <div class="channel-upload" id="artifact_upload_preview_{{thread_id}}" style="display: none;">
                     <div style="float: left;">
                         <strong>Preview your files before posting:</strong>
