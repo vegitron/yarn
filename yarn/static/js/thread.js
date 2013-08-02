@@ -139,15 +139,35 @@ function close_thread(thread_id) {
 
 function show_thread(thread_id) {
     hide_thread_menu();
+
+    // Put the next thread panel in front, and animate it.
+    // After that's done, drop the current panel's z-index
+    // so that we don't just keep going up and up...
+    var current_z_index = 0;
+    var last_display;
     if (current_open_thread) {
-        $("#thread_"+current_open_thread).removeClass('slide-up');
+        last_display = $("#thread_"+current_open_thread);
+        current_z_index = $("#thread_"+current_open_thread).css('z-index') || 0;
     }
     else {
-        $('#available_thread_list').removeClass('slide-up');
+        last_display = $('#available_thread_list');
     }
 
-    $("#thread_"+thread_id).addClass('slide-up');
+    current_z_index = parseInt(current_z_index, 10);
+    var current_display = $("#thread_"+thread_id);
+    current_display.css('position', 'absolute');
+    current_display.css('zIndex', current_z_index + 1);
+
+    last_display.css('position', 'absolute');
+    last_display.css('zIndex', current_z_index);
+    current_display.addClass('slide-up');
     setContentHeights();
+
+    window.setTimeout(function() {
+        last_display.removeClass('slide-up');
+        current_display.css('zIndex', current_z_index);
+
+    }, 1000);
 
     window.current_open_thread = thread_id;
 }
