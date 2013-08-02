@@ -160,9 +160,10 @@ function show_thread(thread_id) {
 
     last_display.css('position', 'absolute');
     last_display.css('zIndex', current_z_index);
-    current_display.addClass('slide-up');
+    
     setContentHeights();
-
+    current_display.addClass('slide-up');
+    
     window.setTimeout(function() {
         last_display.removeClass('slide-up');
         current_display.css('zIndex', current_z_index);
