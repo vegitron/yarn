@@ -48,7 +48,19 @@
                 {{/each}}
                 </ul>
             </div>
-                        
+            
+            
+            <div class="channel-upload yarn-upload-preview clearfix" id="artifact_upload_preview_{{thread_id}}" style="display: none;">
+                <div style="float: left;">
+                    <strong>Preview your files before posting:</strong>
+                    <br />
+                    <a href="javascript:void(0);" class="upload_artifact" rel="{{thread_id}}">Post</a>
+                    <a href="javascript:void(0);" class="cancel_upload_artifact" rel="{{thread_id}}">Cancel</a>
+                </div>
+                <div style="float: left;" class="upload_file_info"><span id="file_upload_name_{{thread_id}}"></span><br/><img id="upload_image_preview_{{thread_id}}" style="display: none;"></div>
+            </div>
+
+            
             <!-- anchored input area -->
             <div class="yarn-input clearfix channel_input">
                 <div class="pull-left"><strong>topic:</strong>&nbsp;&nbsp;<span class="thread_topic_{{thread_id}}">{{ topic }}</span></div>
@@ -58,12 +70,9 @@
                     <a href="javascript:void(0);" class="artifact_upload_interface" rel="{{thread_id}}">UP <span class="glyphicon glyphicon-paperclip"></span></a>
                     
                 </div>
-                
-                    
-                    
+
                 <textarea id="artifact_text_input_{{thread_id}}" class="form-control thread-text-input-{{ thread_id }}" placeholder="Type something..."></textarea>
-                
-                
+                    
                 <div class="channel-sub-actions" style="display:none;">
                     
                     <div class="open_help_icon">HP
@@ -104,17 +113,7 @@
                 </div>
                 
                 
-                <div class="channel-upload" id="artifact_upload_preview_{{thread_id}}" style="display: none;">
-                    <div style="float: left;">
-                        <strong>Preview your files before posting:</strong>
-                        <br />
-                        <a href="javascript:void(0);" class="upload_artifact" rel="{{thread_id}}">Post</a>
-                        <a href="javascript:void(0);" class="cancel_upload_artifact" rel="{{thread_id}}">Cancel</a>
-                    </div>
-                    <div style="float: left;" class="upload_file_info"><span id="file_upload_name_{{thread_id}}"></span><br/><img id="upload_image_preview_{{thread_id}}" style="display: none;"></div>
-                    <br clear="both"/>
-                </div>
-                <div class="channel-upload" id="artifact_uploading_{{thread_id}}" style="display: none;">
+                                <div class="channel-upload" id="artifact_uploading_{{thread_id}}" style="display: none;">
                     Uploading...
                 </div>
             </div>
