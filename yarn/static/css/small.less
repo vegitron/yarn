@@ -91,19 +91,34 @@ a.switch {
         }
     }
     
-    .yarn-content { position: absolute; top: 50px; bottom: 0; left: 0; right: 0; background: #fff url('/static/images/spinner.gif') no-repeat 50% 50%; background-size: 30px; }
+    .yarn-content { position: absolute; top: 50px; bottom: 0; left: 0; right: 0; background: #fff url('/static/images/spinner.gif') no-repeat 50% 50%; background-size: 30px;  overflow:hidden; }
     
-    .yarn-content-module { position: absolute; top: 0; bottom: 0; left: 0; right: 0; background: @clouds; overflow: auto;
+    .yarn-content-module { position: absolute; left:0; right: 0; background: @clouds; overflow: auto;
         
-        -webkit-transform: translate3d(0, 0, 0);
-        -moz-transform: translate3d(0, 0, 0);
-        transform: translate3d(0, 0, 0);
+        /* start the content offscreen - really down low */
+        -webkit-transform: translate3d(0, 2000px, 0);
+        -moz-transform: translate3d(0, 2000px, 0);
+        transform: translate3d(0, 2000px, 0);
     
-        -webkit-transition: .3s all ease;
-        -moz-transition: .3s all ease;
-        -o-transition: .3s all ease;
-        -ms-transition: .3s all ease;
-        transition: .3s all ease;
+        -webkit-transition: .6s all ease;
+        -moz-transition: .6s all ease;
+        -o-transition: .6s all ease;
+        -ms-transition: .6s all ease;
+        transition: .6s all ease;
+        
+        &.slide-up {
+        
+            /* set the content left side to 0 */
+            -webkit-transform: translate3d(0, 0, 0);
+            -moz-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+        
+            -webkit-transition: .6s all ease;
+            -moz-transition: .6s all ease;
+            -o-transition: .6s all ease;
+            -ms-transition: .6s all ease;
+            transition: .6s all ease;
+        }
     }
     
     
