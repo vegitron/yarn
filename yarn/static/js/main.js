@@ -6,17 +6,17 @@ $(function() {
     
     $('#current_thread').on('click', function(e) {
         
-        e.preventDefault();
+//        e.preventDefault();
 
         if($('.yarn-active-list').hasClass('slide-hide')) {
-            $('.yarn-active-list').removeClass('slide-hide');
+            show_thread_menu();
         } else {
-            $('.yarn-active-list').addClass('slide-hide');
+            hide_thread_menu();
         }
     });
     
     $('#myTab a').click(function (e) {
-      e.preventDefault();
+  //    e.preventDefault();
       $(this).tab('show');
     });
     
@@ -29,7 +29,6 @@ $(function() {
     
         
 });
-
 $(window).resize(function() {
     
     sh = $(window).height();

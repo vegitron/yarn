@@ -1,4 +1,5 @@
 var open_threads = {};
+var current_open_thread;
 
 var artifact_post_errors = [];
 
@@ -6,8 +7,11 @@ var MAX_ARTIFACT_HEIGHT = 80;
 
 function load_thread(thread_id, args) {
     if (thread_id == "thread_list") {
-        $("#tabs").tabs({ active: 0 });
         return;
+    }
+
+    if (open_threads[thread_id]) {
+        return show_thread(thread_id);
     }
 
     if (window.use_websockets) {
@@ -133,6 +137,21 @@ function close_thread(thread_id) {
     save_thread_preference();
 }
 
+function show_thread(thread_id) {
+    hide_thread_menu();
+    if (current_open_thread) {
+        $("#thread_"+current_open_thread).removeClass('slide-up');
+    }
+    else {
+        $('#available_thread_list').removeClass('slide-up');
+    }
+
+    $("#thread_"+thread_id).addClass('slide-up');
+    setContentHeights();
+
+    window.current_open_thread = thread_id;
+}
+
 function socket_draw_new_thread(data) {
     var json_data = JSON.parse(data);
     var args = json_data['args'];
@@ -190,14 +209,8 @@ function draw_new_thread(data, args) {
         $($.parseHTML(rendered_users)).appendTo("#people");
     }
 
-//    var container = $("#artifact_container_"+data.thread.id);
-//    container.scrollTop(container[0].scrollHeight);
-
-    refresh_thread_tabs();
-
     if (args && args.highlight) {
-//        var index = $('#tabs a[href="#thread_'+data.thread.id+'"]').parent().index(); 
-//        $("#tabs").tabs("option", "active", index);
+        show_thread(data.thread.id);
     }
 
     $(".thread-text-input-"+data.thread.id).on("keydown", handle_thread_input_keydown);
