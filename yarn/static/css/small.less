@@ -16,6 +16,7 @@ body { background: @asbestos; }
 a.switch {
     &:hover { text-decoration: none; }
 }
+
 .content { padding: 1.2em;
     
     -webkit-border-top-left-radius: 3px;
@@ -38,7 +39,7 @@ a.switch {
     -moz-box-shadow: 0 2px 2px 0 rgba(0,0,0,0.1), 0 1px 0 0 rgba(0,0,0,0.1);
     box-shadow: 0 2px 2px 0 rgba(0,0,0,0.1), 0 1px 0 0 rgba(0,0,0,0.1);
 
-    .yarn-header { position: absolute; top: 0; left: 0; right: 0; min-height: 50px; z-index: 2; background: #fff;
+    .yarn-header { position: absolute; top: 0; left: 0; right: 0; min-height: 50px; z-index: 999; background: #fff;
         
         -webkit-border-top-left-radius: 3px;
         -moz-border-radius-topleft: 3px;
@@ -159,7 +160,7 @@ a.switch {
 
     .yarn-input { position: absolute; bottom: 0; z-index: 0; left: 0; right: 0; padding: 1em; color: @asbestos;
     
-        background: @clouds;
+        background: darken(@clouds,5%);
                 
         -webkit-border-bottom-right-radius: 3px;
         -moz-border-radius-bottomright: 3px;
