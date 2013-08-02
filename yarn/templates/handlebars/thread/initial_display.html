@@ -51,7 +51,7 @@
                         
             <!-- anchored input area -->
             <div class="yarn-input clearfix channel_input">
-                <div class="pull-left"><strong>Current topic:</strong>&nbsp;&nbsp;<span class="thread_topic_{{thread_id}}">{{ topic }}</span></div>
+                <div class="pull-left"><strong>topic:</strong>&nbsp;&nbsp;<span class="thread_topic_{{thread_id}}">{{ topic }}</span></div>
                 <div class="pull-right">
                     <span class="glyphicon glyphicon-camera"></span>&nbsp;&nbsp;
                     <input type="file" class="artifact_upload_chooser" style="display:none;" id="artifact_upload_chooser_{{ thread_id }}" onchange="handle_artifact_upload(this.files, {{ thread_id }})"/>

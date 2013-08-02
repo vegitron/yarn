@@ -1,7 +1,7 @@
 var sh = $(window).height(),
 	hh = $('.yarn-header').height(),
 	ch = sh - hh;
-
+	
 $(function() {
     
     $('#current_thread').on('click', function(e) {
@@ -29,6 +29,7 @@ $(function() {
     
         
 });
+
 $(window).resize(function() {
     
     sh = $(window).height();
@@ -40,6 +41,8 @@ $(window).resize(function() {
 });
 
 function setContentHeights() {
+    
+    $('.viewport').height(sh);
     $('.yarn-content').height(ch);
     $('.yarn-content-module').height(ch);
 }
