@@ -11,13 +11,15 @@
 @concrete: darken(#95A5A6, 35%);
 @asbestos: darken(#7F8C8D, 30%);
 
-body { background: @asbestos; }
+body { background: @asbestos; overflow: hidden !important; }
 
 a.switch {
     &:hover { text-decoration: none; }
 }
 
-.content { padding: 1.2em;
+.viewport { overflow: hidden; }
+
+.content { padding: 1.2em; overflow: hidden !important;
     
     -webkit-border-top-left-radius: 3px;
     -moz-border-radius-topleft: 3px;
