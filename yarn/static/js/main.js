@@ -27,7 +27,6 @@ $(function() {
     // slide the available thread list panel up
     $('#available_thread_list').addClass('slide-up');
     
-        
 });
 
 $(window).resize(function() {
