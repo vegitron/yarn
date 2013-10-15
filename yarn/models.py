@@ -38,8 +38,9 @@ class Thread(models.Model):
             pass
 
         try:
-            has_auth_entry = AuthList.objects.get(thread = self)
-            if has_auth_entry.pk:
+            auth_list = AuthList.objects.filter(thread = self)
+            # This person doesn't have auth, so if anyone does, reject them
+            if len(auth_list):
                 return False
         except AuthList.DoesNotExist:
             pass
