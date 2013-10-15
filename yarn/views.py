@@ -5,6 +5,7 @@ import hashlib
 import sys
 import time
 import base64
+import logging
 from django.conf import settings
 from datetime import datetime
 from datetime import timedelta
@@ -15,6 +16,8 @@ from django.template import RequestContext
 from django.shortcuts import render_to_response
 from django.contrib.auth.decorators import login_required
 from wsgiref.handlers import format_date_time
+
+logger = logging.getLogger(__name__)
 
 @login_required
 def private_thread_info(request, login_name):
@@ -302,7 +305,10 @@ def _mark_person_online(person, threads):
             _set_user_online(user)
         else:
             user.last_online = datetime.now()
-            user.save()
+            try:
+                user.save()
+            except IntegrityError:
+                logger.error("Error saving user: PK: %s, user name: %s, thread id: %s" % (user.pk, user.person.login_name, user.thread.pk))
 
     for thread in threads:
         if not thread.pk in existing_user_thread_ids:
