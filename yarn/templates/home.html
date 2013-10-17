@@ -10,7 +10,8 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     
     <!-- Bootstrap3 -->
-    <link href="{{STATIC_URL}}css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+    <!--<link href="{{STATIC_URL}}css/bootstrap.min.css" rel="stylesheet" type="text/css">-->
     <link href="{{STATIC_URL}}css/bootstrap-glyphicons.css" rel="stylesheet" type="text/css">
     
     <!-- Google WebFonts -->
@@ -61,25 +62,25 @@
             
             <!-- tab controller list -->
             <ul id="myTab" class="yarn-tabs nav nav-tabs">
-              <li class="active"><a href="#people" data-toggle="tab"><span class="glyphicon glyphicon-user"></span></a></li>
-              <li><a href="#threads" data-toggle="tab"><span class="glyphicon glyphicon-list"></span></a></li>
+              <li class="active"><a href="#threads" data-toggle="tab"><span class="glyphicon glyphicon-list"></span></a></li>
+              <li><a href="#people" data-toggle="tab"><span class="glyphicon glyphicon-user"></span></a></li>
               <li><a href="#archive" data-toggle="tab"><span class="glyphicon glyphicon-search"></span></a></li>
             </ul>
             
             <!-- tab content container -->
             <div class="tab-content">
-                <!-- tab contents: people -->
-                <div class="yarn-people tab-pane active" id="people">
-                </div>
                 
                 <!-- tab contents: threads -->
-                <div class="yarn-threads tab-pane" id="threads">
+                <div class="yarn-threads tab-pane active" id="threads">
                     <h2>Threads</h2>
                     <div><span class="label">RELATED</span> <span class="label label-success">ACTIVE</span> <span class="label">FAVORITE</span> <span class="label">OWNED</span> <span class="label">ALL</span></div>
                     <ul style="margin-top:1.5em;">
                         <li>UX</li>
                         <li>Yarn</li>
                         <li>ACA</li>
+                        <li>CSE 341 - Autumn 2014</li>
+                        <li>CSE 341 - Autumn 2014</li>
+                        <li>CSE 341 - Autumn 2014</li>
                         <li>CSE 341 - Autumn 2014</li>
                     </ul>
                     <div class="input-group">
@@ -88,6 +89,15 @@
                         <button class="btn btn-default btn-small" type="button">Find</button>
                       </span>
                     </div>
+                </div>
+                
+                <!-- tab contents: people -->
+                <div class="yarn-people tab-pane" id="people">
+                    <ul>
+                        <li>Larry</li>
+                        <li>Curly</li>
+                        <li>Moe</li>
+                    </ul>
                 </div>
                 
                 <!-- tab contents: archive/find -->
@@ -104,9 +114,12 @@
       
             <!-- header container -->
             <div class="yarn-header">
+                            
                 <h1><a href="javascript:void(0)" id="current_thread"><span class='yarn-current-thread-name'>Threads</span></a>&nbsp;&nbsp;<span class="glyphicon glyphicon-filter" style="color:#aaa; font-size:80%; vertical-align:middle; display:inline-block;"></span></h1>
+            
                 <div id="top_thread_menu">
                 </div>
+                
                 <a href="javascript:void(0)" class="switch" style="color:#aaa"><span class="glyphicon glyphicon-align-justify"></span></a>
             </div><!-- end yarn-header -->
             
