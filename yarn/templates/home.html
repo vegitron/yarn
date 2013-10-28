@@ -18,8 +18,7 @@
     {% load compress %}
         
     {% compress css %} 
-    <link rel="stylesheet" href="{{STATIC_URL}}css/bootstrap.min.css" type="text/css">
-    <link rel="stylesheet" href="{{STATIC_URL}}css/bootstrap-glyphicons.css" type="text/css">
+    <link rel="stylesheet" href="{{STATIC_URL}}css/vendor/bootstrap-3.0.0.min.css" type="text/css">
     <link rel="stylesheet" href="{{STATIC_URL}}css/google_webfonts.css" type="text/css">
 
     <link rel="stylesheet" href="{{STATIC_URL}}css/offcanvas.less" type="text/less">
@@ -28,7 +27,7 @@
     <link rel="stylesheet" href="{{STATIC_URL}}css/big.less" type="text/less">
     {% endcompress %}
         
-    <script src="{{ STATIC_URL }}js/modernizr.min.js"></script>
+    <script src="{{ STATIC_URL }}js/vendor/modernizr-2.6.2.min.js"></script>
         
     <script>
         yarn_headers = {
@@ -161,11 +160,13 @@
 
     <!-- jquery, bootstrap and javascripts -->
     {% compress js %}
-    <script src="{{STATIC_URL}}js/jquery.min.js"></script>
-    <script src="{{STATIC_URL}}js/bootstrap.min.js"></script>
+    <script src="{{STATIC_URL}}js/vendor/jquery-1.10.2.min.js"></script>
+    <script src="{{STATIC_URL}}js/vendor/bootstrap-3.0.0.min.js"></script>
+    <script src="{{STATIC_URL}}js/vendor/handlebars-1.0.0.min.js"></script>
+    
     <script src="{{STATIC_URL}}js/offcanvas.js"></script>
     <script src="{{STATIC_URL}}js/main.js"></script>
-    <script src="{{STATIC_URL}}js/handlebars.js"></script>
+    
     <script src="{{STATIC_URL}}js/handlebar_utilities.js"></script>
     <script src="{{STATIC_URL}}js/thread.js"></script>
     <script src="{{STATIC_URL}}js/thread_history.js"></script>
@@ -176,6 +177,7 @@
     <script src="{{STATIC_URL}}js/click_to_edit.js"></script>
     <script src="{{STATIC_URL}}js/errors.js"></script>
     <script src="{{STATIC_URL}}js/socketio.js"></script>
+    
     {% endcompress %}
     
     {% include "handlebars/available_threads.html" %}
