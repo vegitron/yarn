@@ -7,7 +7,7 @@ import hashlib
 import uuid
 from wsgiref.handlers import format_date_time
 from django.core.urlresolvers import reverse
-from authz_group.models import Crowd
+#from authz_group.models import Crowd
 
 class Thread(models.Model):
     name = models.CharField(max_length=100, unique=True, db_column='name')

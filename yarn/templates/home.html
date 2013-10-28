@@ -4,30 +4,32 @@
 <!--[if IE 8]><html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
 <head>
-    <title>YARN 3</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0; user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Yarn 3</title>
+        <meta name="description" content="">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta http-equiv="cleartype" content="on">
     
-    <!-- Bootstrap3 -->
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
-    <!--<link href="{{STATIC_URL}}css/bootstrap.min.css" rel="stylesheet" type="text/css">-->
-    <link href="{{STATIC_URL}}css/bootstrap-glyphicons.css" rel="stylesheet" type="text/css">
+    <!-- bootstrap 3 and mobile-first styles -->
     
-    <!-- Google WebFonts -->
-    <link href="{{STATIC_URL}}css/google_webfonts.css" rel="stylesheet" type="text/css">
+    {% load compress %}
+        
+    {% compress css %} 
+    <link rel="stylesheet" href="{{STATIC_URL}}css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="{{STATIC_URL}}css/bootstrap-glyphicons.css" type="text/css">
+    <link rel="stylesheet" href="{{STATIC_URL}}css/google_webfonts.css" type="text/css">
 
-    <!-- Mobile-first styles (Less) -->
-    <link href="{{STATIC_URL}}css/offcanvas.less" rel="stylesheet/less" type="text/css">
-    <link href="{{STATIC_URL}}css/small.less" rel="stylesheet/less" type="text/css">
-    <link href="{{STATIC_URL}}css/big.less" rel="stylesheet/less" type="text/css" media="screen and (min-width: 1000px)">
-
-    <!--<link href="{{STATIC_URL}}css/yarn.css" rel="stylesheet" type="text/css">-->
-    <!-- Modernizr & Less.js -->
-    <script src="{{STATIC_URL}}js/modernizr.min.js"></script>
-    <script src="{{STATIC_URL}}js/less.min.js"></script>
-
-
+    <link rel="stylesheet" href="{{STATIC_URL}}css/offcanvas.less" type="text/less">
+    <link rel="stylesheet" href="{{STATIC_URL}}css/small.less" type="text/less">
+    
+    <link rel="stylesheet" href="{{STATIC_URL}}css/big.less" type="text/less">
+    {% endcompress %}
+        
+    <script src="{{ STATIC_URL }}js/modernizr.min.js"></script>
+        
     <script>
         yarn_headers = {
             normal: "Yarn",
@@ -54,8 +56,9 @@
             
             <!-- user profile avatar -->
             <div class="yarn-user clearfix">
-                <img class="yarn-user-avatar img-rounded" src="{{ avatar_url }}">
-                <span class="yarn-header-user-name js_user_display_name_{{ login_name }}">{{ name }}</span>
+                <!--<img class="yarn-user-avatar img-rounded" src="{{ avatar_url }}">-->
+                <img class="img-rounded yarn-user-avatar" src="{{STATIC_URL}}images/user-generic.png">
+                <span class="yarn-header-user-name js_user_display_name_{{ login_name }}">{{ login_name }}</span>
 
                 <span class="yarn-header-settings"><a href="javascript:void(0)" id="open_settings_dialog">edit profile</a></span>
             </div>
@@ -83,12 +86,37 @@
                         <li>CSE 341 - Autumn 2014</li>
                         <li>CSE 341 - Autumn 2014</li>
                     </ul>
+                   
+                    <!--
                     <div class="input-group">
                       <input class="form-control input-small" type="text" placeholder="Find threads">
                       <span class="input-group-btn">
                         <button class="btn btn-default btn-small" type="button">Find</button>
                       </span>
                     </div>
+                    -->
+                    
+                    <div id="new_thread_container">
+                        <a href="javascript:void(0);" class="create_new_thread_link">+ new thread</a>
+                
+                        <div id="new_thread_creation_panel" style="display: none;">
+                            <h3>Create new thread</h3>
+
+                            <div>Thread name:  <br />
+                            <input type="text" id="new_thread_name" />
+                            <span id="err_new_thread_name_required" style="display: none;">A name is required</span>
+                            <span id="err_new_thread_dupe" style="display: none;">A thread already exists with that name</span>
+                            <br />
+                            Initial thread topic: <br/>
+                            <input type="text" id="new_thread_topic" />
+                            <br /><br />
+                
+                            <button class="submit_new_thread btn btn-primary btn-xs">Create</button>
+                            <a href="javascript:void(0);" class="cancel_new_thread_create">Cancel</a>
+                            </div>
+                        </div>
+                    </div>
+                    
                 </div>
                 
                 <!-- tab contents: people -->
@@ -117,8 +145,7 @@
                             
                 <h1><a href="javascript:void(0)" id="current_thread"><span class='yarn-current-thread-name'>Threads</span></a>&nbsp;&nbsp;<span class="glyphicon glyphicon-filter" style="color:#aaa; font-size:80%; vertical-align:middle; display:inline-block;"></span></h1>
             
-                <div id="top_thread_menu">
-                </div>
+                <div id="top_thread_menu"></div>
                 
                 <a href="javascript:void(0)" class="switch" style="color:#aaa"><span class="glyphicon glyphicon-align-justify"></span></a>
             </div><!-- end yarn-header -->
@@ -132,11 +159,10 @@
 
     </div>
 
-    <!-- jQuery & Bootstrap3 via CDN -->
+    <!-- jquery, bootstrap and javascripts -->
+    {% compress js %}
     <script src="{{STATIC_URL}}js/jquery.min.js"></script>
     <script src="{{STATIC_URL}}js/bootstrap.min.js"></script>
-    
-    <!-- Javascript -->
     <script src="{{STATIC_URL}}js/offcanvas.js"></script>
     <script src="{{STATIC_URL}}js/main.js"></script>
     <script src="{{STATIC_URL}}js/handlebars.js"></script>
@@ -150,19 +176,22 @@
     <script src="{{STATIC_URL}}js/click_to_edit.js"></script>
     <script src="{{STATIC_URL}}js/errors.js"></script>
     <script src="{{STATIC_URL}}js/socketio.js"></script>
-
-        {% include "handlebars/available_threads.html" %}
-        {% include "handlebars/thread_menu.html" %}
-        {% include "handlebars/thread/initial_display.html" %}
-        {% include "handlebars/thread/tab_display.html" %}
-        {% include "handlebars/thread/artifact.html" %}
-        {% include "handlebars/user/online_display.html" %}
-        {% include "handlebars/autocomplete.html" %}
-            <div style="visibility: hidden;" id="offscreen_test_render"></div>
+    {% endcompress %}
+    
+    {% include "handlebars/available_threads.html" %}
+    {% include "handlebars/thread_menu.html" %}
+    {% include "handlebars/thread/initial_display.html" %}
+    {% include "handlebars/thread/tab_display.html" %}
+    {% include "handlebars/thread/artifact.html" %}
+    {% include "handlebars/user/online_display.html" %}
+    {% include "handlebars/autocomplete.html" %}
+    <div style="visibility: hidden;" id="offscreen_test_render"></div>
 
 
     <script>
         start_yarn();
     </script>
+    
+    
 </body>
 </html>

@@ -1,37 +1,19 @@
 {% load templatetag_handlebars %}
+    
     {% tplhandlebars "available_threads" %}
     
     <div class="yarn-available-threads">
     
-        <h2>Threads:</h2>
-    
+        <!--    
         {{#each threads}}
             <a href="javascript:void(0);" rel="{{id}}" class="open_thread">{{name}}</a><br/>
             <div>
             {{description}}
             </div>
         {{/each}}
-    
-        <div id="new_thread_container">
-            <a href="javascript:void(0);" class="create_new_thread_link">+ new thread</a>
-    
-            <div id="new_thread_creation_panel" style="display: none;">
-                <h3>Create new thread</h3>
-                <a href="javascript:void(0);" class="cancel_new_thread_create">x close</a>
-                <br />
-                Thread name:  <br />
-                <input type="text" id="new_thread_name" />
-                <span id="err_new_thread_name_required" style="display: none;">A name is required</span>
-                <span id="err_new_thread_dupe" style="display: none;">A thread already exists with that name</span>
-                <br />
-                Initial thread topic: <br/>
-                <input type="text" id="new_thread_topic" />
-                <br /><br />
-    
-                <button class="submit_new_thread">Create</button>
-                <a href="javascript:void(0);" class="cancel_new_thread_create">Cancel</a>
-            </div>
-        </div>
+        -->
+        
+        <p>This is the blank page for new users</p>
         
     </div>
     

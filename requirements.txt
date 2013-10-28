@@ -1,8 +1,14 @@
-Django==1.4
-MySQL-python
-simplejson
-django-compressor
-BeautifulSoup
-django-templatetag-handlebars
--e git+git@github.com:vegitron/authz_group.git#egg=authz_group
-sphinx
+BeautifulSoup==3.2.1
+Django==1.5.5
+Jinja2==2.7
+MarkupSafe==0.18
+Pygments==1.6
+Sphinx==1.1.3
+django-appconf==0.6
+django-compressor==1.3
+django-mobility==0.1
+django-templatetag-handlebars==1.2.0
+docutils==0.11
+simplejson==3.3.0
+six==1.3.0
+wsgiref==0.1.2
