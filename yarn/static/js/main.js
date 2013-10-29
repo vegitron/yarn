@@ -3,17 +3,7 @@ var sh = $(window).height(),
 	ch = sh - hh;
 	
 $(function() {
-    
-    $('#current_thread').on('click', function(e) {
         
-        //e.preventDefault();
-        if($('.yarn-active-list').hasClass('slide-hide')) {
-            show_thread_menu();
-        } else {
-            hide_thread_menu();
-        }
-    });
-    
     $('#myTab a').click(function (e) {
         //e.preventDefault();
         $(this).tab('show');

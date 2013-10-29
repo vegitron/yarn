@@ -138,8 +138,7 @@ function close_thread(thread_id) {
 }
 
 function show_thread(thread_id) {
-    hide_thread_menu();
-
+    
     // Put the next thread panel in front, and animate it.
     // After that's done, drop the current panel's z-index
     // so that we don't just keep going up and up...

@@ -63,14 +63,6 @@ function _draw_available_threads(data) {
     refresh_thread_tabs();
 }
 
-function hide_thread_menu() {
-    $('.yarn-active-list').addClass('slide-hide');
-}
-
-function show_thread_menu() {
-    $('.yarn-active-list').removeClass('slide-hide');
-}
-
 function refresh_thread_tabs() {
     var source = $("#thread_menu").html();
     var template = Handlebars.compile(source);
