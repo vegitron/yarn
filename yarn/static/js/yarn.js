@@ -85,8 +85,7 @@ function refresh_thread_tabs() {
         }
     }
 
-
-    $("#top_thread_menu").html(template(template_data));
+    $("#threads").html(template(template_data));
 }
 
 function handle_window_click(e) {

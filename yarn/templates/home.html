@@ -79,16 +79,9 @@
                 <div class="yarn-threads tab-pane active" id="threads">
                     <h2>Threads</h2>
                     <div><span class="label label-success">Public</span> <span class="label">Active</span> <span class="label">Private</span></div>
-                    <ul style="margin-top:1.5em;">
-                        <li>UX</li>
-                        <li>Yarn</li>
-                        <li>ACA</li>
-                        <li>CSE 341 - Autumn 2014</li>
-                        <li>CSE 341 - Autumn 2014</li>
-                        <li>CSE 341 - Autumn 2014</li>
-                        <li>CSE 341 - Autumn 2014</li>
-                    </ul>
-                   
+                    
+                    {% include "handlebars/thread_menu.html" %}
+                    
                     <!--
                     <div class="input-group">
                       <input class="form-control input-small" type="text" placeholder="Find threads">
@@ -123,11 +116,11 @@
                 
                 <!-- tab contents: people -->
                 <div class="yarn-people tab-pane" id="people">
-                    <ul>
-                        <li>Larry</li>
-                        <li>Curly</li>
-                        <li>Moe</li>
-                    </ul>
+                    <h2>PEOPLE</h2>
+                    <div><span class="label label-success">In thread</span> <span class="label">All active</span></div>
+                    
+                    {% include "handlebars/user/online_display.html" %}
+                    
                 </div>
                 
                 <!-- tab contents: archive/find -->
@@ -145,7 +138,7 @@
             <!-- header container -->
             <div class="yarn-header">
                             
-                <h1><a href="javascript:void(0)" id="current_thread"><span class='yarn-current-thread-name'>Threads</span></a>&nbsp;&nbsp;<span class="glyphicon glyphicon-filter" style="color:#aaa; font-size:80%; vertical-align:middle; display:inline-block;"></span></h1>
+                <h1><a href="javascript:void(0)" id="current_thread"><span class='yarn-current-thread-name'>Yarn or Thread Name</span></a></h1>
             
                 <div id="top_thread_menu"></div>
                 
@@ -154,7 +147,9 @@
             
             <!-- content container -->
             <div id="tabs" class="yarn-content">
-                <div id="available_thread_list" class="content_area yarn-content-module"></div>
+                <div id="available_thread_list" class="content_area yarn-content-module">
+                    
+                </div>
             </div><!-- end yarn-content -->
             
         </section>
@@ -183,12 +178,11 @@
     {% endcompress %}
     
     {% include "handlebars/available_threads.html" %}
-    {% include "handlebars/thread_menu.html" %}
     {% include "handlebars/thread/initial_display.html" %}
     {% include "handlebars/thread/tab_display.html" %}
     {% include "handlebars/thread/artifact.html" %}
-    {% include "handlebars/user/online_display.html" %}
     {% include "handlebars/autocomplete.html" %}
+    
     <div style="visibility: hidden;" id="offscreen_test_render"></div>
 
 
