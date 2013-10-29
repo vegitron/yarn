@@ -46,6 +46,15 @@
             websockets_url = '{{ websockets_url }}';
             websockets_token = '{{ websockets_token }}';
         {% endif %}
+                
+         {% if is_desktop %}
+            var mobile = false,
+            desktop = true;
+         {% else %} 
+            var mobile = true,
+            desktop = false;
+         {% endif %}
+         
     </script>
 
 </head>

@@ -170,6 +170,11 @@ function show_thread(thread_id) {
     }, 1000);
 
     window.current_open_thread = thread_id;
+    
+    // (mobile only) close the sidebar once a thread has been selected
+    if (mobile) {
+        $('body').removeClass('offcanvas');
+    }
 }
 
 function socket_draw_new_thread(data) {
