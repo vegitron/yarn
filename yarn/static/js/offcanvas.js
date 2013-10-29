@@ -20,5 +20,4 @@ $(window).resize(function() {
         }
     }
     
-    
 });

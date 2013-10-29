@@ -6,8 +6,7 @@ $(function() {
     
     $('#current_thread').on('click', function(e) {
         
-//        e.preventDefault();
-
+        //e.preventDefault();
         if($('.yarn-active-list').hasClass('slide-hide')) {
             show_thread_menu();
         } else {
@@ -16,8 +15,8 @@ $(function() {
     });
     
     $('#myTab a').click(function (e) {
-  //    e.preventDefault();
-      $(this).tab('show');
+        //e.preventDefault();
+        $(this).tab('show');
     });
     
     
@@ -26,6 +25,11 @@ $(function() {
     
     // slide the available thread list panel up
     $('#available_thread_list').addClass('slide-up');
+    
+    // TODO: if user has no last active thread, show the sidebar (mobile only)
+    if (Modernizr.mq('screen and (max-width: 768px)')) {
+        $('body').addClass('offcanvas');
+    }
     
 });
 

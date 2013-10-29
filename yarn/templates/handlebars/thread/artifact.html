@@ -6,7 +6,7 @@
                 {{#if artifact.author.avatar_url }}
                     <img src="{{artifact.author.avatar_url}}" class="user_avatar img-circle yarn-chat-user {{artifact.author.login_name}}"/>
                 {{else}}
-                    <img src="/static/images/user-generic.png" class="user_avatar img-circle yarn-chat-user"/>
+                    <img src="http://api.randomuser.me/0.2/portraits/men/9.jpg" class="user_avatar img-circle yarn-chat-user"/>
                 {{/if}}                
                 <span class="artifact-timestamp">{{ format_time artifact.timestamp }}</span>
             </div>

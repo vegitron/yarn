@@ -1,5 +1,7 @@
-/*** COLORS ***/
+/*** breakpoints ***/
+@tablet: ~"screen and (min-width: 768px)";
 
+/*** colors ***/
 @clouds: lighten(#ECF0F1,4%);
 
 @turquoise: #1ABC9C;
@@ -11,6 +13,7 @@
 @concrete: darken(#95A5A6, 35%);
 @asbestos: darken(#7F8C8D, 30%);
 
+/*** globals ***/
 body { background: @asbestos; overflow: hidden !important; }
 
 a.switch {
@@ -19,6 +22,8 @@ a.switch {
 
 .viewport { overflow: hidden; }
 
+
+/*** content ***/
 .content { padding: 1.2em; overflow: hidden !important;
     
     -webkit-border-top-left-radius: 3px;
