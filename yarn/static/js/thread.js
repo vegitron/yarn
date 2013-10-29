@@ -231,7 +231,7 @@ function draw_new_thread(data, args) {
     else {
         $($.parseHTML(tab_content)).appendTo("#tab_list");
         $($.parseHTML(initial_content)).appendTo("#tabs");
-        $($.parseHTML(rendered_users)).appendTo("#people");
+        $($.parseHTML(rendered_users)).appendTo("#people_list");
     }
 
     if (args && args.highlight) {

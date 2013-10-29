@@ -107,8 +107,8 @@
                     <h2>Threads</h2>
                     <div><span class="label label-success">Public</span> <span class="label">Active</span> <span class="label">Private</span></div>
                     
+                    <!-- render list of threads here -->
                     <div id="threads_list" style="margin-top:1.5em;"></div>
-                    {% include "handlebars/thread_menu.html" %}
                     
                     <!--
                     <div class="input-group">
@@ -147,7 +147,8 @@
                     <h2>PEOPLE</h2>
                     <div><span class="label label-success">In thread</span> <span class="label">All active</span></div>
                     
-                    {% include "handlebars/user/online_display.html" %}
+                    <!-- render list of users here -->
+                    <div id="people_list" class="yarn-people-list" style="margin-top:1.5em;"></div>
                     
                 </div>
                 
@@ -175,9 +176,10 @@
             
             <!-- content container -->
             <div id="tabs" class="yarn-content">
-                <div id="available_thread_list" class="content_area yarn-content-module">
-                    
-                </div>
+                
+                <!-- render threads in here -->
+                <div id="available_thread_list" class="content_area yarn-content-module"></div>
+                
             </div><!-- end yarn-content -->
             
         </section>
@@ -205,6 +207,8 @@
     
     {% endcompress %}
     
+    {% include "handlebars/user/online_display.html" %}
+    {% include "handlebars/thread_menu.html" %}
     {% include "handlebars/available_threads.html" %}
     {% include "handlebars/thread/initial_display.html" %}
     {% include "handlebars/thread/tab_display.html" %}

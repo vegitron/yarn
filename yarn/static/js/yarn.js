@@ -78,6 +78,7 @@ function refresh_thread_tabs() {
     }
 
     $("#threads_list").html(template(template_data));
+    
 }
 
 function handle_window_click(e) {
