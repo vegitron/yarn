@@ -175,6 +175,9 @@ function show_thread(thread_id) {
     if (mobile) {
         $('body').removeClass('offcanvas');
     }
+    
+    // make sure the thread container is scrolled to the bottom
+    $('#artifact_container_'+thread_id).scrollTop($('#artifact_container_'+thread_id).prop("scrollHeight"));
 }
 
 function socket_draw_new_thread(data) {
