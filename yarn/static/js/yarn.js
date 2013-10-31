@@ -85,43 +85,43 @@ function handle_window_click(e) {
     var target = e.target;
     var classname = target.className;
 
-    if (classname == "artifact_upload_interface") {
+    if (classname.indexOf("artifact_upload_interface") !== -1) {
         choose_file_to_upload(target.rel);
     }
-    else if (classname == "cancel_upload_artifact") {
+    else if (classname.indexOf("cancel_upload_artifact") !== -1) {
         cancel_file_upload(target.rel);
     }
-    else if (classname == "upload_artifact") {
+    else if (classname.indexOf("upload_artifact") !== -1) {
         upload_new_artifact(target.rel);
     }
-    else if (classname == "private_chat") {
+    else if (classname.indexOf("private_chat") !== -1) {
         open_private_chat(target.rel, { "highlight": true });
     }
-    else if (classname == "thread-history") {
+    else if (classname.indexOf("thread-history") !== -1) {
         show_thread_history(target.rel);
     }
-    else if (classname == "close-history") {
+    else if (classname.indexOf("close-history") !== -1) {
         close_thread_history(target.rel);
     }
-    else if (classname == "create_new_thread_link") {
+    else if (classname.indexOf("create_new_thread_link") !== -1) {
         show_thread_creation_panel();
     }
-    else if (classname == "cancel_new_thread_create") {
+    else if (classname.indexOf("cancel_new_thread_create") !== -1) {
         hide_thread_creation_panel();
     }
-    else if (classname == "submit_new_thread") {
+    else if (classname.indexOf("submit_new_thread") !== -1) {
         create_new_thread();
     }
-    else if (classname == "close_thread_tab") {
+    else if (classname.indexOf("close_thread_tab") !== -1) {
         close_thread(target.rel);
     }
-    else if (classname == "open_thread") {
+    else if (classname.indexOf("open_thread") !== -1) {
         load_thread(target.rel, { highlight: true, save_preference: true });
     }
-    else if (classname == "show_more_artifact") {
+    else if (classname.indexOf("show_more_artifact") !== -1) {
         show_more_artifact(target);
     }
-    else if (classname == "show_less_artifact") {
+    else if (classname.indexOf("show_less_artifact") !== -1) {
         show_less_artifact(target);
     }
 }
