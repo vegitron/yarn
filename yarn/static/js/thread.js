@@ -179,6 +179,11 @@ function show_thread(thread_id) {
     
     // make sure the thread container is scrolled to the bottom
     $('#artifact_container_'+thread_id).scrollTop($('#artifact_container_'+thread_id).prop("scrollHeight"));
+    
+    // handle scrolling of threads (debounced)
+    $('#artifact_container_'+thread_id).smartscroll(function(e){
+        console.log("scrolling"); 
+    });
 }
 
 function socket_draw_new_thread(data) {
