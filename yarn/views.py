@@ -129,7 +129,7 @@ def _create_new_thread(request):
 
     thread = Thread.objects.create(name=json_data["name"], description=json_data["topic"], is_private=None)
 
-    return HttpResponse(thread.id)
+    return HttpResponse(json.dumps(thread.json_data()))
 
 def _get_threads_for_current_user(request):
     """ Returns a list of all threads the user has access to """

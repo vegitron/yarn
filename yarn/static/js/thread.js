@@ -170,7 +170,8 @@ function show_thread(thread_id) {
     }, 1000);
 
     window.current_open_thread = thread_id;
-    
+    $("#current_thread").html(window.all_thread_data[thread_id].name)
+
     // (mobile only) close the sidebar once a thread has been selected
     if (mobile) {
         $('body').removeClass('offcanvas');
@@ -805,7 +806,12 @@ function create_new_thread() {
 }
 
 function new_thread_created(response) {
-    load_thread(response, { highlight: true, save_preference: true});
+    response = JSON.parse(response);
+    window.all_thread_data[response.id] = {
+        name: response.name,
+        description: response.description
+    };
+    load_thread(response.id, { highlight: true, save_preference: true});
     hide_thread_creation_panel();
 }
 
