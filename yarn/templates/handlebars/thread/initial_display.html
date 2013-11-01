@@ -31,19 +31,19 @@
             </div>
         </div>
         <div id="thread_live_{{ thread_id }}">
-            
-            
-            <div class="yarn-date-bar-static dummy">
-                <div class="clearfix" style="padding: 0 1.2em;">
-                    <div class="pull-left"><strong>MON JUL 29 2013</strong></div>
-                    <div class="pull-right"><span class="label">PREV</span>&nbsp;<span class="label">NEXT</span>&nbsp;<span class="label">NOW</span></div>
-                </div>
-            </div>
-            
+                         
             <!-- scrolling chat area -->    
             <div class="yarn-artifacts yarn-chat" id="artifact_container_{{thread_id}}">
                 <ul class="yarn-chat-list" id="yarn_artifact_list_{{thread_id}}">
-                   
+                    
+                    <!-- template for fixed at top of scroll, if the date is out of view
+                    <li class="yarn-date-bar-fixed dummy">
+                        <div class="clearfix" style="padding: 0 1.2em;">
+                            <div class="pull-left"><strong>TUE JUL 30 2013</strong></div>
+                            <div class="pull-right"><span class="label">PREV</span>&nbsp;<span class="label">NEXT</span>&nbsp;<span class="label">NOW</span></div>
+                        </div>
+                    </li> -->
+                    
                     {{#each artifacts}}
                         
                         <!-- display artifact -->
