@@ -13,8 +13,14 @@
 @concrete: darken(#95A5A6, 35%);
 @asbestos: darken(#7F8C8D, 30%);
 
+@danger: #d9534f;
+
 /*** globals ***/
 body { background: @asbestos; overflow: hidden !important; }
+
+.dummy { color: @danger !important; 
+    & * { color: @danger !important;  }
+}
 
 a.switch {
     &:hover { text-decoration: none; }
@@ -255,11 +261,6 @@ a.switch {
         }
     }
     
-    
-
-
-
-
 }
 
 
