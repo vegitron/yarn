@@ -68,16 +68,16 @@ a.switch {
         -moz-box-shadow: 0 2px 2px 0 rgba(0,0,0,0.1), 0 1px 0 0 rgba(0,0,0,0.1);
         box-shadow: 0 2px 2px 0 rgba(0,0,0,0.1), 0 1px 0 0 rgba(0,0,0,0.1);
         
-        h1 { font-family: 'Open Sans', sans-serif; font-size: 130%; font-weight: bold; text-transform: uppercase; position: absolute; top: .70em; left: 1em; margin: 0; padding: .15em; 
+        h1 { font-family: 'Open Sans', sans-serif; font-size: 130%; font-weight: bold; text-transform: uppercase; position: absolute; top: .70em; left: .80em; margin: 0; padding: .15em 0; 
             
             a { color: @belizehole; text-decoration: none; }
         }
 
-        a.switch { top: .55em; color: @belizehole; }
+        a.switch { top: .55em; right: .80em; color: @belizehole; }
         
         .yarn-active-list { list-style: none; background: @concrete; max-height: 280px; width: 250px; overflow: scroll; -webkit-overflow-scrolling: touch;  margin: 0; padding: 0;
             
-            position: absolute; top: 50px; left: .5em;
+            position: absolute; top: 50px; left: .50em;
             
             -webkit-transition: .3s max-height ease;
             -moz-transition: .3s max-height ease;
@@ -137,8 +137,9 @@ a.switch {
     .yarn-available-threads { padding: 1.2em; }
     
 
-    
-    .yarn-chat { position: absolute; bottom: 84px; top: 0; left: 0; right: 0; overflow: scroll; -webkit-overflow-scrolling: touch; padding: 0 1.2em; /*z-index: -1;*/
+    .yarn-date-bar-static { background: @danger; line-height: 36px; }
+        
+    .yarn-chat { position: absolute; bottom: 84px; top: 36px; left: 0; right: 0; overflow: scroll; -webkit-overflow-scrolling: touch; padding: 0 1.2em; /*z-index: -1;*/
     
         background: @clouds;
 
@@ -169,11 +170,14 @@ a.switch {
             }
             
             .yarn-date-bar { background:#dde4e6; line-height: 2.5em; margin-left: -1.2em; margin-right: -1.2em; margin-bottom: 1em; padding: 0 1.2em; 
+                .label { padding-right: 0;}
                 
-                 &.fixed-bar { position:fixed; background:#ccc; top:0px; left:1.2em; right:1.2em; z-index:1; padding: 0 1.2em; visibility: hidden; }
+                &.fixed-bar { position:fixed; background:#ccc; top:0; left:0; right:0; z-index:999; padding: 0 1.2em; display: block; visibility: hidden !important; }
             }
     
         }
+        
+        
     }
     
     .yarn-upload-preview { position: absolute; top:0; bottom: 0; left: 0; right: 0; overflow: hidden; z-index: 888; color: #fff; padding: 1.2em;

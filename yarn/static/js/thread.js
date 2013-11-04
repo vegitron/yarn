@@ -180,14 +180,11 @@ function show_thread(thread_id) {
     // make sure the thread container is scrolled to the bottom
     $('#artifact_container_'+thread_id).scrollTop($('#artifact_container_'+thread_id).prop("scrollHeight"));
     
-    // clone all databars in thread
-    clone_datebars(thread_id);
- 
+    
     // handle thread scrolling (debounced)
     $('#artifact_container_'+thread_id).smartscroll(function(e){
-        //console.log("debounced scrolling"); 
-        // update the datebar when scrolling this thread
-        update_datebar(thread_id);
+        console.log("debounced scrolling"); 
+    
     });
 }
 
@@ -838,46 +835,6 @@ function show_more_artifact(element) {
 
 function show_less_artifact(element) {
     $(element).closest('.artifact-oversized').removeClass('showing_more');
-}
-
-
-// clone all datebars
-function clone_datebars(thread_id) {
-
-    var clonedDateBar;
-    
-    // clone all datebars in this thread
-    $('#artifact_container_'+thread_id).each(function() {
-       clonedDateBar = $(".yarn-date-bar", this);
-       clonedDateBar
-         .before(clonedDateBar.clone())
-         .addClass("fixed-bar");
-    });
-
-}
-
-// handle showing and hiding of the fixed databar
-function update_datebar(thread_id) {
-   
-   $('#artifact_container_'+thread_id).each(function() {
-    
-        // figure out where the current datebar is
-       var el             = $(this),
-           offset         = el.offset(),
-           scrollTop      = $(this).scrollTop(),
-           fixedBar = $(".fixed-bar", this)
-       
-       // show the fixed datebar depending on where it is in the view
-       if ((scrollTop > offset.top) && (scrollTop < offset.top + el.height())) {
-           fixedBar.css({
-            "visibility": "visible"
-           });
-       } else {
-           fixedBar.css({
-            "visibility": "hidden"
-           });      
-       };
-   });
 }
 
     
