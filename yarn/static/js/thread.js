@@ -818,6 +818,7 @@ function new_thread_created(response) {
         name: response.name,
         description: response.description
     };
+    refresh_thread_tabs();
     load_thread(response.id, { highlight: true, save_preference: true});
     hide_thread_creation_panel();
 }
