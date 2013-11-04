@@ -137,7 +137,9 @@ a.switch {
     .yarn-available-threads { padding: 1.2em; }
     
 
-    .yarn-date-bar-static { background: @danger; line-height: 36px; }
+    .yarn-date-bar-static { background: #ccc; line-height: 36px; height: 36px; padding: 0 1.2em; 
+        .label { padding-right: 0;}
+    }
         
     .yarn-chat { position: absolute; bottom: 84px; top: 36px; left: 0; right: 0; overflow: scroll; -webkit-overflow-scrolling: touch; padding: 0 1.2em; /*z-index: -1;*/
     
@@ -171,8 +173,6 @@ a.switch {
             
             .yarn-date-bar { background:#dde4e6; line-height: 2.5em; margin-left: -1.2em; margin-right: -1.2em; margin-bottom: 1em; padding: 0 1.2em; 
                 .label { padding-right: 0;}
-                
-                &.fixed-bar { position:fixed; background:#ccc; top:0; left:0; right:0; z-index:999; padding: 0 1.2em; display: block; visibility: hidden !important; }
             }
     
         }
