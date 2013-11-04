@@ -29,7 +29,6 @@ var deBouncer = function($,cf,of, interval){
 deBouncer(jQuery,'smartresize', 'resize', 100);
 deBouncer(jQuery,'smartscroll', 'scroll', 100);
 deBouncer(jQuery,'smartmousemove', 'mousemove', 100);
-    
 	
 $(function() {
     

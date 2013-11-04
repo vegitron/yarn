@@ -166,11 +166,12 @@ a.switch {
                 /*** chat in nested format ***/                
                 .yarn-chat-inner-list { padding-left: 0; }
 
-
             }
             
-            .yarn-date-bar-fixed { position:fixed; background:#ddd; top:0px; left:0; right:0; z-index:1; line-height: 2.5em; }
-            .yarn-date-bar-inline { background:#dde4e6; line-height: 2.5em; margin-left: -1.2em; margin-right: -1.2em; margin-bottom: 1em; }
+            .yarn-date-bar { background:#dde4e6; line-height: 2.5em; margin-left: -1.2em; margin-right: -1.2em; margin-bottom: 1em; padding: 0 1.2em; 
+                
+                 &.fixed-bar { position:fixed; background:#ccc; top:0px; left:1.2em; right:1.2em; z-index:1; padding: 0 1.2em; visibility: hidden; }
+            }
     
         }
     }
