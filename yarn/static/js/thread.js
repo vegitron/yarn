@@ -184,7 +184,10 @@ function show_thread(thread_id) {
     // handle thread scrolling (debounced)
     $('#artifact_container_'+thread_id).smartscroll(function(e){
         console.log("debounced scrolling"); 
-    
+        
+        // update the fixed datebar
+        update_datebar(thread_id);
+        
     });
 }
 
@@ -836,6 +839,42 @@ function show_more_artifact(element) {
 
 function show_less_artifact(element) {
     $(element).closest('.artifact-oversized').removeClass('showing_more');
+}
+
+function update_datebar(thread_id) {
+        
+        // array of datebars       
+        var clonedDatebars = [];
+        var lastDatebar = clonedDatebars[clonedDatebars.length-1];
+                
+        // for all datebars
+        $('.yarn-date-bar').each(function() {
+
+            var elemTop = $(this).offset().top;
+            var contents;
+            
+            // check to see if the datebar is out of view
+            if (elemTop <= 0) {
+                
+                //console.log('item scrolled out of view');
+                //console.log('elemtop '+ elemTop);
+                
+                // if out of view... add it to array
+                contents = $(this).html();
+                clonedDatebars.push(contents)
+                
+                //console.log(contents);
+            }
+            else {
+
+                 // if in view, remove it from array if it exists
+            }
+
+        });
+        
+        // display the LAST datebar that is out of view... inside of the static datebar container
+        $('#thread_datebar_static_'+thread_id).html("this is the static datebar");
+
 }
 
     
