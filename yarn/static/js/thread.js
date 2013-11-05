@@ -71,6 +71,8 @@ function render_artifacts(artifacts, id_addon) {
         var artifact = artifacts[i];
         _artifact_pre_process(artifact);
 
+        var date_string = _date_string_from_timestamp(artifact.timestamp);
+
         if ((artifact.type == "") ||
             (artifact.type == null) ||
             (artifact.type == "action") ||
@@ -106,6 +108,36 @@ function render_artifacts(artifacts, id_addon) {
 
     return { rendered_artifacts: rendered_artifacts, has_alert_text: has_alert_text };
 
+}
+
+function _date_string_from_timestamp(timestamp) {
+    var weekday = [
+        "SUN",
+        "MON",
+        "TUE",
+        "WED",
+        "THU",
+        "FRI",
+        "SAT"
+    ];
+    var months = [
+        "JAN",
+        "FEB",
+        "MAR",
+        "APR",
+        "MAY",
+        "JUN",
+        "JUL",
+        "AUG",
+        "SEP",
+        "OCT",
+        "NOV",
+        "DEC"
+    ];
+    var date = new Date(Date.parse(timestamp));
+    var date_string = weekday[date.getDay()] + " " + months[date.getMonth()] + " " + date.getDate() + " " + date.getFullYear();
+
+    return date_string;
 }
 
 function _artifact_pre_process(artifact) {
@@ -510,6 +542,7 @@ function handle_successful_artifact_repost() {
 
 function handle_successful_artifact_post() {
     $("#error_posting_text").hide();
+    console.log('posted');
 }
 
 function handle_error_artifact_post(thread_id, content) {
