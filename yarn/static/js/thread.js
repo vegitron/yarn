@@ -216,11 +216,12 @@ function show_thread(thread_id) {
     // handle thread scrolling (debounced)
     $('#artifact_container_'+thread_id).smartscroll(function(e){
         console.log("debounced scrolling"); 
-        
+                
         // update the fixed datebar
         update_datebar(thread_id);
-        
     });
+
+
 }
 
 function socket_draw_new_thread(data) {
@@ -875,7 +876,7 @@ function show_less_artifact(element) {
 }
 
 function update_datebar(thread_id) {
-        
+                
         // array of datebars       
         var clonedDatebars = [];
         var lastDatebar = clonedDatebars[clonedDatebars.length-1];
