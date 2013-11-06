@@ -1,8 +1,20 @@
-@offcanvaswidth: 20em;
+/*** variables ***/
+@showsidebar: ~"screen and (min-width: 768px)";
+@sidebarwidth: 20em;
 
-body { }
+/*** main styles ***/
+a.switch { color: #ccc; font-size: 140%; position:absolute; top: 1em; right:1em; 
+    
+    &:hover { text-decoration: none; }
+    
+    @media @showsidebar {
+        display: none; 
+    }
+}
 
-a.switch { color: #ccc; font-size: 140%; position:absolute; top: 1em; right:1em; }
+a.switch {
+    
+}
 
 .viewport {
     position: absolute;
@@ -19,8 +31,12 @@ a.switch { color: #ccc; font-size: 140%; position:absolute; top: 1em; right:1em;
     overflow: auto;
     position: absolute;
     top: 0;
-    width: @offcanvaswidth;
+    width: @sidebarwidth;
     z-index: 0;
+    
+    @media @showsidebar { 
+        right: 0;
+    }
 }
 
 .content {
@@ -42,40 +58,33 @@ a.switch { color: #ccc; font-size: 140%; position:absolute; top: 1em; right:1em;
     -o-transition: .3s all ease;
     -ms-transition: .3s all ease;
     transition: .3s all ease;
-}
-
-
-
-/* offcanvas has been activated */
-.offcanvas .content {
-
-    /* slide the content to the left -19em */
-    -webkit-transform: translate3d(-@offcanvaswidth, 0, 0);
-    -moz-transform: translate3d(-@offcanvaswidth, 0, 0);
-    transform: translate3d(-@offcanvaswidth, 0, 0);
-
-    -webkit-transition: .3s all ease;
-    -moz-transition: .3s all ease;
-    -o-transition: .3s all ease;
-    -ms-transition: .3s all ease;
-    transition: .3s all ease;
-
-}
-
-
-/*** desktop is 1000px and wider ***/
-@media only screen and (min-width: 1000px) {
-
-    a.switch { display: none; }
-    .sidebar { right: 0; }
-    .content { left: 0; right: @offcanvaswidth; width: auto; 
-        
-    -webkit-transition: none;
-    -moz-transition: none;
-    -o-transition: none;
-    -ms-transition: none;
-    transition: none;
     
-    }
+     @media @showsidebar { 
+        left: 0; 
+        right: @sidebarwidth; 
+        width: auto;
+        -webkit-transition: none;
+        -moz-transition: none;
+        -o-transition: none;
+        -ms-transition: none;
+        transition: none;
+     }
 }
 
+/*** offcanvas ***/
+.offcanvas {
+
+    .content {
+        /* slide the content to the left -19em */
+        -webkit-transform: translate3d(-@sidebarwidth, 0, 0);
+        -moz-transform: translate3d(-@sidebarwidth, 0, 0);
+        transform: translate3d(-@sidebarwidth, 0, 0);
+        /* set the transition time */
+        -webkit-transition: .3s all ease;
+        -moz-transition: .3s all ease;
+        -o-transition: .3s all ease;
+        -ms-transition: .3s all ease;
+        transition: .3s all ease;
+    }
+    
+} 
