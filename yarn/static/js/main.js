@@ -1,6 +1,3 @@
-var sh = $(window).height(),
-	hh = $('.yarn-header').height(),
-	ch = sh - hh;
 
 var deBouncer = function($,cf,of, interval){
     // deBouncer by hnldesign.nl
@@ -26,8 +23,8 @@ var deBouncer = function($,cf,of, interval){
 };
 
 // register debouncing functions
-deBouncer(jQuery,'smartresize', 'resize', 100);
 deBouncer(jQuery,'smartscroll', 'scroll', 100);
+deBouncer(jQuery,'smartresize', 'resize', 100);
 deBouncer(jQuery,'smartmousemove', 'mousemove', 100);
 	
 $(function() {
@@ -50,20 +47,15 @@ $(function() {
     
 });
 
-// handle browser resizing (debounced)
-$(window).smartresize(function(e){
-    
-    sh = $(window).height();
-	hh = $('.yarn-header').height();
-	ch = sh - hh;
-	
-    setContentHeights();
-    
-});
+//$(window).smartresize(setContentHeights);
+$(window).on('resize', setContentHeights);
 
 function setContentHeights() {
-    
-    $('.viewport').height(sh);
-    $('.yarn-content').height(ch);
-    $('.yarn-content-module').height(ch);
+    var window_height = $(window).height();
+    var header_height = $('.yarn-header').height();
+    var content_height = window_height- header_height;
+
+    $('#viewport').height(window_height);
+    $('#tabs').height(content_height);
+    $('.yarn-content-module').height(content_height);
 }
