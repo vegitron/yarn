@@ -228,14 +228,13 @@ body { background: @asbestos; overflow: hidden !important; }
             
         li { background: transparent; 
             
-            a { border: none; 
-                &:hover, &:focus {  background: lighten(@asbestos, 5%); border: none; }
-            }        
-            &.active { 
-                a { background: lighten(@asbestos, 2%); color: #fff; 
-                    &:hover, &:focus { background: lighten(@asbestos, 2%); color: #fff; }
-                }
-            }
+            a { border: none; }
+            a:hover {  background: lighten(@asbestos, 5%); border: none; }
+        }
+        
+        .active { 
+            a { background: lighten(@asbestos, 2%); color: #fff; }
+            a:hover { background: lighten(@asbestos, 2%); color: #fff; }
         }
     }
 
