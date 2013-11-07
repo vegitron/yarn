@@ -65,13 +65,13 @@ function render_artifacts(artifacts, id_addon) {
     var rendered_artifacts = [];
     var artifact_source = $("#artifact_display").html();
     var artifact_template = Handlebars.compile(artifact_source);
+    var date_source = $("#date_seperator").html();
+    var date_template = Handlebars.compile(date_source);
 
     var has_alert_text = false;
     for (var i = 0; i < artifacts.length; i++) {
         var artifact = artifacts[i];
         _artifact_pre_process(artifact);
-
-        var date_string = _date_string_from_timestamp(artifact.timestamp);
 
         if ((artifact.type == "") ||
             (artifact.type == null) ||
@@ -79,6 +79,19 @@ function render_artifacts(artifacts, id_addon) {
             (artifact.type == "new_description") ||
             (artifact.type == "new_thread_name") ||
             (artifact.type == "file")) {
+            
+            var date_string = _date_string_from_timestamp(artifact.timestamp);
+            var date_id =  date_string.replace(/\s/g, "_") + "_" +artifact.thread_id
+            
+            if(window.all_thread_data[artifact.thread_id].last_date === undefined) {
+                window.all_thread_data[artifact.thread_id].last_date = date_string;
+                var date_html = date_template({date: date_string, id: date_id});
+                rendered_artifacts.push({ artifact: date_html });
+            }else if(window.all_thread_data[artifact.thread_id].last_date !== date_string) {
+                window.all_thread_data[artifact.thread_id].last_date = date_string;
+                var date_html = date_template({date: date_string, id: date_id});
+                rendered_artifacts.push({ artifact: date_html });
+            }
 
             var artifact_html = artifact_template({ artifact: artifact, id_addon: id_addon });
 
