@@ -210,9 +210,12 @@ function show_thread(thread_id) {
     
     window.setTimeout(function() {
         last_display.removeClass('slide-up');
+        last_display.removeClass('after-slide');
         current_display.css('zIndex', current_z_index);
 
     }, 1000);
+
+    _stabilize_thread_footer(thread_id);
 
     window.current_open_thread = thread_id;
     $("#current_thread").html(window.all_thread_data[thread_id].name)
@@ -333,13 +336,17 @@ function draw_new_thread(data, args) {
         }
     }
 
+    _stabilize_thread_footer(thread_id);
+}
+
+function _stabilize_thread_footer(thread_id) {
     // After the thread loads, remove the slide-up class, so as the thread is resized
     // it doesn't wobble all over the screen
     window.setTimeout(function() {
         var thread_panel = $("#thread_"+thread_id);
         thread_panel.addClass("after-slide");
         thread_panel.removeClass("slide-up");
-    }, 600);
+    }, 1000);
 }
 
 function handle_thread_input_keydown(e) {
