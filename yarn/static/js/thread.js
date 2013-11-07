@@ -889,9 +889,7 @@ function update_datebar(thread_id) {
     var top_of_thread = $("#thread_live_"+thread_id).offset().top;
 
     $('#artifact_container_'+thread_id+' .yarn-date-bar').each(function() {
-        console.log("El: ", this);
         var datebar_top = $(this).offset().top;
-        console.log("Top: ", datebar_top, top_of_thread);
         // check to see if the datebar is out of view
         if (datebar_top > top_of_thread) {
             has_onscreen_datebar = true;
