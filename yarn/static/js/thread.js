@@ -332,6 +332,14 @@ function draw_new_thread(data, args) {
             });
         }
     }
+
+    // After the thread loads, remove the slide-up class, so as the thread is resized
+    // it doesn't wobble all over the screen
+    window.setTimeout(function() {
+        var thread_panel = $("#thread_"+thread_id);
+        thread_panel.addClass("after-slide");
+        thread_panel.removeClass("slide-up");
+    }, 600);
 }
 
 function handle_thread_input_keydown(e) {
