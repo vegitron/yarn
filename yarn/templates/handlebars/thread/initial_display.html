@@ -41,27 +41,11 @@
             <!-- scrolling chat area -->    
             <div class="yarn-artifacts yarn-chat" id="artifact_container_{{thread_id}}">
                 
-                <ul class="yarn-chat-list" id="yarn_artifact_list_{{thread_id}}">
-                                        
-                    <!-- TODO: new loop for each day -->
-                    <li>
-                        
-                        <ul class="yarn-chat-inner-list">
-                            <!-- loop for each artifact on a given day -->
-                            {{#each artifacts}}
-                                {{{ artifact }}}
-                             {{/each}}
-                        </ul>
-                        
-                        <!-- TODO: this is the databar for the day -->
-                        <div class="yarn-date-bar clearfix dummy">
-                            <div class="pull-left"><strong>TUE JUL 30 2013</strong></div>
-                            <div class="pull-right"><span class="label">PREV</span>&nbsp;<span class="label">NEXT</span>&nbsp;<span class="label">NOW</span></div>
-                        </div>
-                        
-                    </li><!-- end day loop -->
-                    
-                </ul>
+                <ol class="yarn-chat-list" id="yarn_artifact_list_{{thread_id}}">
+                    {{#each artifacts}}
+                        {{{ artifact }}}
+                     {{/each}}
+                </ol>
                 
             </div>
             
