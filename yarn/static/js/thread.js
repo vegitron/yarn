@@ -224,16 +224,12 @@ function show_thread(thread_id) {
     
     // make sure the thread container is scrolled to the bottom
     $('#artifact_container_'+thread_id).scrollTop($('#artifact_container_'+thread_id).prop("scrollHeight"));
-    
-    
-    // handle thread scrolling (debounced)
-    $('#artifact_container_'+thread_id).smartscroll(function(e){
-        console.log("debounced scrolling"); 
-                
-        // update the fixed datebar
-        update_datebar(thread_id);
-    });
 
+
+    // handle static datebar display on scroll
+    $('#artifact_container_'+thread_id).on('scroll', function() {
+        update_datebar(thread_id)
+    });
 
 }
 

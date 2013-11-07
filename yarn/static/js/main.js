@@ -23,9 +23,7 @@ var deBouncer = function($,cf,of, interval){
 };
 
 // register debouncing functions
-deBouncer(jQuery,'smartscroll', 'scroll', 100);
 deBouncer(jQuery,'smartresize', 'resize', 100);
-deBouncer(jQuery,'smartmousemove', 'mousemove', 100);
 	
 $(function() {
     
