@@ -105,7 +105,11 @@
                 <!-- tab contents: threads -->
                 <div class="yarn-threads tab-pane active" id="threads">
                     <h2>Threads</h2>
-                    <div><span class="label label-success">Public</span> <span class="label">Active</span> <span class="label">Private</span></div>
+                    <div>
+                        <span class="label label-success" id="public_thread_menu"><a href="javascript:void(0);" class="show_public_threads">Public</a></span>
+                        <span class="label" id="active_thread_menu"><a href="javascript:void(0);" class="show_active_threads">Active</a></span>
+                        <span class="label" id="private_thread_menu"><a href="javascript:void(0);" class="show_private_threads">Private</a></span>
+                    </div>
                     
                     <!-- render list of threads here -->
                     <div id="threads_list" style="margin-top:1.5em;">
@@ -196,6 +200,7 @@
     <script src="{{STATIC_URL}}js/main.js"></script>
     <script src="{{STATIC_URL}}js/handlebar_utilities.js"></script>
     <script src="{{STATIC_URL}}js/thread.js"></script>
+    <script src="{{STATIC_URL}}js/thread_menu.js"></script>
     <script src="{{STATIC_URL}}js/thread_history.js"></script>
     <script src="{{STATIC_URL}}js/format.js"></script>
     <script src="{{STATIC_URL}}js/upload.js"></script>

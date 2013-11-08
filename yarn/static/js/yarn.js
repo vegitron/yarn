@@ -64,21 +64,26 @@ function _draw_available_threads(data) {
 }
 
 function refresh_thread_tabs() {
+    show_public_threads();
+}
+
+function show_filtered_thread_tabs(func) {
     var source = $("#thread_menu").html();
     var template = Handlebars.compile(source);
 
     var template_data = { threads: [] };
     for (var thread_id in window.all_thread_data) {
         if (window.all_thread_data.hasOwnProperty(thread_id)) {
-            template_data.threads.push({
-                id: thread_id,
-                name: window.all_thread_data[thread_id].name
-            });
+            if (func.call(null, window.all_thread_data[thread_id])) {
+                template_data.threads.push({
+                    id: thread_id,
+                    name: window.all_thread_data[thread_id].name
+                });
+            }
         }
     }
 
     $("#threads_list").html(template(template_data));
-    
 }
 
 function handle_window_click(e) {
@@ -123,6 +128,15 @@ function handle_window_click(e) {
     }
     else if (classname.indexOf("show_less_artifact") !== -1) {
         show_less_artifact(target);
+    }
+    else if (classname.indexOf("show_public_threads") !== -1) {
+        show_public_threads();
+    }
+    else if (classname.indexOf("show_active_threads") !== -1) {
+        show_active_threads();
+    }
+    else if (classname.indexOf("show_private_threads") !== -1) {
+        show_private_threads();
     }
 }
 
