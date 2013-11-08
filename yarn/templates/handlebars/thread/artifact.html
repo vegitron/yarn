@@ -13,7 +13,7 @@
             
             <div class="yarn-chat-message">
                 <span class="artifact_user"><a href="javascript:void(0);" class="private_chat" rel="{{ artifact.author.login_name }}">{{ artifact.author.name }}</a></span>
-                <span class="artifact_user_id">{{ artifact.author.login_name }}</span>
+                <span class="artifact_user_id"><a href="javascript:void(0);" class="private_chat" rel="{{ artifact.author.login_name }}">{{ artifact.author.login_name }}</a></span>
                 {{#if_eq artifact.type "action"}}
                     <em>{{artifact.description}}</em>
                 {{/if_eq}}
