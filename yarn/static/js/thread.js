@@ -218,7 +218,7 @@ function show_thread(thread_id) {
     _stabilize_thread_footer(thread_id);
 
     window.current_open_thread = thread_id;
-    $("#current_thread").html(window.all_thread_data[thread_id].name)
+    $("#current_thread").html(htmlEncode(window.all_thread_data[thread_id].name))
 
     // (mobile only) close the sidebar once a thread has been selected
     if (mobile) {
@@ -236,6 +236,13 @@ function show_thread(thread_id) {
 
 }
 
+// from http://stackoverflow.com/questions/1219860/html-encoding-in-javascript-jquery
+function htmlEncode(value){
+    //create a in-memory div, set it's inner text(which jQuery automatically encodes)
+    //then grab the encoded contents back out.  The div never exists on the page.
+    return $('<div/>').text(value).html();
+}
+
 function socket_draw_new_thread(data) {
     var json_data = JSON.parse(data);
     var args = json_data['args'];
@@ -244,6 +251,17 @@ function socket_draw_new_thread(data) {
 }
 
 function draw_new_thread(data, args) {
+    // For private threads, this is going to be true.  At this point, no other
+    // threads can be opened without being known about.
+    if (!window.all_thread_data[data.thread.id]) {
+        window.all_thread_data[data.thread.id] = data.thread;
+        if (data.thread.is_private) {
+            window.all_thread_data[data.thread.id]['name'] = "<"+data.thread.login_name+">";
+        }
+    }
+
+
+
     var source = $("#initial_thread_display").html();
     var tab_source = $("#thread_tab_display").html();
 
@@ -253,7 +271,6 @@ function draw_new_thread(data, args) {
     var artifact_data = render_artifacts(data.artifacts);
     var rendered_artifacts = artifact_data.rendered_artifacts;
     // has_alert_text not used here
-
 
     var rendered_users = render_online_users(data.online_users);
     window.last_person_change_timestamp = data.last_person_update;
