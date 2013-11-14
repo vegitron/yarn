@@ -917,27 +917,29 @@ function show_less_artifact(element) {
 }
 
 function update_datebar(thread_id) {
-    var has_onscreen_datebar = false;
+    
+    // thread top
     var top_of_thread = $("#thread_live_"+thread_id).offset().top;
-
+    
     $('#artifact_container_'+thread_id+' .yarn-date-bar').each(function() {
+        
+        // datebar top
         var datebar_top = $(this).offset().top;
-        // check to see if the datebar is out of view
-        if (datebar_top > top_of_thread) {
-            has_onscreen_datebar = true;
+        
+        // check to see if the datebar is out of view (less than the thread top) and mark them with the offview class
+        if (datebar_top < top_of_thread) {
+             $(this).addClass("offview");
+        }
+        else {            
+             $(this).removeClass("offview");
         }
     });
-
+    
     var static_datebar = $("#thread_datebar_static_"+thread_id);
-    if (has_onscreen_datebar) {
-        static_datebar.hide();
-    }
-    else {
-        // display the LAST datebar that is out of view... inside of the static datebar container
-        static_datebar.html($('#artifact_container_'+thread_id+' .yarn-date-bar').last().html());
-        static_datebar.show();
-    }
-
+    
+    // grab the last offview datebar and copy the contents into the static datebar
+    static_datebar.html($('#artifact_container_'+thread_id+' .yarn-date-bar.offview').last().html());
+    
 }
 
     
