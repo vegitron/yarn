@@ -129,13 +129,38 @@ body { background: @asbestos; overflow: hidden !important; }
         }
     }
     
-    
     /** these should be moved inside of .yarn-content-module **/
     
     .yarn-available-threads { padding: 1.2em; }
     
 
     .yarn-date-bar-static { background: #ccc; line-height: 36px; height: 36px; padding: 0 1.2em; 
+        
+        /* start the static datebar offscreen */
+        -webkit-transform: translate3d(0, -40px, 0);
+        -moz-transform: translate3d(0, -40px, 0);
+        transform: translate3d(0, -40px, 0);
+        
+        -webkit-transition: .4s all ease;
+        -moz-transition: .4s all ease;
+        -o-transition: .4s all ease;
+        -ms-transition: .4s all ease;
+        transition: .4s all ease;
+            
+        &.slide-down {
+        
+            /* slide the static datebar down */
+            -webkit-transform: translate3d(0, 0, 0);
+            -moz-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+        
+            -webkit-transition: .4s all ease;
+            -moz-transition: .4s all ease;
+            -o-transition: .4s all ease;
+            -ms-transition: .4s all ease;
+            transition: .4s all ease;
+        }
+        
         .label { padding-right: 0;}
     }
         

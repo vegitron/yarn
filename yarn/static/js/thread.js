@@ -940,12 +940,12 @@ function update_datebar(thread_id) {
     var static_datebar = $("#thread_datebar_static_"+thread_id);
     
     if (has_offscreen_datebar) {
-        static_datebar.show();
+        static_datebar.addClass("slide-down")
         // grab the last offview datebar and copy the contents into the static datebar
         static_datebar.html($('#artifact_container_'+thread_id+' .yarn-date-bar.offview').last().html());
     }
     else {
-        static_datebar.hide();
+        static_datebar.removeClass("slide-down");
     }
 
 }
