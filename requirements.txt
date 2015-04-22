@@ -4,5 +4,5 @@ simplejson
 django-compressor
 BeautifulSoup
 django-templatetag-handlebars
--e git+git@github.com:vegitron/authz_group.git#egg=authz_group
+-e git://github.com/vegitron/authz_group.git#egg=authz_group
 sphinx
